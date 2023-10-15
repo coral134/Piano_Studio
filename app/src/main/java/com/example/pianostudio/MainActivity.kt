@@ -28,7 +28,7 @@ class MainActivity : ComponentActivity() {
                 ) {
                     PianoKeyboard(
                         startNote = 0,
-                        endNote = 30,
+                        endNote = 45,
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(150.dp)

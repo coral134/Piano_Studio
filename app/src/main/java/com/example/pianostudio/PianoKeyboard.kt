@@ -19,10 +19,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.em
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.example.pianostudio.music.*
+import com.example.pianostudio.music.Note
+import com.example.pianostudio.music.letter
+import com.example.pianostudio.music.octave
+import com.example.pianostudio.music.string
 
 
 @Composable

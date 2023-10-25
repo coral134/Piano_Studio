@@ -19,6 +19,9 @@ import com.example.pianostudio.ui.theme.PianoStudioTheme
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val pianoState = PianoState()
+
         setContent {
             PianoStudioTheme {
                 Box(
@@ -30,10 +33,11 @@ class MainActivity : ComponentActivity() {
                 ) {
                     PianoKeyboard(
                         startNote = createNote(KeyType.A, 0),
-                        endNote = createNote(KeyType.C, 6),
+                        endNote = createNote(KeyType.C, 3),
+                        pianoState = pianoState,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(70.dp)
+                            .height(170.dp)
                     )
                 }
             }

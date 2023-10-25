@@ -1,19 +1,32 @@
 package com.example.pianostudio
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.interaction.MutableInteractionSource
+import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -31,6 +44,7 @@ import com.example.pianostudio.music.string
 fun PianoKeyboard(
     startNote: Note,
     endNote: Note,
+    pianoState: PianoState = PianoState(),
     modifier: Modifier
 ) {
     BoxWithConstraints (
@@ -47,44 +61,21 @@ fun PianoKeyboard(
 
         for (note in keyboard.start..keyboard.end) {
             if (KeyboardAlignment.isBlackKey(note)) {
-                // Black keys
-                Box(
-                    modifier = Modifier
-                        .zIndex(3f)
-                        .offset(x = keyboard.keyLeftPosition(note))
-                        .clip(RoundedCornerShape(
-                            bottomStart = keyboard.blackKeyClip,
-                            bottomEnd = keyboard.blackKeyClip
-                        ))
-                        .width(keyboard.blackKeyWidth)
-                        .height(keyboard.blackKeyHeight)
-                        .background(Color.Black)
+                BlackKey(
+                    position = keyboard.keyLeftPosition(note),
+                    width = keyboard.blackKeyWidth,
+                    height = keyboard.blackKeyHeight,
+                    clip = keyboard.blackKeyClip,
+                    pressed = pianoState.keys[note],
                 )
             } else {
-                // White keys
-                Box(
-                    modifier = Modifier
-                        .zIndex(1f)
-                        .offset(x = keyboard.keyLeftPosition(note))
-                        .clip(RoundedCornerShape(
-                            bottomStart = keyboard.whiteKeyClip,
-                            bottomEnd = keyboard.whiteKeyClip
-                        ))
-                        .width(keyboard.whiteKeyWidth)
-                        .fillMaxHeight()
-                        .background(Color.White)
-                ) {
-                    Text(
-                        text = note.string(),
-                        textAlign = TextAlign.Center,
-                        color = Color.Gray,
-                        fontWeight = FontWeight.Bold,
-                        fontSize = 10.sp,
-                        fontFamily = FontFamily.Monospace,
-                        modifier = Modifier
-                            .align(Alignment.BottomCenter)
-                    )
-                }
+                WhiteKey(
+                    position = keyboard.keyLeftPosition(note),
+                    width = keyboard.whiteKeyWidth,
+                    clip = keyboard.whiteKeyClip,
+                    text = note.string(),
+                    pressed = pianoState.keys[note],
+                )
 
                 // Lines between white keys
                 if (note != keyboard.start) {
@@ -100,6 +91,80 @@ fun PianoKeyboard(
                 }
             }
         }
+    }
+}
+
+@Composable
+fun WhiteKey(
+    position: Dp,
+    width: Dp,
+    clip: Dp,
+    text: String,
+    pressed: MutableState<Int>
+) {
+    Box(
+        modifier = Modifier
+            .zIndex(1f)
+            .offset(x = position)
+            .clip(RoundedCornerShape(0.dp, 0.dp, clip, clip))
+            .width(width)
+            .fillMaxHeight()
+            .background(if(pressed.value == 0) Color.White else Color.Cyan)
+    ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        if (interactionSource.collectIsPressedAsState().value) pressed.value = 127
+        else pressed.value = 0
+        Button(
+            onClick = { pressed.value = 127 },
+            interactionSource = interactionSource,
+            modifier = Modifier
+                .zIndex(1f)
+                .fillMaxSize()
+                .alpha(0f),
+            shape = RectangleShape,
+        ) {}
+
+        Text(
+            text = text,
+            textAlign = TextAlign.Center,
+            color = (if(pressed.value == 0) Color.Gray else Color.Blue),
+            fontWeight = FontWeight.Bold,
+            fontSize = 10.sp,
+            fontFamily = FontFamily.Monospace,
+            modifier = Modifier.align(Alignment.BottomCenter)
+        )
+    }
+}
+
+@Composable
+fun BlackKey(
+    position: Dp,
+    width: Dp,
+    height: Dp,
+    clip: Dp,
+    pressed: MutableState<Int>
+) {
+    Box(
+        modifier = Modifier
+            .zIndex(3f)
+            .offset(x = position)
+            .clip(RoundedCornerShape(0.dp, 0.dp, clip, clip))
+            .width(width)
+            .height(height)
+            .background(if(pressed.value == 0) Color.Black else Color.Blue)
+    ) {
+        val interactionSource = remember { MutableInteractionSource() }
+        if (interactionSource.collectIsPressedAsState().value) pressed.value = 127
+        else pressed.value = 0
+        Button(
+            onClick = {},
+            interactionSource = interactionSource,
+            modifier = Modifier
+                .zIndex(3f)
+                .fillMaxSize()
+                .alpha(0f),
+            shape = RectangleShape,
+        ) {}
     }
 }
 

@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import com.example.pianostudio.piano_ui.PianoKeyboard
 import com.example.pianostudio.music.KeyType
 import com.example.pianostudio.music.createNote
 import com.example.pianostudio.ui.theme.PianoStudioTheme
@@ -33,11 +34,12 @@ class MainActivity : ComponentActivity() {
                 ) {
                     PianoKeyboard(
                         startNote = createNote(KeyType.A, 0),
-                        endNote = createNote(KeyType.C, 3),
+                        endNote = createNote(KeyType.C, 4),
                         pianoState = pianoState,
+                        useTouchInput = true,
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(170.dp)
+                            .height(140.dp)
                     )
                 }
             }

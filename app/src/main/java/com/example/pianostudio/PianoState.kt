@@ -5,12 +5,17 @@ import com.example.pianostudio.music.Note
 
 class PianoState {
     val keys = List(128) { mutableStateOf(0) }
+    val bufferKeys = MutableList(128) { 0 }
 
-    fun setKey(note: Note, value: Int) {
-        keys[note].value = value
+    fun clearBuffer() {
+        bufferKeys.forEachIndexed { index, _ ->
+            bufferKeys[index] = 0
+        }
     }
 
-    fun keyOff(note: Note) {
-        setKey(note, 0)
+    fun pushBuffer() {
+        keys.forEachIndexed { index, i ->
+            i.value = bufferKeys[index]
+        }
     }
 }

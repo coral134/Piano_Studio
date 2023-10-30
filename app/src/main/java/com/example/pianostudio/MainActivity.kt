@@ -5,21 +5,26 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.ui.Alignment
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
-import com.example.pianostudio.piano_ui.PianoKeyboard
-import com.example.pianostudio.music.KeyType
-import com.example.pianostudio.music.createNote
+import androidx.core.view.WindowCompat
+import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
+import com.example.pianostudio.piano_ui.PianoKeyboardAndRoll
 import com.example.pianostudio.ui.theme.PianoStudioTheme
+
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val windowInsetsController =
+            WindowCompat.getInsetsController(window, window.decorView)
+        // Configure the behavior of the hidden system bars.
+        windowInsetsController.systemBarsBehavior =
+            WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
+        windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
 
         val pianoState = PianoState()
 
@@ -27,19 +32,12 @@ class MainActivity : ComponentActivity() {
             PianoStudioTheme {
                 Box(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .fillMaxHeight()
-                        .background(Color.DarkGray),
-                    contentAlignment = Alignment.BottomCenter
+                        .fillMaxSize()
+                        .background(Color.DarkGray)
                 ) {
-                    PianoKeyboard(
-                        startNote = createNote(KeyType.A, 0),
-                        endNote = createNote(KeyType.C, 4),
-                        pianoState = pianoState,
-                        useTouchInput = true,
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(140.dp)
+                    PianoKeyboardAndRoll(
+                        modifier = Modifier.fillMaxSize(),
+                        pianoState = pianoState
                     )
                 }
             }

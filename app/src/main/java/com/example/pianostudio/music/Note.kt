@@ -2,6 +2,8 @@ package com.example.pianostudio.music
 
 typealias Note = Int
 
+fun createNote(keyType: KeyType, octave: Int): Note = octave * 12 + keyType.num
+
 fun Note.letter(): Int = this % 12
 
 fun Note.octave(): Int = this / 12
@@ -11,7 +13,16 @@ fun Note.string(): String {
         .plus("").plus(octave())
 }
 
-fun createNote(keyType: KeyType, octave: Int): Note = octave * 12 + keyType.num
+private val whichAreBlackKeys = listOf(false, true, false, true, false, false, true,
+    false, true, false, true, false)
+fun Note.isBlackKey(): Boolean = whichAreBlackKeys[this.letter()]
+
+private val numWhiteKeysBefore = listOf(0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6)
+fun numWhiteKeysBetween(start: Note, end: Note): Int {
+    val octaveDiff = end.octave() - start.octave()
+    return 1 + (octaveDiff * 7) +
+            numWhiteKeysBefore[end.letter()] - numWhiteKeysBefore[start.letter()]
+}
 
 enum class KeyType(val num: Int) {
     C(0), Csharp(1), Dflat(1),

@@ -1,27 +1,19 @@
 package com.example.pianostudio.piano_ui
 
-import androidx.compose.animation.Animatable
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -29,7 +21,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.PianoState
-import com.example.pianostudio.music.Note
+import com.example.pianostudio.custom_composables.TrackPointers
+import com.example.pianostudio.custom_composables.VerticalLine
+import com.example.pianostudio.custom_composables.fadeOut
 import com.example.pianostudio.music.string
 import com.example.pianostudio.ui.theme.PressedBlackKey
 import com.example.pianostudio.ui.theme.PressedWhiteKey
@@ -39,33 +33,24 @@ import com.example.pianostudio.ui.theme.WhiteKeyText
 
 @Composable
 fun PianoKeyboard(
-    startNote: Note,
-    endNote: Note,
+    keyboard: PianoPositioner,
     modifier: Modifier = Modifier,
     pianoState: PianoState = PianoState(),
     useTouchInput: Boolean = false
 ) {
-    BoxWithConstraints (
-        modifier = modifier
-            .background(Color.Black),
+    Box (
+        modifier = modifier.background(Color.Black),
         contentAlignment = Alignment.TopStart
     ) {
-        val keyboard = KeyPositioner(
-            startNote = startNote,
-            endNote = endNote,
-            width = maxWidth,
-            height = maxHeight
-        )
-
         // Touch input ------------------------------------------------------
         if (useTouchInput) {
             TrackPointers { map ->
-                pianoState.clearBuffer()
+                pianoState.clear()
                 map.forEach {
-                    val key = keyboard.whichKeyPressed(it.value)
-                    if (key != null) pianoState.bufferKeys[key] = 127
+                    val note = keyboard.whichNotePressed(it.value)
+                    if (note != null) pianoState.setNote(note, 127)
                 }
-                pianoState.pushBuffer()
+                pianoState.update()
             }
         }
 
@@ -76,19 +61,17 @@ fun PianoKeyboard(
                 width = keyboard.whiteKeyWidth,
                 clip = keyboard.whiteKeyClip,
                 text = key.note.string(),
-                pressed = pianoState.keys[key.note],
+                pressed = pianoState.noteState(key.note),
             )
+        }
 
-            if (key != keyboard.keys.first()) {
-                Box(
-                    modifier = Modifier
-                        .align(Alignment.Center)
-                        .offset(x = key.leftAlignment - maxWidth / 2)
-                        .width(1.dp)
-                        .fillMaxHeight()
-                        .background(Color.Black)
-                )
-            }
+        // Draw dividing lines
+        for (i in 1 until keyboard.whiteKeys.size) {
+            VerticalLine(
+                width = 1.dp,
+                horizPosition = keyboard.whiteKeys[i].leftAlignment,
+                color = Color.Black
+            )
         }
 
         // Draw black keys ------------------------------------------------------
@@ -98,7 +81,7 @@ fun PianoKeyboard(
                 width = keyboard.blackKeyWidth,
                 height = keyboard.blackKeyHeight,
                 clip = keyboard.blackKeyClip,
-                pressed = pianoState.keys[key.note],
+                pressed = pianoState.noteState(key.note)
             )
         }
     }
@@ -165,49 +148,5 @@ private fun DrawBlackKey(
             .width(width)
             .height(height)
             .background(keyColor)
-    )
-}
-
-@Composable
-private fun fadeOut(
-    pressed: MutableState<Int>,
-    color1: Color,
-    color2: Color
-): Color {
-    val color = remember { Animatable(Color.White) }
-
-    if (pressed.value != 0) {
-        LaunchedEffect(Unit) {
-            color.animateTo(color2, animationSpec = tween(0))
-        }
-    } else {
-        LaunchedEffect(Unit) {
-            color.animateTo(color1, animationSpec = tween(300))
-        }
-    }
-
-    return color.value
-}
-
-@Composable
-fun TrackPointers(
-    processTouchInput: (map: MutableMap<Long, Offset>) -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .pointerInput(Unit) {
-                awaitPointerEventScope {
-                    val map = mutableMapOf<Long, Offset>()
-                    while (true) {
-                        val event = awaitPointerEvent()
-                        event.changes.forEach {
-                            if (it.pressed) map[it.id.value] = it.position
-                            else map.remove(it.id.value)
-                        }
-                        processTouchInput(map)
-                    }
-                }
-            }
     )
 }

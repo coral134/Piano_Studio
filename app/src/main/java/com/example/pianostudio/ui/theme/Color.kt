@@ -21,6 +21,7 @@ val PressedBlackKey = Color(0xFF0048FF)
 val PianoRollBackGround = Color(0xFF2F323F)
 val PianoRollMinorLine = Color(0xFF4B4F63)
 val PianoRollMajorLine = Color(0xFF575C74)
+val PianoRollBottomLine = Color(0xFF142441)
 
 val WhiteKeyNote = PressedWhiteKey
 val WhiteKeyNoteOutline = Color(0xFFC7EFFF)

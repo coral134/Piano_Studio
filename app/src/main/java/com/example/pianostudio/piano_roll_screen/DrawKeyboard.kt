@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_ui
+package com.example.pianostudio.piano_roll_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -20,7 +20,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.PianoState
 import com.example.pianostudio.custom_composables.TrackPointers
 import com.example.pianostudio.custom_composables.VerticalLine
 import com.example.pianostudio.custom_composables.fadeOut
@@ -32,10 +31,10 @@ import com.example.pianostudio.ui.theme.WhiteKeyText
 
 
 @Composable
-fun PianoKeyboard(
-    keyboard: PianoPositioner,
+fun DrawKeyboard(
+    vm: PianoViewModel,
+    positioner: PianoPositioner,
     modifier: Modifier = Modifier,
-    pianoState: PianoState = PianoState(),
     useTouchInput: Boolean = false
 ) {
     Box (
@@ -45,43 +44,40 @@ fun PianoKeyboard(
         // Touch input ------------------------------------------------------
         if (useTouchInput) {
             TrackPointers { map ->
-                pianoState.clear()
-                map.forEach {
-                    val note = keyboard.whichNotePressed(it.value)
-                    if (note != null) pianoState.setNote(note, 127)
-                }
-                pianoState.update()
+                vm.updateOskPressedNotes(
+                    map.map{ positioner.whichNotePressed(it.value) }.filterNotNull()
+                )
             }
         }
 
         // Draw white keys ------------------------------------------------------
-        for (key in keyboard.whiteKeys) {
+        for (key in positioner.whiteKeys) {
             DrawWhiteKey(
                 position = key.leftAlignment,
-                width = keyboard.whiteKeyWidth,
-                clip = keyboard.whiteKeyClip,
+                width = positioner.wkeyWidth,
+                clip = positioner.wkeyClip,
                 text = key.note.string(),
-                pressed = pianoState.noteState(key.note),
+                pressed = vm.noteState(key.note),
             )
         }
 
         // Draw dividing lines
-        for (i in 1 until keyboard.whiteKeys.size) {
+        for (i in 1 until positioner.whiteKeys.size) {
             VerticalLine(
                 width = 1.dp,
-                horizPosition = keyboard.whiteKeys[i].leftAlignment,
+                horizPosition = positioner.whiteKeys[i].leftAlignment,
                 color = Color.Black
             )
         }
 
         // Draw black keys ------------------------------------------------------
-        for (key in keyboard.blackKeys) {
+        for (key in positioner.blackKeys) {
             DrawBlackKey(
                 position = key.leftAlignment,
-                width = keyboard.blackKeyWidth,
-                height = keyboard.blackKeyHeight,
-                clip = keyboard.blackKeyClip,
-                pressed = pianoState.noteState(key.note)
+                width = positioner.bkeyWidth,
+                height = positioner.bkeyHeight,
+                clip = positioner.bKeyClip,
+                pressed = vm.noteState(key.note)
             )
         }
     }

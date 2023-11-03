@@ -11,7 +11,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.pianostudio.piano_ui.PianoKeyboardAndRoll
+import com.example.pianostudio.piano_roll_screen.DrawKeyboardAndRoll
+import com.example.pianostudio.piano_roll_screen.PianoViewModel
 import com.example.pianostudio.ui.theme.PianoStudioTheme
 
 
@@ -26,7 +27,7 @@ class MainActivity : ComponentActivity() {
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
 
-        val pianoState = PianoState()
+        val vm = PianoViewModel()
 
         setContent {
             PianoStudioTheme {
@@ -35,9 +36,9 @@ class MainActivity : ComponentActivity() {
                         .fillMaxSize()
                         .background(Color.DarkGray)
                 ) {
-                    PianoKeyboardAndRoll(
-                        modifier = Modifier.fillMaxSize(),
-                        pianoState = pianoState
+                    DrawKeyboardAndRoll(
+                        vm = vm,
+                        modifier = Modifier.fillMaxSize()
                     )
                 }
             }

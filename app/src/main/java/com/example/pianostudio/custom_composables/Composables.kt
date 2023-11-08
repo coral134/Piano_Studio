@@ -41,12 +41,13 @@ fun fadeOut(
 
 @Composable
 fun TrackPointers(
+    key1: Any?,
     processTouchInput: (map: MutableMap<Long, Offset>) -> Unit
 ) {
     Box(
         modifier = Modifier
             .fillMaxSize()
-            .pointerInput(Unit) {
+            .pointerInput(key1) {
                 awaitPointerEventScope {
                     val map = mutableMapOf<Long, Offset>()
                     while (true) {

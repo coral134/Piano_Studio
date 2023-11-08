@@ -9,6 +9,6 @@ fun Modifier.absoluteHorizOffsetByCenter(x: Dp = 0.dp) =
     layout { measurable, constraints ->
         val placeable = measurable.measure(constraints)
         layout(placeable.width, placeable.height) {
-            placeable.place(x.roundToPx() - placeable.width/2, 0)
+            placeable.place(x.roundToPx() - placeable.width / 2, 0)
         }
     }

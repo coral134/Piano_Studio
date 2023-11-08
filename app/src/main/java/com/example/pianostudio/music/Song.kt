@@ -3,7 +3,7 @@ package com.example.pianostudio.music
 import java.util.TreeMap
 
 
-class Song() {
+class Song {
     private val measures = mutableListOf<TreeMap<SongNoteKey, SongNote>>()
     private val danglingNotes = mutableMapOf<Note, SongNote>()
 
@@ -41,7 +41,7 @@ class Song() {
             measures.add(TreeMap())
     }
 
-    fun collectNotesInRange(lowerSongPoint: Int, upperSongPoint: Int) : Set<SongNote> {
+    fun collectNotesInRange(lowerSongPoint: Int, upperSongPoint: Int): Set<SongNote> {
         val notes = mutableSetOf<SongNote>()
 
         for (mi in maxOf(lowerSongPoint.measure(), 0)..
@@ -49,15 +49,17 @@ class Song() {
             measures[mi].subMap(
                 SongNoteKey(lowerSongPoint, -1), true,
                 SongNoteKey(upperSongPoint, 128), true
-            ).forEach() {
+            ).forEach {
                 if (it.value.complete) notes.add(it.value)
             }
         }
 
-        danglingNotes.forEach() {
+        danglingNotes.forEach {
             notes.add(
-                SongNote(it.value.note, it.value.vel,
-                    it.value.startPoint, upperSongPoint, false)
+                SongNote(
+                    it.value.note, it.value.vel,
+                    it.value.startPoint, upperSongPoint, false
+                )
             )
         }
 
@@ -75,8 +77,10 @@ private class SongNoteKey(
     override fun compareTo(other: SongNoteKey): Int = when {
         this.songPoint != other.songPoint ->
             this.songPoint compareTo other.songPoint
+
         this.note != other.note ->
             this.note compareTo other.note
+
         else -> 0
     }
 }

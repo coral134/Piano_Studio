@@ -5,17 +5,17 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.example.pianostudio.custom_composables.pixToDp
 import com.example.pianostudio.music.Note
+import com.example.pianostudio.music.Piano.isBlackKey
+import com.example.pianostudio.music.Piano.letter
+import com.example.pianostudio.music.Piano.numWKeysBetweenNotes
 import com.example.pianostudio.music.SongNote
-import com.example.pianostudio.music.isBlackKey
-import com.example.pianostudio.music.letter
-import com.example.pianostudio.music.numWhiteKeysBetween
 
 class PianoPositioner(
-    startNote: Note = 0,
-    endNote: Note = 0,
-    val width: Dp = 0.dp,
-    val keyboardHeight: Dp = 0.dp,
-    val rollHeight: Dp = 0.dp
+    startNote: Note,
+    endNote: Note,
+    val width: Dp,
+    val keyboardHeight: Dp,
+    val rollHeight: Dp,
 ) {
     private companion object {
         val bkeyOffsets = listOf(0, 15, 0, 19, 0, 0, 13, 0, 17, 0, 21, 0)
@@ -24,7 +24,7 @@ class PianoPositioner(
 
     private val startNote = if (startNote.isBlackKey()) startNote - 1 else startNote
     private val endNote = if (endNote.isBlackKey()) endNote + 1 else endNote
-    private val numWKeys = numWhiteKeysBetween(this.startNote, this.endNote)
+    private val numWKeys = numWKeysBetweenNotes(this.startNote, this.endNote)
 
     val wkeyWidth = width / numWKeys
     val bkeyWidth = (width * 7) / (numWKeys * 12)
@@ -44,12 +44,12 @@ class PianoPositioner(
             if (note.isBlackKey()) {
                 val alignment = keys.last().leftAlignment +
                         width * bkeyOffsets[note.letter()] / (24 * numWKeys)
-                val key = PianoKey(note, alignment, alignment + bkeyWidth/2)
+                val key = PianoKey(note, alignment, alignment + bkeyWidth / 2)
                 keys.add(key)
                 blackKeys.add(key)
             } else {
-                val alignment = width * (numWhiteKeysBetween(this.startNote, note) - 1) / numWKeys
-                val key = PianoKey(note, alignment, alignment + bkeyWidth/2)
+                val alignment = width * (numWKeysBetweenNotes(this.startNote, note) - 1) / numWKeys
+                val key = PianoKey(note, alignment, alignment + bkeyWidth / 2)
                 keys.add(key)
                 whiteKeys.add(key)
             }
@@ -77,20 +77,20 @@ class PianoPositioner(
 
     // -------------------------------------
 
-    fun positionNote(songNote: SongNote, currentSongPoint: Int) : Pair<Dp, Dp> {
-        val endPoint = songPointToDp(currentSongPoint - songNote.endPoint)
+    fun positionNote(songNote: SongNote, currentSongPoint: Int): Pair<Dp, Dp> {
+        val startPoint = rollHeight - songPointToDp(currentSongPoint - songNote.startPoint)
         val height = songPointToDp(songNote.endPoint - songNote.startPoint)
-        return Pair(-endPoint, height)
+        return Pair(startPoint, height)
     }
 
     val numMeasuresVisible = 3.0
     private val dpPerMeasure = rollHeight.value / numMeasuresVisible
 
-    private fun songPointToDp(songPoint: Int) : Dp {
+    private fun songPointToDp(songPoint: Int): Dp {
         return (songPoint * dpPerMeasure / 1000.0).dp
     }
 
-    class PianoKey (
+    class PianoKey(
         val note: Note,
         val leftAlignment: Dp,
         val centerAlignment: Dp

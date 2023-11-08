@@ -1,0 +1,85 @@
+val numUpdates = 100
+
+LaunchedEffect(Unit) {
+    while(true) {
+        val lastUpdateTime = System.currentTimeMillis()
+        repeat(numUpdates) {
+            delay(2)
+            vm.updateVisibleNotes(positioner.numMeasuresVisible)
+        }
+        val duration = System.currentTimeMillis() - lastUpdateTime
+        val avg = duration.toFloat() / numUpdates
+        println("duration: $avg --------------")
+    }
+}
+
+// #########################################################################
+
+for (songNote in vm.visibleNotes.value) {
+val key = positioner.getKey(songNote.note)
+val (posY, height) = positioner.positionNote(songNote, vm.currentSongPoint.value)
+
+if (key.note.isBlackKey()) {
+    DrawBlackNote(
+        posX = key.leftAlignment,
+        posY = posY,
+        width = positioner.bkeyWidth,
+        height = height
+    )
+} else {
+    DrawWhiteNote(
+        posX = key.leftAlignment,
+        posY = posY,
+        width = positioner.wkeyWidth,
+        height = height
+    )
+}
+
+
+
+@Composable
+private fun DrawBlackNote(
+    posX: Dp,
+    posY: Dp,
+    width: Dp,
+    height: Dp
+) {
+    Box(
+        modifier = Modifier
+            .zIndex(2f)
+//            .offset(x = posX, y = posY)
+            .offset { IntOffset(posX.toPix.toInt(), posY.toPix.toInt()) }
+            .clip(RoundedCornerShape(5.dp, 5.dp, 5.dp, 5.dp))
+            .width(width)
+            .height(max(height, 10.dp))
+            .background(BlackKeyNoteOutline)
+            .padding(2.dp)
+            .clip(RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp))
+            .background(BlackKeyNote)
+    )
+}
+
+@Composable
+private fun DrawWhiteNote(
+    posX: Dp,
+    posY: Dp,
+    width: Dp,
+    height: Dp
+) {
+    Box(
+        modifier = Modifier
+            .zIndex(1f)
+//            .offset(x = posX, y = posY)
+            .offset { IntOffset(posX.toPix.toInt(), posY.toPix.toInt()) }
+            .width(width)
+            .height(max(height, 10.dp))
+            .padding(1.dp)
+            .clip(RoundedCornerShape(5.dp, 5.dp, 5.dp, 5.dp))
+            .background(WhiteKeyNoteOutline)
+            .padding(2.dp)
+            .clip(RoundedCornerShape(4.dp, 4.dp, 4.dp, 4.dp))
+            .background(WhiteKeyNote)
+    )
+}
+
+// #########################################################################

@@ -24,7 +24,7 @@ fun fadeOut(
     color1: Color,
     color2: Color
 ): Color {
-    val color = remember { Animatable(Color.White) }
+    val color = remember { Animatable(color1) }
 
     if (pressed.value != 0) {
         LaunchedEffect(Unit) {
@@ -71,7 +71,7 @@ fun VerticalLine(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = modifier
+        modifier = Modifier
             .fillMaxHeight()
             .width(width)
             .absoluteHorizOffsetByCenter(horizPosition)

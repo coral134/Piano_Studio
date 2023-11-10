@@ -12,13 +12,19 @@ import com.example.pianostudio.music.SongNote
 class PianoViewModel : ViewModel() {
 
     val startNote = mutableStateOf(createNote(Piano.KeyType.A, 0))
-    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 6))
+    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 1))
 
     private val keys = List(128) { mutableStateOf(0) }
     private val bufferKeys = MutableList(128) { 0 }
     fun noteState(note: Note) = keys[note]
 
     val visibleNotes = mutableStateOf(setOf<SongNote>())
+//    val visibleNotes = SnapshotStateMap<SongNote, Unit>()
+
+    fun changeInterval(startNote: Note, endNote: Note) {
+        this.startNote.value = startNote.coerceIn(0..127)
+        this.endNote.value = endNote.coerceIn(0..127)
+    }
 
     fun updateOskPressedNotes(touches: List<Int>) {
         bufferKeys.fill(0)
@@ -54,7 +60,7 @@ class PianoViewModel : ViewModel() {
             ((System.currentTimeMillis() - startTime) * measuresPerSecond).toInt()
     }
 
-    fun updateVisibleNotes(numMeasures: Float) {
+    fun updateVisibleNotes(numMeasures: Float): Int {
         updateSongTime()
 
         visibleNotes.value = song.collectNotesInRange(
@@ -62,25 +68,7 @@ class PianoViewModel : ViewModel() {
             upperSongPoint = currentSongPoint.value
         )
 
-//        val newNotes = song.collectNotesInRange(
-//            lowerSongPoint = currentSongPoint.value - (1000 * numMeasures).toInt(),
-//            upperSongPoint = currentSongPoint.value
-//        )
-//
-//        val toRemove = mutableListOf<SongNote>()
-//        visibleNotes.forEach { (songNote, _) ->
-//            if (!newNotes.contains(songNote))
-//                toRemove.add(songNote)
-//        }
-//
-//        toRemove.forEach {
-//            visibleNotes.remove(it)
-//        }
-//
-//        newNotes.forEach {
-//            if (!visibleNotes.contains(it))
-//                visibleNotes[it] = Unit
-//        }
+        return visibleNotes.value.size
     }
 }
 

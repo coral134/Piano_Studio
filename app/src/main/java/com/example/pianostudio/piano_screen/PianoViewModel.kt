@@ -9,17 +9,15 @@ import com.example.pianostudio.music.Song
 import com.example.pianostudio.music.SongNote
 
 
+data class KeyboardKeyInfo(
+    val targetVel: Int = 0,
+    val actualVel: Int = 0
+)
+
 class PianoViewModel : ViewModel() {
-
-    val startNote = mutableStateOf(createNote(Piano.KeyType.A, 0))
-    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 1))
-
     private val keys = List(128) { mutableStateOf(0) }
     private val bufferKeys = MutableList(128) { 0 }
     fun noteState(note: Note) = keys[note]
-
-    val visibleNotes = mutableStateOf(setOf<SongNote>())
-//    val visibleNotes = SnapshotStateMap<SongNote, Unit>()
 
     fun changeInterval(startNote: Note, endNote: Note) {
         this.startNote.value = startNote.coerceIn(0..127)
@@ -42,7 +40,7 @@ class PianoViewModel : ViewModel() {
     // song stuff
     private val song = Song()
 
-    var currentSongPoint = mutableStateOf(0)
+    var currentSongPoint: Int = 0
     private var startTime: Long = System.currentTimeMillis()
 
     private val measuresPerSecond = 0.5
@@ -52,23 +50,21 @@ class PianoViewModel : ViewModel() {
 //    }
 
     private fun addNoteEvent(note: Note, vel: Int) {
-        song.addEvent(note, vel, currentSongPoint.value)
+        song.addEvent(note, vel, currentSongPoint)
     }
 
     private fun updateSongTime() {
-        currentSongPoint.value =
+        currentSongPoint =
             ((System.currentTimeMillis() - startTime) * measuresPerSecond).toInt()
     }
 
-    fun updateVisibleNotes(numMeasures: Float): Int {
+    fun updateVisibleNotes(numMeasures: Float): Set<SongNote> {
         updateSongTime()
 
-        visibleNotes.value = song.collectNotesInRange(
-            lowerSongPoint = currentSongPoint.value - (1000 * numMeasures).toInt(),
-            upperSongPoint = currentSongPoint.value
+        return song.collectNotesInRange(
+            lowerSongPoint = currentSongPoint - (1000 * numMeasures).toInt(),
+            upperSongPoint = currentSongPoint
         )
-
-        return visibleNotes.value.size
     }
 }
 

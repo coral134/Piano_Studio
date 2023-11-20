@@ -3,15 +3,10 @@ package com.example.pianostudio.piano_screen
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -21,22 +16,24 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.pianostudio.custom_composables.TrackPointers
 import com.example.pianostudio.custom_composables.fadeOut
-import com.example.pianostudio.custom_composables.pixToDp
 import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.string
+import com.example.pianostudio.music.SongNote
 import com.example.pianostudio.ui.theme.PressedBlackKey
 import com.example.pianostudio.ui.theme.PressedWhiteKey
 import com.example.pianostudio.ui.theme.PressedWhiteKeyText
 import com.example.pianostudio.ui.theme.WhiteKeyText
 
+
+data class KeyboardUIState(
+    val notes: Set<SongNote> = setOf(),
+    val positioner: PianoPositioner,
+    val currentSongPoint: Int = 0
+)
 
 @Composable
 fun DrawKeyboard(
@@ -66,11 +63,7 @@ fun DrawKeyboard(
         }
 
         // Draw dividing lines --------------------------------------------------
-        Canvas(
-            modifier = Modifier
-                .zIndex(2F)
-                .fillMaxSize()
-        ) {
+        Canvas(modifier = Modifier.zIndex(2F).fillMaxSize()) {
             for (i in 1 until positioner.value.whiteKeys.size) {
                 val note = positioner.value.whiteKeys[i]
                 val weight = 1.dp.toPix

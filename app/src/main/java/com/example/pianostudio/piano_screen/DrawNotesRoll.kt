@@ -2,20 +2,9 @@ package com.example.pianostudio.piano_screen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.calculatePan
-import androidx.compose.foundation.gestures.calculateRotation
-import androidx.compose.foundation.gestures.calculateZoom
-import androidx.compose.foundation.gestures.detectTransformGestures
-import androidx.compose.foundation.gestures.rememberTransformableState
-import androidx.compose.foundation.gestures.transformable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -25,93 +14,81 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.input.pointer.PointerInputChange
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.isBlackKey
 import com.example.pianostudio.music.Piano.letter
+import com.example.pianostudio.music.SongNote
 import com.example.pianostudio.ui.theme.BlackKeyNote
 import com.example.pianostudio.ui.theme.BlackKeyNoteOutline
-import com.example.pianostudio.ui.theme.PianoRollBackGround
+import com.example.pianostudio.ui.theme.DarkGrayBackground
 import com.example.pianostudio.ui.theme.PianoRollBottomLine
 import com.example.pianostudio.ui.theme.PianoRollMajorLine
 import com.example.pianostudio.ui.theme.PianoRollMinorLine
 import com.example.pianostudio.ui.theme.WhiteKeyNote
 import com.example.pianostudio.ui.theme.WhiteKeyNoteOutline
-import kotlinx.coroutines.delay
-import kotlin.math.abs
 
+
+data class NotesRollUIState(
+    val notes: Set<SongNote> = setOf(),
+    val positioner: PianoPositioner,
+    val currentSongPoint: Int = 0
+)
 
 @Composable
 fun DrawNotesRoll(
-    vm: PianoViewModel,
-    positioner: MutableState<PianoPositioner>,
+    state: NotesRollUIState,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.background(PianoRollBackGround)) {
+    Box(modifier = modifier.background(DarkGrayBackground)) {
 
-        // draw background ----------------------------------------------------
+        // Draw background ----------------------------------------------------
         Canvas(modifier = modifier.fillMaxSize()) {
-            for (i in 1 until positioner.value.whiteKeys.size) {
-                val note = positioner.value.whiteKeys[i]
+            for (i in 1 until state.positioner.whiteKeys.size) {
+                val note = state.positioner.whiteKeys[i]
                 if (note.letter() == 0) {
                     val weight = 6.dp.toPix
                     drawRect(
                         color = PianoRollMajorLine,
-                        topLeft = Offset(positioner.value.leftAlignment(note) - weight / 2, 0F),
-                        size = Size(weight, positioner.value.rollHeight)
+                        topLeft = Offset(state.positioner.leftAlignment(note) - weight / 2, 0F),
+                        size = Size(weight, state.positioner.rollHeight)
                     )
                 } else {
                     val weight = 3.dp.toPix
                     drawRect(
                         color = PianoRollMinorLine,
-                        topLeft = Offset(positioner.value.leftAlignment(note) - weight / 2, 0F),
-                        size = Size(weight, positioner.value.rollHeight)
+                        topLeft = Offset(state.positioner.leftAlignment(note) - weight / 2, 0F),
+                        size = Size(weight, state.positioner.rollHeight)
                     )
                 }
             }
         }
 
         // Draw notes -------------------------------------------------------
-        LaunchedEffect(positioner.value) {
-            var last: Long = 0
-            while (true) {
-//                withFrameMillis {
-                delay(100)
-                    val num = vm.updateVisibleNotes(positioner.value.numMeasuresVisible)
-
-//                    println("duration: ${it - last} --------------")
-//                    last = it
-//                }
-            }
-        }
-
         Canvas(modifier = modifier.fillMaxSize()) {
-            println("num notes: ${vm.visibleNotes.value.size}")
-            for (songNote in vm.visibleNotes.value) {
+            for (songNote in state.notes) {
                 val note = songNote.note
-                if (!positioner.value.isVisible(note)) break
+                if (!state.positioner.isVisible(note)) continue
 
-                val (posY, height) = positioner.value.positionNote(
+                val (posY, height) = state.positioner.positionNote(
                     songNote = songNote,
-                    currentSongPoint = vm.currentSongPoint.value
+                    currentSongPoint = state.currentSongPoint
                 )
 
                 if (note.isBlackKey()) {
                     drawNote(
-                        posX = positioner.value.leftAlignment(note),
+                        posX = state.positioner.leftAlignment(note),
                         posY = posY,
-                        width = positioner.value.bkeyWidth,
+                        width = state.positioner.bkeyWidth,
                         height = height,
                         color = BlackKeyNote,
                         outline = BlackKeyNoteOutline
                     )
                 } else {
                     drawNote(
-                        posX = positioner.value.leftAlignment(note),
+                        posX = state.positioner.leftAlignment(note),
                         posY = posY,
-                        width = positioner.value.wkeyWidth,
+                        width = state.positioner.wkeyWidth,
                         height = height,
                         color = WhiteKeyNote,
                         outline = WhiteKeyNoteOutline
@@ -125,8 +102,8 @@ fun DrawNotesRoll(
             val weight = 8.dp.toPix
             drawRect(
                 color = PianoRollBottomLine,
-                topLeft = Offset(0F, positioner.value.rollHeight - weight),
-                size = Size(positioner.value.width, weight + 10)
+                topLeft = Offset(0F, state.positioner.rollHeight - weight),
+                size = Size(state.positioner.width, weight + 10)
             )
         }
     }

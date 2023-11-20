@@ -10,8 +10,6 @@ import com.example.pianostudio.music.Piano.letter
 import com.example.pianostudio.music.Piano.toWKey
 import com.example.pianostudio.music.Piano.wkeyToNote
 import com.example.pianostudio.music.SongNote
-import java.lang.Math.pow
-import kotlin.math.pow
 
 // TODO: Make more efficient
 
@@ -47,6 +45,7 @@ class PianoPositioner(
     val bkeyWidth = wkeyWidth * 7 / 12
 
     val keyboardHeight = minOf(wkeyWidth * 5.4F, height * 0.34F)
+//    val keyboardHeight = height * 0.34F
     val rollHeight = height - keyboardHeight
 
     val wkeyClip = wkeyWidth * 0.11F
@@ -75,6 +74,13 @@ class PianoPositioner(
             amountWKeyVisible / newZoom,
             centerPoint - newPan * amountWKeyVisible / width,
             width, height
+        )
+
+    fun updateSize(newWidth: Float, newHeight: Float): PianoPositioner =
+        PianoPositioner(
+            amountWKeyVisible,
+            centerPoint,
+            newWidth, newHeight
         )
 
     fun leftAlignment(note: Note): Float {

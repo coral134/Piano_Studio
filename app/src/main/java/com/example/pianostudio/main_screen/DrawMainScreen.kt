@@ -65,7 +65,7 @@ fun DrawOptionsCard(
             contentColor = Color.White
         ),
         modifier = modifier
-            .clickable{
+            .clickable {
 
             }
     ) {

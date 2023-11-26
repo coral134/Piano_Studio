@@ -4,20 +4,13 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.pianostudio.main_screen.DrawMainScreen
-import com.example.pianostudio.piano_screen.PianoViewModel
 import com.example.pianostudio.piano_screen.DrawPianoScreen
+import com.example.pianostudio.piano_screen.PianoViewModel
 import com.example.pianostudio.ui.theme.PianoStudioTheme
 
 

@@ -9,7 +9,6 @@ import com.example.pianostudio.music.Piano.isBlackKey
 import com.example.pianostudio.music.Piano.letter
 import com.example.pianostudio.music.Piano.toWKey
 import com.example.pianostudio.music.Piano.wkeyToNote
-import com.example.pianostudio.music.SongNote
 
 // TODO: Make more efficient
 
@@ -45,7 +44,6 @@ class PianoPositioner(
     val bkeyWidth = wkeyWidth * 7 / 12
 
     val keyboardHeight = minOf(wkeyWidth * 5.4F, height * 0.34F)
-//    val keyboardHeight = height * 0.34F
     val rollHeight = height - keyboardHeight
 
     val wkeyClip = wkeyWidth * 0.11F
@@ -109,18 +107,11 @@ class PianoPositioner(
             (wkeyNote - 1).coerceIn(startNote, endNote)
     }
 
-    // ----------------------------------------------------------------------------
-
-    fun positionNote(songNote: SongNote, currentSongPoint: Int): Offset {
-        val startPoint = rollHeight - songPointToPix(currentSongPoint - songNote.startPoint)
-        val height = songPointToPix(songNote.endPoint - songNote.startPoint)
-        return Offset(startPoint, height)
+    fun noteYPos(pos: Float): Float {
+        return noteHeight(pos) - 10.dp.toPix
     }
 
-    val numMeasuresVisible = 3.0F
-    private val pixPerMeasure = (rollHeight + 10.dp.toPix) / numMeasuresVisible
-
-    private fun songPointToPix(songPoint: Int): Float {
-        return songPoint * pixPerMeasure / 1000
+    fun noteHeight(height: Float): Float {
+        return height * (rollHeight + 10.dp.toPix)
     }
 }

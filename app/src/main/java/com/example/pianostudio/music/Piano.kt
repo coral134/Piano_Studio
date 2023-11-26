@@ -3,8 +3,10 @@ package com.example.pianostudio.music
 object Piano {
     val bkeyOffsets = listOf(0, 15, 0, 19, 0, 0, 13, 0, 17, 0, 21, 0)
     val bkeyHitboxes = listOf(-1, -2, 12, -2, 25, -1, -2, 7, -2, 17, -2, 25)
-    private val whichAreBlackKeys = listOf(false, true, false, true, false, false, true,
-        false, true, false, true, false)
+    private val whichAreBlackKeys = listOf(
+        false, true, false, true, false, false, true,
+        false, true, false, true, false
+    )
     private val numWKeysBeforeNote = listOf(0, 0, 1, 1, 2, 3, 3, 4, 4, 5, 5, 6)
     private val numNotesBeforeWKey = listOf(0, 2, 4, 5, 7, 9, 11)
 

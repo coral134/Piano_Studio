@@ -21,7 +21,6 @@ fun Modifier.pianoScreenGestures(positioner: MutableState<PianoPositioner>) =
                 if (event.changes.size == 2) {
                     val diff = event.changes[0].position.x - event.changes[1].position.x
 
-                    println("updating positioner")
                     if (abs(diff) > 140.dp.toPix) {
                         positioner.value = positioner.value.updateByPanAndZoom(
                             newPan = event.calculatePan().x / 2F,

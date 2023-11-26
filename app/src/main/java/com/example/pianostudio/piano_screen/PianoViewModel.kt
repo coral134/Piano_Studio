@@ -1,34 +1,26 @@
 package com.example.pianostudio.piano_screen
 
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.pianostudio.music.Note
 import com.example.pianostudio.music.Piano
 import com.example.pianostudio.music.Piano.createNote
 import com.example.pianostudio.music.Song
-import com.example.pianostudio.music.SongNote
 
 
-data class KeyboardKeyInfo(
-    val targetVel: Int = 0,
-    val actualVel: Int = 0
-)
+typealias KeysState = List<MutableState<Int>>
 
 class PianoViewModel : ViewModel() {
-    private val keys = List(128) { mutableStateOf(0) }
-    private val bufferKeys = MutableList(128) { 0 }
-    fun noteState(note: Note) = keys[note]
-
-    fun changeInterval(startNote: Note, endNote: Note) {
-        this.startNote.value = startNote.coerceIn(0..127)
-        this.endNote.value = endNote.coerceIn(0..127)
-    }
+    val keysState: KeysState = List(128) { mutableStateOf(0) }
+    val startNote = mutableStateOf(createNote(Piano.KeyType.A, 0))
+    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 6))
 
     fun updateOskPressedNotes(touches: List<Int>) {
-        bufferKeys.fill(0)
+        val bufferKeys = MutableList(128) { 0 }
         touches.forEach { bufferKeys[it] = 100 }
 
-        keys.forEachIndexed { note, i ->
+        keysState.forEachIndexed { note, i ->
             if (i.value == 0 && bufferKeys[note] != 0)
                 addNoteEvent(note, 100)
             else if (i.value != 0 && bufferKeys[note] == 0)
@@ -44,10 +36,11 @@ class PianoViewModel : ViewModel() {
     private var startTime: Long = System.currentTimeMillis()
 
     private val measuresPerSecond = 0.5
+    private val numMeasuresVisible = 3.0
 
-//    fun startSong() {
-//        startTime = System.currentTimeMillis()
-//    }
+    fun startSong() {
+        startTime = System.currentTimeMillis()
+    }
 
     private fun addNoteEvent(note: Note, vel: Int) {
         song.addEvent(note, vel, currentSongPoint)
@@ -58,13 +51,26 @@ class PianoViewModel : ViewModel() {
             ((System.currentTimeMillis() - startTime) * measuresPerSecond).toInt()
     }
 
-    fun updateVisibleNotes(numMeasures: Float): Set<SongNote> {
+    fun getVisibleNotes(): List<NotePosition> {
         updateSongTime()
+        val duration = (1000 * numMeasuresVisible).toInt()
+        val lowerSongPoint = currentSongPoint - duration
 
         return song.collectNotesInRange(
-            lowerSongPoint = currentSongPoint - (1000 * numMeasures).toInt(),
+            lowerSongPoint = lowerSongPoint,
             upperSongPoint = currentSongPoint
-        )
+        ).map {
+            NotePosition(
+                note = it.note,
+                topPos = (it.startPoint - lowerSongPoint).toFloat() / duration,
+                height = (it.endPoint - it.startPoint).toFloat() / duration
+            )
+        }
     }
 }
 
+data class NotePosition(
+    val note: Note,
+    val topPos: Float,
+    val height: Float
+)

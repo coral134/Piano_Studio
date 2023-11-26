@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
-import com.example.pianostudio.piano_screen.main.MainPianoScreen
+import com.example.pianostudio.piano_screen.main.DrawMainPianoScreen
 import com.example.pianostudio.piano_screen.settings.DrawPianoOptions
 
 
@@ -13,7 +13,7 @@ fun DrawPianoScreen(
     vm: PianoViewModel,
     modifier: Modifier = Modifier
 ) {
-    MainPianoScreen(
+    DrawMainPianoScreen(
         vm = vm,
         modifier = modifier
     )

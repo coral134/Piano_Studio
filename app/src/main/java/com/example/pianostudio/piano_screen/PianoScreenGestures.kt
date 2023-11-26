@@ -10,6 +10,7 @@ import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
 import com.example.pianostudio.custom_composables.toPix
+import com.example.pianostudio.piano_screen.main.PianoPositioner
 import kotlin.math.abs
 
 fun Modifier.pianoScreenGestures(positioner: MutableState<PianoPositioner>) =

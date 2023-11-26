@@ -9,10 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.custom_composables.LogCompositions
 import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.letter
-import com.example.pianostudio.piano_screen.PianoPositioner
 import com.example.pianostudio.ui.theme.DarkGrayBackground
 import com.example.pianostudio.ui.theme.PianoRollMajorLine
 import com.example.pianostudio.ui.theme.PianoRollMinorLine
@@ -25,7 +23,7 @@ fun DrawBackground(
     Box(modifier = Modifier
         .fillMaxSize()
         .background(DarkGrayBackground)) {
-        LogCompositions("Background")
+//        LogCompositions("Background")
         Canvas(modifier = Modifier.fillMaxSize()) {
             for (i in 1 until positioner.whiteKeys.size) {
                 val note = positioner.whiteKeys[i]

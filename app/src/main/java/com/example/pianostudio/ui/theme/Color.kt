@@ -12,7 +12,7 @@ val Pink40 = Color(0xFF7D5260)
 
 
 // All
-val DarkGrayBackground = Color(0xFF202233)
+val DarkGrayBackground = Color(0xFF1B263C)
 
 // PianoKeyboard colors
 val WhiteKeyText = Color(0xFF4E4E4E)
@@ -21,11 +21,13 @@ val PressedWhiteKeyText = Color(0xFF0048FF)
 val PressedBlackKey = Color(0xFF0048FF)
 
 // PianoRoll colors
-val PianoRollMinorLine = Color(0xFF34384D)
-val PianoRollMajorLine = Color(0xFF454A66)
+val PianoRollMinorLine = Color(0xFF263552)
+val PianoRollMajorLine = Color(0xFF2F4061)
 val PianoRollBottomLine = Color(0xFF2F323F)
 
 val WhiteKeyNote = PressedWhiteKey
 val WhiteKeyNoteOutline = Color(0xFFC7EFFF)
 val BlackKeyNote = PressedBlackKey
 val BlackKeyNoteOutline = Color(0xFF5583F7)
+
+val ClockBackground = Color(0xFF101622)

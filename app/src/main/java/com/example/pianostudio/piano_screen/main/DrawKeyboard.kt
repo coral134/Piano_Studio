@@ -22,7 +22,6 @@ import com.example.pianostudio.custom_composables.fadeOut
 import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.string
 import com.example.pianostudio.piano_screen.KeysState
-import com.example.pianostudio.piano_screen.PianoPositioner
 import com.example.pianostudio.ui.theme.PressedBlackKey
 import com.example.pianostudio.ui.theme.PressedWhiteKey
 import com.example.pianostudio.ui.theme.PressedWhiteKeyText

@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.isBlackKey
 import com.example.pianostudio.piano_screen.NotePosition
-import com.example.pianostudio.piano_screen.PianoPositioner
 import com.example.pianostudio.ui.theme.BlackKeyNote
 import com.example.pianostudio.ui.theme.BlackKeyNoteOutline
 import com.example.pianostudio.ui.theme.WhiteKeyNote

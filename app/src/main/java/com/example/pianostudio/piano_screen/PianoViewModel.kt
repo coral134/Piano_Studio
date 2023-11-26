@@ -4,19 +4,22 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.pianostudio.music.Note
-import com.example.pianostudio.music.Piano
-import com.example.pianostudio.music.Piano.createNote
 import com.example.pianostudio.music.Song
+import kotlin.time.Duration.Companion.milliseconds
 
 
 typealias KeysState = List<MutableState<Int>>
 
 class PianoViewModel : ViewModel() {
     val keysState: KeysState = List(128) { mutableStateOf(0) }
-    val startNote = mutableStateOf(createNote(Piano.KeyType.A, 0))
-    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 6))
+    val seconds = mutableStateOf(0)
+    val minutes = mutableStateOf(0)
 
-    fun updateOskPressedNotes(touches: List<Int>) {
+    // TODO: make positioner dependent on these values (and animate smoothly)
+//    val startNote = mutableStateOf(createNote(Piano.KeyType.A, 0))
+//    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 6))
+
+    fun updateOSKPressedNotes(touches: List<Int>) {
         val bufferKeys = MutableList(128) { 0 }
         touches.forEach { bufferKeys[it] = 100 }
 
@@ -53,8 +56,8 @@ class PianoViewModel : ViewModel() {
 
     fun getVisibleNotes(): List<NotePosition> {
         updateSongTime()
-        val duration = (1000 * numMeasuresVisible).toInt()
-        val lowerSongPoint = currentSongPoint - duration
+        val range = (1000 * numMeasuresVisible).toInt()
+        val lowerSongPoint = currentSongPoint - range
 
         return song.collectNotesInRange(
             lowerSongPoint = lowerSongPoint,
@@ -62,8 +65,8 @@ class PianoViewModel : ViewModel() {
         ).map {
             NotePosition(
                 note = it.note,
-                topPos = (it.startPoint - lowerSongPoint).toFloat() / duration,
-                height = (it.endPoint - it.startPoint).toFloat() / duration
+                topPos = (it.startPoint - lowerSongPoint).toFloat() / range,
+                height = (it.endPoint - it.startPoint).toFloat() / range
             )
         }
     }

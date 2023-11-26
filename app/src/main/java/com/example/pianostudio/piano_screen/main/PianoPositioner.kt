@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen
+package com.example.pianostudio.piano_screen.main
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp

@@ -9,9 +9,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.piano_screen.main.PianoPositioner
 import kotlin.math.abs
+
 
 fun Modifier.pianoScreenGestures(positioner: MutableState<PianoPositioner>) =
     pointerInput(Unit) {
@@ -22,7 +22,7 @@ fun Modifier.pianoScreenGestures(positioner: MutableState<PianoPositioner>) =
                 if (event.changes.size == 2) {
                     val diff = event.changes[0].position.x - event.changes[1].position.x
 
-                    if (abs(diff) > 140.dp.toPix) {
+                    if (abs(diff) > 140.dp.toPx()) {
                         positioner.value = positioner.value.updateByPanAndZoom(
                             newPan = event.calculatePan().x / 2F,
                             newZoom = event.calculateZoom()

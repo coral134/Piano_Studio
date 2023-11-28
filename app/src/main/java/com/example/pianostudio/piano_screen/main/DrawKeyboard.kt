@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
@@ -15,11 +16,16 @@ import androidx.compose.ui.geometry.RoundRect
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.text.ExperimentalTextApi
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.drawText
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.pianostudio.custom_composables.TrackPointers
 import com.example.pianostudio.custom_composables.fadeOut
-import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.string
 import com.example.pianostudio.piano_screen.KeysState
 import com.example.pianostudio.ui.theme.PressedBlackKey
@@ -62,7 +68,7 @@ fun DrawKeyboard(
             .fillMaxSize()) {
             for (i in 1 until positioner.whiteKeys.size) {
                 val note = positioner.whiteKeys[i]
-                val weight = 1.dp.toPix
+                val weight = 1.dp.toPx()
                 drawRect(
                     color = Color.Black,
                     topLeft = Offset(positioner.leftAlignment(note) - weight / 2, 0F),
@@ -84,6 +90,7 @@ fun DrawKeyboard(
     }
 }
 
+@OptIn(ExperimentalTextApi::class)
 @Composable
 private fun DrawWhiteKey(
     position: Float,
@@ -104,6 +111,22 @@ private fun DrawWhiteKey(
         color1 = WhiteKeyText,
         color2 = PressedWhiteKeyText
     )
+
+    val textMeasurer = rememberTextMeasurer()
+
+    val style = remember {
+        TextStyle(
+            fontSize = 10.sp,
+            color = textColor,
+            fontFamily = FontFamily.Monospace
+        )
+    }
+
+    val textSize = remember(text, width) {
+        val firstMeasure = textMeasurer.measure(text, style)
+        if (width > (firstMeasure.size.width * 1.5)) firstMeasure
+        else textMeasurer.measure(text[0].toString(), style)
+    }
 
     Canvas(
         modifier = Modifier
@@ -126,25 +149,16 @@ private fun DrawWhiteKey(
         }
 
         drawPath(path, color = keyColor)
-    }
 
-//    Box(
-//        modifier = Modifier
-//            .zIndex(2F)
-//            .offset(x = position.pixToDp)
-//            .width(width.pixToDp)
-//            .fillMaxHeight()
-//    ) {
-//        Text(
-//            text = text,
-//            textAlign = TextAlign.Center,
-//            color = textColor,
-//            fontWeight = FontWeight.Bold,
-//            fontSize = 10.sp,
-//            fontFamily = FontFamily.Monospace,
-//            modifier = Modifier.align(Alignment.BottomCenter)
-//        )
-//    }
+        drawText(
+            textLayoutResult = textSize,
+            topLeft = Offset(
+                x = position + (width - textSize.size.width) / 2F,
+                y = size.height - textSize.size.height
+            ),
+            color = textColor
+        )
+    }
 }
 
 @Composable

@@ -16,7 +16,6 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.isBlackKey
 import com.example.pianostudio.piano_screen.NotePosition
 import com.example.pianostudio.ui.theme.BlackKeyNote
@@ -83,9 +82,9 @@ private fun DrawScope.drawNote(
     color: Color,
     outline: Color
 ) {
-    val theHeight = maxOf(height, 10.dp.toPix)
-    val cornerRadius1 = CornerRadius(5.dp.toPix, 5.dp.toPix)
-    val cornerRadius2 = CornerRadius(4.dp.toPix, 4.dp.toPix)
+    val theHeight = maxOf(height, 10.dp.toPx())
+    val cornerRadius1 = CornerRadius(5.dp.toPx(), 5.dp.toPx())
+    val cornerRadius2 = CornerRadius(4.dp.toPx(), 4.dp.toPx())
 
     val path1 = Path().apply {
         addRoundRect(
@@ -106,8 +105,8 @@ private fun DrawScope.drawNote(
         addRoundRect(
             RoundRect(
                 rect = Rect(
-                    offset = Offset(posX + 2.dp.toPix, posY + 2.dp.toPix),
-                    size = Size(width - 4.dp.toPix, theHeight - 4.dp.toPix)
+                    offset = Offset(posX + 2.dp.toPx(), posY + 2.dp.toPx()),
+                    size = Size(width - 4.dp.toPx(), theHeight - 4.dp.toPx())
                 ),
                 topLeft = cornerRadius2,
                 topRight = cornerRadius2,

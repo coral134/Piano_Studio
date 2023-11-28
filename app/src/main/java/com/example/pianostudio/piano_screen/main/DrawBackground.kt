@@ -9,7 +9,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.custom_composables.toPix
 import com.example.pianostudio.music.Piano.letter
 import com.example.pianostudio.ui.theme.DarkGrayBackground
 import com.example.pianostudio.ui.theme.PianoRollMajorLine
@@ -28,14 +27,14 @@ fun DrawBackground(
             for (i in 1 until positioner.whiteKeys.size) {
                 val note = positioner.whiteKeys[i]
                 if (note.letter() == 0) {
-                    val weight = 6.dp.toPix
+                    val weight = 6.dp.toPx()
                     drawRect(
                         color = PianoRollMajorLine,
                         topLeft = Offset(positioner.leftAlignment(note) - weight / 2, 0F),
                         size = Size(weight, positioner.rollHeight)
                     )
                 } else {
-                    val weight = 3.dp.toPix
+                    val weight = 3.dp.toPx()
                     drawRect(
                         color = PianoRollMinorLine,
                         topLeft = Offset(positioner.leftAlignment(note) - weight / 2, 0F),

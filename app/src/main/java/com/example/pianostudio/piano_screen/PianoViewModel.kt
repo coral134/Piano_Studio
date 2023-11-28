@@ -4,8 +4,9 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import com.example.pianostudio.music.Note
+import com.example.pianostudio.music.Piano
+import com.example.pianostudio.music.Piano.createNote
 import com.example.pianostudio.music.Song
-import kotlin.time.Duration.Companion.milliseconds
 
 
 typealias KeysState = List<MutableState<Int>>
@@ -15,9 +16,11 @@ class PianoViewModel : ViewModel() {
     val seconds = mutableStateOf(0)
     val minutes = mutableStateOf(0)
 
+    val mode = mutableStateOf(PianoScreenMode.Playing)
+
     // TODO: make positioner dependent on these values (and animate smoothly)
-//    val startNote = mutableStateOf(createNote(Piano.KeyType.A, 0))
-//    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 6))
+    val startNote = mutableStateOf(createNote(Piano.KeyType.A, 0))
+    val endNote = mutableStateOf(createNote(Piano.KeyType.C, 6))
 
     fun updateOSKPressedNotes(touches: List<Int>) {
         val bufferKeys = MutableList(128) { 0 }
@@ -77,3 +80,9 @@ data class NotePosition(
     val topPos: Float,
     val height: Float
 )
+
+enum class PianoScreenMode {
+    Playing,
+    Paused,
+    Settings
+}

@@ -13,6 +13,7 @@ val Pink40 = Color(0xFF7D5260)
 
 // All
 val DarkGrayBackground = Color(0xFF1B263C)
+val PausedTint = Color(0x801B263C)
 
 // PianoKeyboard colors
 val WhiteKeyText = Color(0xFF4E4E4E)

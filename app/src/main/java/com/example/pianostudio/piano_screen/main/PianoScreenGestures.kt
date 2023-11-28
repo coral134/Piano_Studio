@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen
+package com.example.pianostudio.piano_screen.main
 
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -9,11 +9,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.piano_screen.main.PianoPositioner
+import com.example.pianostudio.piano_screen.PianoScreenMode
 import kotlin.math.abs
 
 
-fun Modifier.pianoScreenGestures(positioner: MutableState<PianoPositioner>) =
+fun Modifier.pianoScreenGestures(
+    positioner: MutableState<PianoPositioner>,
+    mode: MutableState<PianoScreenMode>
+) =
     pointerInput(Unit) {
         awaitEachGesture {
             awaitFirstDown()
@@ -33,6 +36,8 @@ fun Modifier.pianoScreenGestures(positioner: MutableState<PianoPositioner>) =
                             newZoom = 1F
                         )
                     }
+                } else if (event.changes.size == 1) {
+                    mode.value = PianoScreenMode.Paused
                 }
 
                 event.changes.forEach { pointerInputChange: PointerInputChange ->

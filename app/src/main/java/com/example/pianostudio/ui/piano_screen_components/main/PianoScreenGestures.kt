@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen.main
+package com.example.pianostudio.piano_screen_components.main
 
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown
@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.piano_screen.PianoScreenMode
+import com.example.pianostudio.piano_screen_components.PianoScreenMode
 import kotlin.math.abs
 
 

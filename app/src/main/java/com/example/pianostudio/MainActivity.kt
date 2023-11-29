@@ -10,8 +10,11 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import com.example.pianostudio.piano_screen.DrawPianoScreen
-import com.example.pianostudio.piano_screen.PianoViewModel
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
+import com.example.pianostudio.piano_screen_components.DrawPianoScreen
+import com.example.pianostudio.piano_screen_components.PianoViewModel
 import com.example.pianostudio.ui.theme.PianoStudioTheme
 
 
@@ -29,6 +32,7 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             PianoStudioTheme {
+
                 Box(
                     modifier = Modifier
                         .fillMaxSize()

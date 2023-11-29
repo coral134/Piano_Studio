@@ -1,7 +1,6 @@
-package com.example.pianostudio.piano_screen.paused_screen
+package com.example.pianostudio.piano_screen_components.paused_screen
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,9 +27,9 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.custom_composables.animateFloat
-import com.example.pianostudio.piano_screen.PianoViewModel
-import com.example.pianostudio.piano_screen.main.PianoPositioner
-import com.example.pianostudio.piano_screen.main.pianoScreenGestures
+import com.example.pianostudio.piano_screen_components.PianoViewModel
+import com.example.pianostudio.piano_screen_components.main.PianoPositioner
+import com.example.pianostudio.piano_screen_components.main.pianoScreenGestures
 import com.example.pianostudio.ui.theme.PausedTint
 import com.example.pianostudio.ui.theme.SidePanelButtonBackground
 

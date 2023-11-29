@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen
+package com.example.pianostudio.piano_screen_components
 
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf

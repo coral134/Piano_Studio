@@ -1,11 +1,11 @@
-package com.example.pianostudio.piano_screen
+package com.example.pianostudio.piano_screen_components
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.zIndex
-import com.example.pianostudio.piano_screen.main.DrawMainPianoScreen
-import com.example.pianostudio.piano_screen.settings.DrawPianoOptions
+import com.example.pianostudio.piano_screen_components.main.DrawMainPianoScreen
+import com.example.pianostudio.piano_screen_components.settings.DrawPianoOptions
 
 
 @Composable

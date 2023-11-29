@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen.main
+package com.example.pianostudio.piano_screen_components.main
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -10,7 +10,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
 import com.example.pianostudio.music.Piano.letter
-import com.example.pianostudio.piano_screen.NotePosition
+import com.example.pianostudio.piano_screen_components.NotePosition
 import com.example.pianostudio.ui.theme.DarkGrayBackground
 import com.example.pianostudio.ui.theme.PianoRollMajorLine
 import com.example.pianostudio.ui.theme.PianoRollMinorLine

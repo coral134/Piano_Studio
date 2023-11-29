@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen.main
+package com.example.pianostudio.piano_screen_components.main
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -27,7 +27,7 @@ import androidx.compose.ui.zIndex
 import com.example.pianostudio.custom_composables.fadeOut
 import com.example.pianostudio.custom_composables.trackPointers
 import com.example.pianostudio.music.Piano.string
-import com.example.pianostudio.piano_screen.KeysState
+import com.example.pianostudio.piano_screen_components.KeysState
 import com.example.pianostudio.ui.theme.PressedBlackKey
 import com.example.pianostudio.ui.theme.PressedWhiteKey
 import com.example.pianostudio.ui.theme.PressedWhiteKeyText

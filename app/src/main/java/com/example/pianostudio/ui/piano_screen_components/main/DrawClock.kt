@@ -1,7 +1,6 @@
-package com.example.pianostudio.piano_screen.main
+package com.example.pianostudio.piano_screen_components.main
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape

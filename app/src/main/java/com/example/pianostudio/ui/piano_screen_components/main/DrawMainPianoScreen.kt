@@ -1,14 +1,12 @@
-package com.example.pianostudio.piano_screen.main
+package com.example.pianostudio.piano_screen_components.main
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -18,9 +16,9 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import com.example.pianostudio.custom_composables.pixToDp
-import com.example.pianostudio.piano_screen.PianoScreenMode
-import com.example.pianostudio.piano_screen.PianoViewModel
-import com.example.pianostudio.piano_screen.paused_screen.DrawPausedScreen
+import com.example.pianostudio.piano_screen_components.PianoScreenMode
+import com.example.pianostudio.piano_screen_components.PianoViewModel
+import com.example.pianostudio.piano_screen_components.paused_screen.DrawPausedScreen
 
 
 @Composable

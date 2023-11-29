@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen.main
+package com.example.pianostudio.piano_screen_components.main
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
 import com.example.pianostudio.music.Piano.isBlackKey
-import com.example.pianostudio.piano_screen.NotePosition
+import com.example.pianostudio.piano_screen_components.NotePosition
 import com.example.pianostudio.ui.theme.BlackKeyNote
 import com.example.pianostudio.ui.theme.BlackKeyNoteOutline
 import com.example.pianostudio.ui.theme.WhiteKeyNote

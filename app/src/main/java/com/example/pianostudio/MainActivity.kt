@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
@@ -20,7 +21,6 @@ class MainActivity : ComponentActivity() {
 
         val windowInsetsController =
             WindowCompat.getInsetsController(window, window.decorView)
-        // Configure the behavior of the hidden system bars.
         windowInsetsController.systemBarsBehavior =
             WindowInsetsControllerCompat.BEHAVIOR_SHOW_TRANSIENT_BARS_BY_SWIPE
         windowInsetsController.hide(WindowInsetsCompat.Type.statusBars())
@@ -29,16 +29,20 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             PianoStudioTheme {
-                DrawPianoScreen(
-                    vm = vm,
+                Box(
                     modifier = Modifier
                         .fillMaxSize()
-                )
+                ) {
+                    DrawPianoScreen(
+                        vm = vm,
+                        modifier = Modifier.fillMaxSize()
+                    )
 
 //                DrawMainScreen(
 //                    modifier = Modifier
 //                        .fillMaxSize()
 //                )
+                }
             }
         }
     }

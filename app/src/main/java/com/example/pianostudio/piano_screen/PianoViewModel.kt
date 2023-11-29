@@ -84,5 +84,7 @@ data class NotePosition(
 enum class PianoScreenMode {
     Playing,
     Paused,
-    Settings
+    Settings,
+    ChooseSong,
+    Home
 }

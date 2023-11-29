@@ -37,7 +37,7 @@ fun Modifier.pianoScreenGestures(
                         )
                     }
                 } else if (event.changes.size == 1) {
-                    mode.value = PianoScreenMode.Paused
+                    mode.value = PianoScreenMode.Playing
                 }
 
                 event.changes.forEach { pointerInputChange: PointerInputChange ->

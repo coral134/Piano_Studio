@@ -24,8 +24,8 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.example.pianostudio.custom_composables.TrackPointers
 import com.example.pianostudio.custom_composables.fadeOut
+import com.example.pianostudio.custom_composables.trackPointers
 import com.example.pianostudio.music.Piano.string
 import com.example.pianostudio.piano_screen.KeysState
 import com.example.pianostudio.ui.theme.PressedBlackKey
@@ -41,14 +41,14 @@ fun DrawKeyboard(
     updatePressedNotes: (touches: List<Int>) -> Unit,
     modifier: Modifier = Modifier
 ) {
-    Box(modifier = modifier.background(Color.Black)) {
-
-        // Touch input ---------------------------------------------------------
-        TrackPointers(positioner) { map ->
+    Box(modifier = modifier
+        .background(Color.Black)
+        .trackPointers(positioner) { map ->
             updatePressedNotes(
                 map.map { positioner.whichNotePressed(it.value) }.filterNotNull()
             )
         }
+    ) {
 
         // Draw white keys ------------------------------------------------------
         for (note in positioner.whiteKeys) {
@@ -128,11 +128,7 @@ private fun DrawWhiteKey(
         else textMeasurer.measure(text[0].toString(), style)
     }
 
-    Canvas(
-        modifier = Modifier
-            .zIndex(1F)
-            .fillMaxSize()
-    ) {
+    Canvas(modifier = Modifier.fillMaxSize()) {
         val cornerRadius = CornerRadius(clip, clip)
 
         val path = Path().apply {

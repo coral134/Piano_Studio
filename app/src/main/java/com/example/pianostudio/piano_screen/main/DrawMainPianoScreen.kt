@@ -1,8 +1,10 @@
 package com.example.pianostudio.piano_screen.main
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxWithConstraints
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -15,11 +17,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.zIndex
 import com.example.pianostudio.custom_composables.pixToDp
 import com.example.pianostudio.piano_screen.PianoScreenMode
 import com.example.pianostudio.piano_screen.PianoViewModel
-import com.example.pianostudio.ui.theme.PausedTint
+import com.example.pianostudio.piano_screen.paused_screen.DrawPausedScreen
 
 
 @Composable
@@ -48,53 +49,42 @@ fun DrawMainPianoScreen(
                 )
             }
     ) {
-        BoxWithConstraints(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(positioner.value.rollHeight.pixToDp)
-                .pianoScreenGestures(positioner, vm.mode)
-        ) {
 
-            DrawBackground(
-                positioner = positioner.value
-            )
-
-            DrawNotes(
+        Column(modifier = Modifier.fillMaxSize()) {
+            DrawNotesRoll(
                 positioner = positioner.value,
                 getVisibleNotes = { vm.getVisibleNotes() },
                 modifier = Modifier
-                    .zIndex(1F)
                     .fillMaxWidth()
                     .height(positioner.value.rollHeight.pixToDp)
+                    .pointerInput(Unit) {
+                        detectTapGestures {
+                            vm.mode.value = PianoScreenMode.Paused
+                        }
+                    }
             )
 
-            DrawClock(
-                minutes = vm.minutes.value,
-                seconds = vm.seconds.value,
-                modifier = Modifier
-                    .zIndex(1.1F)
-                    .align(Alignment.TopCenter)
+            DrawKeyboard(
+                positioner = positioner.value,
+                keyboardState = vm.keysState,
+                updatePressedNotes = { vm.updateOSKPressedNotes(it) },
+                modifier = Modifier.fillMaxSize()
             )
         }
 
-        DrawKeyboard(
-            positioner = positioner.value,
-            keyboardState = vm.keysState,
-            updatePressedNotes = { vm.updateOSKPressedNotes(it) },
-            modifier = Modifier
-                .zIndex(2F)
-                .offset(y = positioner.value.rollHeight.pixToDp)
-                .fillMaxWidth()
-                .height(positioner.value.keyboardHeight.pixToDp)
-        )
-    }
+        if (vm.mode.value == PianoScreenMode.Paused) {
+            DrawPausedScreen(
+                vm = vm,
+                positioner = positioner,
+                modifier = Modifier.fillMaxSize()
+            )
+        }
 
-    if (vm.mode.value == PianoScreenMode.Paused) {
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(PausedTint)
-                .pointerInput(Unit) { }
+        DrawClock(
+            modifier = Modifier.align(Alignment.TopCenter),
+            minutes = vm.minutes.value,
+            seconds = vm.seconds.value,
+            paused = (vm.mode.value == PianoScreenMode.Paused)
         )
     }
 }

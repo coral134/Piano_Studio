@@ -17,6 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
+import androidx.navigation.NavController
 import com.example.pianostudio.PianoViewModel
 import com.example.pianostudio.ui.custom_composables.pixToDp
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawClock
@@ -30,7 +31,8 @@ import com.example.pianostudio.ui.piano_screen_components.paused_screen.SidePane
 @Composable
 fun DrawPracticeScreen(
     modifier: Modifier = Modifier,
-    vm: PianoViewModel
+    vm: PianoViewModel,
+    nav: NavController
 ) {
     val positioner = remember {
         mutableStateOf(
@@ -94,12 +96,12 @@ fun DrawPracticeScreen(
                 positioner = positioner,
                 onResume = { vm.isPaused.value = false },
                 leftOptions = listOf(
-                    SidePanelButtonState("Home") { },
-                    SidePanelButtonState("Options") { }
+                    SidePanelButtonState("Home") { nav.navigate("home") },
+                    SidePanelButtonState("Options") { nav.navigate("studio_options") }
                 ),
                 rightOptions = listOf(
                     SidePanelButtonState("Restart") { vm.updateSongPoint(0) },
-                    SidePanelButtonState("Change song") { }
+                    SidePanelButtonState("Change song") { nav.navigate("select_song") }
                 )
             )
         }

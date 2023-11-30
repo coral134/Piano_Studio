@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen_components.main
+package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -24,10 +24,10 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import com.example.pianostudio.custom_composables.fadeOut
-import com.example.pianostudio.custom_composables.trackPointers
-import com.example.pianostudio.music.Piano.string
-import com.example.pianostudio.piano_screen_components.KeysState
+import com.example.pianostudio.KeysState
+import com.example.pianostudio.data.music.Piano.string
+import com.example.pianostudio.ui.custom_composables.fadeOut
+import com.example.pianostudio.ui.custom_composables.trackPointers
 import com.example.pianostudio.ui.theme.PressedBlackKey
 import com.example.pianostudio.ui.theme.PressedWhiteKey
 import com.example.pianostudio.ui.theme.PressedWhiteKeyText
@@ -45,7 +45,9 @@ fun DrawKeyboard(
         .background(Color.Black)
         .trackPointers(positioner) { map ->
             updatePressedNotes(
-                map.map { positioner.whichNotePressed(it.value) }.filterNotNull()
+                map
+                    .map { positioner.whichNotePressed(it.value) }
+                    .filterNotNull()
             )
         }
     ) {
@@ -63,9 +65,11 @@ fun DrawKeyboard(
         }
 
         // Draw dividing lines --------------------------------------------------
-        Canvas(modifier = Modifier
-            .zIndex(2F)
-            .fillMaxSize()) {
+        Canvas(
+            modifier = Modifier
+                .zIndex(2F)
+                .fillMaxSize()
+        ) {
             for (i in 1 until positioner.whiteKeys.size) {
                 val note = positioner.whiteKeys[i]
                 val weight = 1.dp.toPx()

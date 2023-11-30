@@ -1,9 +1,9 @@
-package com.example.pianostudio.music
+package com.example.pianostudio.data.music
 
 import java.util.TreeMap
 
 
-class Song {
+class Track {
     private val measures = mutableListOf<TreeMap<SongNoteKey, SongNote>>()
     private val danglingNotes = mutableMapOf<Note, SongNote>()
 

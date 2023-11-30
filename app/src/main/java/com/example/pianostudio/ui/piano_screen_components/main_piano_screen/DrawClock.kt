@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen_components.main
+package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.custom_composables.fadeColor
+import com.example.pianostudio.ui.custom_composables.fadeColor
 import com.example.pianostudio.ui.theme.ClockBackgroundPaused
 import com.example.pianostudio.ui.theme.ClockBackgroundPlaying
 
@@ -24,12 +24,11 @@ import com.example.pianostudio.ui.theme.ClockBackgroundPlaying
 @Composable
 fun DrawClock(
     modifier: Modifier = Modifier,
-    minutes: Int,
     seconds: Int,
     paused: Boolean
 ) {
-    val text = remember {
-        String.format("%02d:%02d", minutes, seconds)
+    val text = remember(seconds) {
+        String.format("%02d:%02d", seconds / 60, seconds % 60)
     }
 
     val color = fadeColor(

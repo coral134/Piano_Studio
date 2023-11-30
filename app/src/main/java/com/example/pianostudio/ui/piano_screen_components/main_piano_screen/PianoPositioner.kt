@@ -1,14 +1,14 @@
-package com.example.pianostudio.piano_screen_components.main
+package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
 
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.custom_composables.toPix
-import com.example.pianostudio.music.Note
-import com.example.pianostudio.music.Piano
-import com.example.pianostudio.music.Piano.isBlackKey
-import com.example.pianostudio.music.Piano.letter
-import com.example.pianostudio.music.Piano.toWKey
-import com.example.pianostudio.music.Piano.wkeyToNote
+import com.example.pianostudio.data.music.Note
+import com.example.pianostudio.data.music.Piano
+import com.example.pianostudio.data.music.Piano.isBlackKey
+import com.example.pianostudio.data.music.Piano.letter
+import com.example.pianostudio.data.music.Piano.toWKey
+import com.example.pianostudio.data.music.Piano.wkeyToNote
+import com.example.pianostudio.ui.custom_composables.toPix
 
 // TODO: Make more efficient
 

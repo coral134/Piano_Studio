@@ -1,4 +1,4 @@
-package com.example.pianostudio.custom_composables
+package com.example.pianostudio.ui.custom_composables
 
 import android.util.Log
 import androidx.compose.animation.Animatable

@@ -10,11 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
-import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
-import com.example.pianostudio.piano_screen_components.DrawPianoScreen
-import com.example.pianostudio.piano_screen_components.PianoViewModel
+import com.example.pianostudio.ui.screens.DrawPracticeScreen
 import com.example.pianostudio.ui.theme.PianoStudioTheme
 
 
@@ -37,7 +33,7 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier
                         .fillMaxSize()
                 ) {
-                    DrawPianoScreen(
+                    DrawPracticeScreen(
                         vm = vm,
                         modifier = Modifier.fillMaxSize()
                     )

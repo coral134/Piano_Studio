@@ -1,4 +1,4 @@
-package com.example.pianostudio.music
+package com.example.pianostudio.data.music
 
 object Piano {
     val bkeyOffsets = listOf(0, 15, 0, 19, 0, 0, 13, 0, 17, 0, 21, 0)

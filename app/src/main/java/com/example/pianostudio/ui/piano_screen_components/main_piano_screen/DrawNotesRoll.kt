@@ -1,4 +1,4 @@
-package com.example.pianostudio.piano_screen_components.main
+package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -9,8 +9,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.music.Piano.letter
-import com.example.pianostudio.piano_screen_components.NotePosition
+import com.example.pianostudio.NotePosition
+import com.example.pianostudio.data.music.Piano.letter
 import com.example.pianostudio.ui.theme.DarkGrayBackground
 import com.example.pianostudio.ui.theme.PianoRollMajorLine
 import com.example.pianostudio.ui.theme.PianoRollMinorLine
@@ -24,7 +24,9 @@ fun DrawNotesRoll(
 ) {
     Box(modifier = modifier) {
         // Background
-        Box(modifier = Modifier.background(DarkGrayBackground).fillMaxSize()) {
+        Box(modifier = Modifier
+            .background(DarkGrayBackground)
+            .fillMaxSize()) {
             Canvas(modifier = Modifier.fillMaxSize()) {
                 for (i in 1 until positioner.whiteKeys.size) {
                     val note = positioner.whiteKeys[i]

@@ -1,6 +1,7 @@
-package com.example.pianostudio.piano_screen_components.paused_screen
+package com.example.pianostudio.ui.piano_screen_components.paused_screen
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -26,19 +27,21 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.custom_composables.animateFloat
-import com.example.pianostudio.piano_screen_components.PianoViewModel
-import com.example.pianostudio.piano_screen_components.main.PianoPositioner
-import com.example.pianostudio.piano_screen_components.main.pianoScreenGestures
+import com.example.pianostudio.PianoViewModel
+import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.PianoPositioner
+import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.pianoScreenGestures
+import com.example.pianostudio.ui.custom_composables.animateFloat
 import com.example.pianostudio.ui.theme.PausedTint
 import com.example.pianostudio.ui.theme.SidePanelButtonBackground
 
 
 @Composable
 fun DrawPausedScreen(
-    vm: PianoViewModel,
+    modifier: Modifier = Modifier,
     positioner: MutableState<PianoPositioner>,
-    modifier: Modifier = Modifier
+    onResume: () -> Unit,
+    leftOptions: List<SidePanelButtonState>,
+    rightOptions: List<SidePanelButtonState>
 ) {
     val alpha = animateFloat(0F, 1F, 300)
 
@@ -50,19 +53,14 @@ fun DrawPausedScreen(
             .pointerInput(Unit) {}
     ) {
         // Left menu
-        DrawSidePanel(
-            listOf(
-                SidePanelButtonState("Home"),
-                SidePanelButtonState("Preferences")
-            )
-        )
+        DrawSidePanel(leftOptions)
 
         // Center space
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1F)
-                .pianoScreenGestures(positioner, vm.mode)
+                .pianoScreenGestures(positioner) { onResume() }
                 .padding(vertical = 75.dp)
                 .alpha(0.7F),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -71,30 +69,24 @@ fun DrawPausedScreen(
             val text = buildAnnotatedString {
                 withStyle(
                     style = SpanStyle(
-                        color = Color.White,
                         fontWeight = FontWeight.ExtraBold,
                         fontSize = 25.sp,
-                        fontFamily = FontFamily.Default
                     )
                 ) {
                     append("Practicing: ")
                 }
                 withStyle(
                     style = SpanStyle(
-                        color = Color.White,
                         fontWeight = FontWeight.Medium,
-                        fontSize = 25.sp,
-                        fontFamily = FontFamily.Default
+                        fontSize = 25.sp
                     )
                 ) {
                     append("\"Ode to Joy\"")
                 }
                 withStyle(
                     style = SpanStyle(
-                        color = Color.White,
                         fontWeight = FontWeight.Light,
                         fontSize = 18.sp,
-                        fontFamily = FontFamily.Default,
                         fontStyle = FontStyle.Italic
                     )
                 ) {
@@ -102,21 +94,22 @@ fun DrawPausedScreen(
                 }
             }
 
-            Text(text, textAlign = TextAlign.Center)
+            Text(
+                text = text,
+                textAlign = TextAlign.Center,
+                color = Color.White,
+                fontFamily = FontFamily.Default
+            )
         }
 
         // Right menu
-        DrawSidePanel(
-            listOf(
-                SidePanelButtonState("Restart"),
-                SidePanelButtonState("Change song")
-            )
-        )
+        DrawSidePanel(rightOptions)
     }
 }
 
 data class SidePanelButtonState(
-    val text: String
+    val text: String,
+    val onClick: () -> Unit
 )
 
 @Composable
@@ -133,16 +126,17 @@ fun DrawSidePanel(buttons: List<SidePanelButtonState>) {
 }
 
 @Composable
-fun DrawSidePanelButton(button: SidePanelButtonState) {
+fun DrawSidePanelButton(state: SidePanelButtonState) {
     Box(
         modifier = Modifier
             .padding(25.dp)
             .clip(shape = RoundedCornerShape(12.dp))
+            .clickable { state.onClick() }
             .background(SidePanelButtonBackground)
             .padding(10.dp)
     ) {
         Text(
-            text = button.text,
+            text = state.text,
             color = Color.White,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,

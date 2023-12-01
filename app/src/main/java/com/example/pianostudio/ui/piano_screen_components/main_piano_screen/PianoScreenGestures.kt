@@ -1,47 +1,80 @@
 package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
 
-import androidx.compose.foundation.gestures.awaitEachGesture
-import androidx.compose.foundation.gestures.awaitFirstDown
-import androidx.compose.foundation.gestures.calculatePan
-import androidx.compose.foundation.gestures.calculateZoom
+import androidx.compose.foundation.gestures.detectHorizontalDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.PointerInputChange
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.unit.dp
-import kotlin.math.abs
-
+import com.example.pianostudio.ui.custom_composables.detectHorizontalZoomGestures
+import kotlin.math.pow
 
 fun Modifier.pianoScreenGestures(
     positioner: MutableState<PianoPositioner>,
-    onResume: () -> Unit
-) =
-    pointerInput(Unit) {
-        awaitEachGesture {
-            awaitFirstDown()
-            do {
-                val event = awaitPointerEvent()
-                if (event.changes.size == 2) {
-                    val diff = event.changes[0].position.x - event.changes[1].position.x
+    onResume: () -> Unit,
+    gestureIsActive: MutableState<Boolean>,
+    changeSongPoint: (change: Float) -> Unit
+): Modifier {
+    var horizDragging = false
+    var vertDragging = false
+    var zooming = false
 
-                    if (abs(diff) > 140.dp.toPx()) {
-                        positioner.value = positioner.value.updateByPanAndZoom(
-                            newPan = event.calculatePan().x / 2F,
-                            newZoom = event.calculateZoom()
-                        )
-                    } else {
-                        positioner.value = positioner.value.updateByPanAndZoom(
-                            newPan = event.calculatePan().x / 2F,
-                            newZoom = 1F
-                        )
-                    }
-                } else if (event.changes.size == 1) {
-                    onResume()
-                }
+    val isActive = { horizDragging || vertDragging || zooming }
 
-                event.changes.forEach { pointerInputChange: PointerInputChange ->
-                    pointerInputChange.consume()
-                }
-            } while (event.changes.any { it.pressed })
+    return pointerInput(Unit) {
+        detectTapGestures(onTap = { onResume() })
+    }.pointerInput(Unit) {
+        detectHorizontalDragGestures(
+            onDragStart = {
+                horizDragging = true
+                gestureIsActive.value = true
+            },
+            onDragCancel = {
+                horizDragging = false
+                gestureIsActive.value = isActive()
+            },
+            onDragEnd = {
+                horizDragging = false
+                gestureIsActive.value = isActive()
+            }
+        ) { _, dragAmount ->
+            positioner.value = positioner.value.updateByPanAndZoom(
+                newPan = dragAmount / 2f,
+                newZoom = 1f
+            )
+        }
+    }.pointerInput(Unit) {
+        detectVerticalDragGestures(
+            onDragStart = {
+                vertDragging = true
+                gestureIsActive.value = true
+            },
+            onDragCancel = {
+                vertDragging = false
+                gestureIsActive.value = isActive()
+            },
+            onDragEnd = {
+                vertDragging = false
+                gestureIsActive.value = isActive()
+            }
+        ) { _, dragAmount ->
+            changeSongPoint(-dragAmount * 4)
+        }
+    }.pointerInput(Unit) {
+        detectHorizontalZoomGestures(
+            onStart = {
+                zooming = true
+                gestureIsActive.value = true
+            },
+            onEnd = {
+                zooming = false
+                gestureIsActive.value = isActive()
+            }
+        ) { zoom ->
+            positioner.value = positioner.value.updateByPanAndZoom(
+                newPan = 0f,
+                newZoom = zoom
+            )
         }
     }
+}

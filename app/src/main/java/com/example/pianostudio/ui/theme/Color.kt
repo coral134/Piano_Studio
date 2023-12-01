@@ -22,7 +22,7 @@ val PianoRollMinorLine = Color(0xFF263552)
 val PianoRollMajorLine = Color(0xFF2F4061)
 val PianoRollBottomLine = Color(0xFF2F323F)
 val DarkGrayBackground = Color(0xFF1B263C)
-val PausedTint = Color(0x8C1B263C)
+val PausedTint = Color(0xD9141B2C)
 
 val WhiteKeyNote = PressedWhiteKey
 val WhiteKeyNoteOutline = Color(0xFFC7EFFF)
@@ -32,4 +32,4 @@ val BlackKeyNoteOutline = Color(0xFF5583F7)
 val ClockBackgroundPlaying = Color(0xFF101622)
 val ClockBackgroundPaused = Color(0xFF882626)
 
-val SidePanelButtonBackground = Color(0xFF151C2B)
+val SidePanelButtonBackground = Color(0xFF2A3958)

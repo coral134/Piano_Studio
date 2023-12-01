@@ -78,7 +78,7 @@ fun DrawPracticeScreen(
                     .fillMaxWidth()
                     .height(positioner.value.rollHeight.pixToDp)
                     .pointerInput(Unit) {
-                        detectTapGestures { vm.isPaused.value = true }
+                        detectTapGestures(onTap = { vm.isPaused.value = true })
                     }
             )
 
@@ -95,6 +95,7 @@ fun DrawPracticeScreen(
                 modifier = Modifier.fillMaxSize(),
                 positioner = positioner,
                 onResume = { vm.isPaused.value = false },
+                changeSongPoint = { vm.changeSongPoint(it) },
                 leftOptions = listOf(
                     SidePanelButtonState("Home") { nav.navigate("home") },
                     SidePanelButtonState("Options") { nav.navigate("studio_options") }

@@ -12,13 +12,17 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontStyle
@@ -27,10 +31,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.PianoViewModel
+import com.example.pianostudio.ui.custom_composables.animateFloat
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.PianoPositioner
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.pianoScreenGestures
-import com.example.pianostudio.ui.custom_composables.animateFloat
 import com.example.pianostudio.ui.theme.PausedTint
 import com.example.pianostudio.ui.theme.SidePanelButtonBackground
 
@@ -40,10 +43,15 @@ fun DrawPausedScreen(
     modifier: Modifier = Modifier,
     positioner: MutableState<PianoPositioner>,
     onResume: () -> Unit,
+    changeSongPoint: (change: Float) -> Unit,
     leftOptions: List<SidePanelButtonState>,
     rightOptions: List<SidePanelButtonState>
 ) {
-    val alpha = animateFloat(0F, 1F, 300)
+    val gestureIsActive = remember { mutableStateOf(false) }
+    val alpha = if (!gestureIsActive.value)
+        animateFloat(0F, 1F, 200)
+    else
+        animateFloat(1F, 0F, 100)
 
     Row(
         modifier = modifier
@@ -60,9 +68,8 @@ fun DrawPausedScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1F)
-                .pianoScreenGestures(positioner) { onResume() }
-                .padding(vertical = 75.dp)
-                .alpha(0.7F),
+                .pianoScreenGestures(positioner, onResume, gestureIsActive) { changeSongPoint(it) }
+                .padding(vertical = 75.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -70,22 +77,14 @@ fun DrawPausedScreen(
                 withStyle(
                     style = SpanStyle(
                         fontWeight = FontWeight.ExtraBold,
-                        fontSize = 25.sp,
+                        fontSize = 30.sp
                     )
                 ) {
-                    append("Practicing: ")
+                    append("Practicing: \"Ode to Joy\"")
                 }
                 withStyle(
                     style = SpanStyle(
                         fontWeight = FontWeight.Medium,
-                        fontSize = 25.sp
-                    )
-                ) {
-                    append("\"Ode to Joy\"")
-                }
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Light,
                         fontSize = 18.sp,
                         fontStyle = FontStyle.Italic
                     )
@@ -98,7 +97,15 @@ fun DrawPausedScreen(
                 text = text,
                 textAlign = TextAlign.Center,
                 color = Color.White,
-                fontFamily = FontFamily.Default
+                fontFamily = FontFamily.Default,
+                letterSpacing = 0.6.sp,
+                style = TextStyle(
+                    shadow = Shadow(
+                        color = Color.DarkGray,
+                        blurRadius = 20f,
+                        offset = Offset(0f, 0f),
+                    )
+                )
             )
         }
 
@@ -126,13 +133,13 @@ fun DrawSidePanel(buttons: List<SidePanelButtonState>) {
 }
 
 @Composable
-fun DrawSidePanelButton(state: SidePanelButtonState) {
+fun DrawSidePanelButton(state: SidePanelButtonState = SidePanelButtonState("Thing", {})) {
+    val shape = RoundedCornerShape(12.dp)
     Box(
         modifier = Modifier
             .padding(25.dp)
-            .clip(shape = RoundedCornerShape(12.dp))
+            .background(SidePanelButtonBackground, shape = shape)
             .clickable { state.onClick() }
-            .background(SidePanelButtonBackground)
             .padding(10.dp)
     ) {
         Text(
@@ -140,7 +147,8 @@ fun DrawSidePanelButton(state: SidePanelButtonState) {
             color = Color.White,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Bold,
-            fontSize = 20.sp
+            fontSize = 20.sp,
+            letterSpacing = 0.5.sp
         )
     }
 }

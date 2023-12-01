@@ -43,11 +43,9 @@ fun DrawKeyboard(
 ) {
     Box(modifier = modifier
         .background(Color.Black)
-        .trackPointers(positioner) { map ->
+        .trackPointers(positioner) { positions ->
             updatePressedNotes(
-                map
-                    .map { positioner.whichNotePressed(it.value) }
-                    .filterNotNull()
+                positions.mapNotNull { positioner.whichNotePressed(it) }
             )
         }
     ) {

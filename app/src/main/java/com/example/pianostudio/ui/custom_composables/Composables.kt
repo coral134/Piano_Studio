@@ -5,6 +5,10 @@ import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.awaitEachGesture
+import androidx.compose.foundation.gestures.awaitFirstDown
+import androidx.compose.foundation.gestures.calculatePan
+import androidx.compose.foundation.gestures.calculateZoom
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.width
@@ -22,96 +26,12 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import kotlin.math.abs
 
-
-@Composable
-fun fadeOut(
-    pressed: MutableState<Int>,
-    color1: Color,
-    color2: Color
-): Color {
-    val color = remember { Animatable(color1) }
-
-    if (pressed.value != 0) {
-        LaunchedEffect(Unit) {
-            color.animateTo(color2, animationSpec = tween(0))
-        }
-    } else {
-        LaunchedEffect(Unit) {
-            color.animateTo(color1, animationSpec = tween(300))
-        }
-    }
-
-    return color.value
-}
-
-@Composable
-fun fadeColor(
-    state: Boolean,
-    color1: Color,
-    color2: Color,
-    duration: Int
-): Color {
-    val color = remember {
-        Animatable(
-            if (state) color2
-            else color1
-        )
-    }
-
-    if (state) {
-        LaunchedEffect(Unit) {
-            color.animateTo(color2, animationSpec = tween(duration))
-        }
-    } else {
-        LaunchedEffect(Unit) {
-            color.animateTo(color1, animationSpec = tween(duration))
-        }
-    }
-
-    return color.value
-}
-
-@Composable
-fun fadeColor(
-    color1: Color,
-    color2: Color,
-    duration: Int
-): Color {
-    val color = remember { Animatable(color1) }
-
-    LaunchedEffect(Unit) {
-        color.animateTo(color2, animationSpec = tween(duration))
-    }
-
-    return color.value
-}
-
-@Composable
-fun animateFloat(
-    num1: Float,
-    num2: Float,
-    duration: Int
-): Float {
-
-    val state = remember { mutableStateOf(false) }
-
-    val num: Float by animateFloatAsState(
-        targetValue = if (state.value) num2 else num1,
-        animationSpec = tween(duration),
-        label = ""
-    )
-
-    LaunchedEffect(Unit) {
-        state.value = true
-    }
-
-    return num
-}
 
 fun Modifier.trackPointers(
     key1: Any?,
-    processTouchInput: (map: MutableMap<Long, Offset>) -> Unit
+    processTouchInput: (pointers: MutableCollection<Offset>) -> Unit
 ) =
     pointerInput(key1) {
         awaitPointerEventScope {
@@ -122,9 +42,19 @@ fun Modifier.trackPointers(
                     if (it.pressed) map[it.id.value] = it.position
                     else map.remove(it.id.value)
                 }
-                processTouchInput(map)
+                processTouchInput(map.values)
             }
         }
+
+//        awaitEachGesture {
+//            awaitFirstDown()
+//            do {
+//                val event = awaitPointerEvent()
+//                processTouchInput( event.changes.map { it.position } )
+//                event.changes.forEach { it.consume() }
+//            } while (event.changes.any { it.pressed })
+//            processTouchInput(listOf())
+//        }
     }
 
 fun Modifier.absoluteHorizOffsetByCenter(x: Dp = 0.dp) =
@@ -152,7 +82,6 @@ fun VerticalLine(
 }
 
 class Ref(var value: Int)
-
 @Composable
 inline fun LogCompositions(msg: String) {
     val ref = remember { Ref(0) }

@@ -95,13 +95,14 @@ fun DrawRecordScreen(
                 modifier = Modifier.fillMaxSize(),
                 positioner = positioner,
                 onResume = { vm.isPaused.value = false },
+                changeSongPoint = { vm.changeSongPoint(it) },
                 leftOptions = listOf(
                     SidePanelButtonState("Home") { nav.navigate("home") },
                     SidePanelButtonState("Options") { nav.navigate("studio_options") }
                 ),
                 rightOptions = listOf(
-                    SidePanelButtonState("Restart") { vm.updateSongPoint(0) },
-                    SidePanelButtonState("Change song") { nav.navigate("select_song") }
+                    SidePanelButtonState("Save") {  },
+                    SidePanelButtonState("Delete") {  }
                 )
             )
         }

@@ -37,26 +37,36 @@ class PianoViewModel : ViewModel() {
     // song stuff
     private val track = Track()
 
-    var currentSongPoint = 0
+    var currentSongPoint = 0f
     val measuresPerSecond = 0.5
     private val numMeasuresVisible = 3.0
 
-    fun updateSongPoint(songPoint: Int) {
-        currentSongPoint = songPoint
+    private fun getCurrentSongPoint() = currentSongPoint.toInt()
+
+    fun updateSongPoint(songPoint: Float) {
+        currentSongPoint = maxOf(songPoint, 0f)
         seconds.value = (songPoint / (1000 * measuresPerSecond)).toInt()
     }
 
+    fun updateSongPoint(songPoint: Int) {
+        updateSongPoint(songPoint.toFloat())
+    }
+
+    fun changeSongPoint(change: Float) {
+        updateSongPoint(currentSongPoint + change)
+    }
+
     private fun addNoteEvent(note: Note, vel: Int) {
-        track.addEvent(note, vel, currentSongPoint)
+        track.addEvent(note, vel, getCurrentSongPoint())
     }
 
     fun getVisibleNotes(): List<NotePosition> {
         val range = (1000 * numMeasuresVisible).toInt()
-        val lowerSongPoint = currentSongPoint - range
+        val lowerSongPoint = getCurrentSongPoint() - range
 
         return track.collectNotesInRange(
             lowerSongPoint = lowerSongPoint,
-            upperSongPoint = currentSongPoint
+            upperSongPoint = getCurrentSongPoint()
         ).map {
             NotePosition(
                 note = it.note,

@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -22,18 +21,14 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.pianostudio.R
 import com.example.pianostudio.ui.theme.DarkGrayBackground
-import com.example.pianostudio.ui.theme.PianoRollBottomLine
 import com.example.pianostudio.ui.theme.SidePanelButtonBackground
 
 
@@ -53,7 +48,7 @@ fun DrawHomeScreen(
             modifier = Modifier
                 .background(DarkGrayBackground)
                 .padding(top = 30.dp)
-                .padding(horizontal = 40.dp),
+                .padding(horizontal = 60.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             val mod = Modifier
@@ -83,7 +78,7 @@ fun DrawLogo(modifier: Modifier = Modifier) {
     Row(modifier = modifier) {
         Image(
             painter = painterResource(id = R.drawable.splashscreen_icon),
-            "",
+            "App logo",
             modifier = Modifier
                 .size(120.dp)
                 .clip(RoundedCornerShape(15.dp))
@@ -94,12 +89,12 @@ fun DrawLogo(modifier: Modifier = Modifier) {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Bold)) {
                     append("Piano")
                 }
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Thin)) {
+                withStyle(style = SpanStyle(fontWeight = FontWeight.ExtraLight)) {
                     append("Studio")
                 }
             },
             fontSize = 65.sp,
-            letterSpacing = 7.sp,
+            letterSpacing = 4.sp,
             color = Color.White,
             fontFamily = FontFamily.Default,
             modifier = Modifier
@@ -119,8 +114,8 @@ fun DrawChooseModeButton(
     Box(
         modifier = modifier
             .clip(shape = RoundedCornerShape(70.dp))
-            .clickable { onClick() }
-            .background(color),
+            .background(color)
+            .clickable { onClick() },
         contentAlignment = Alignment.Center
     ) {
         Text(

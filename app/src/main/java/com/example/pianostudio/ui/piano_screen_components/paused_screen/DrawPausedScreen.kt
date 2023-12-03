@@ -45,7 +45,8 @@ fun DrawPausedScreen(
     onResume: () -> Unit,
     changeSongPoint: (change: Float) -> Unit,
     leftOptions: List<SidePanelButtonState>,
-    rightOptions: List<SidePanelButtonState>
+    rightOptions: List<SidePanelButtonState>,
+    text: String
 ) {
     val gestureIsActive = remember { mutableStateOf(false) }
     val alpha = if (!gestureIsActive.value)
@@ -53,64 +54,69 @@ fun DrawPausedScreen(
     else
         animateFloat(1F, 0F, 100)
 
-    Row(
+    Box(
         modifier = modifier
-            .fillMaxSize()
-            .alpha(alpha)
-            .background(PausedTint)
-            .pointerInput(Unit) {}
-    ) {
+            .pianoScreenGestures(positioner, onResume, gestureIsActive) { changeSongPoint(it) }
+    )
+
+    Row(modifier = modifier.alpha(alpha).background(PausedTint)) {
         // Left menu
         DrawSidePanel(leftOptions)
 
         // Center space
-        Column(
+        Box(
             modifier = Modifier
                 .fillMaxSize()
                 .weight(1F)
-                .pianoScreenGestures(positioner, onResume, gestureIsActive) { changeSongPoint(it) }
-                .padding(vertical = 75.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-
-            val text = buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.ExtraBold,
-                        fontSize = 30.sp
-                    )
-                ) {
-                    append("Practicing: \"Ode to Joy\"")
-                }
-                withStyle(
-                    style = SpanStyle(
-                        fontWeight = FontWeight.Medium,
-                        fontSize = 18.sp,
-                        fontStyle = FontStyle.Italic
-                    )
-                ) {
-                    append("\n\nTap to start\n\nDrag to adjust timestamp and piano size")
-                }
-            }
-
-            Text(
-                text = text,
-                textAlign = TextAlign.Center,
-                color = Color.White,
-                fontFamily = FontFamily.Default,
-                letterSpacing = 0.6.sp,
-                style = TextStyle(
-                    shadow = Shadow(
-                        color = Color.DarkGray,
-                        blurRadius = 20f,
-                        offset = Offset(0f, 0f),
-                    )
-                )
-            )
-        }
+                .padding(vertical = 75.dp)
+        )
 
         // Right menu
         DrawSidePanel(rightOptions)
+    }
+
+    // Center text
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(vertical = 75.dp)
+            .alpha(alpha),
+        contentAlignment = Alignment.TopCenter
+    ) {
+        val allText = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.ExtraBold,
+                    fontSize = 30.sp
+                )
+            ) {
+                append(text)
+            }
+            withStyle(
+                style = SpanStyle(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 18.sp,
+                    fontStyle = FontStyle.Italic
+                )
+            ) {
+                append("\n\nTap to start\n\nDrag to adjust timestamp and piano size")
+            }
+        }
+
+        Text(
+            text = allText,
+            textAlign = TextAlign.Center,
+            color = Color.White,
+            fontFamily = FontFamily.Default,
+            letterSpacing = 0.6.sp,
+            style = TextStyle(
+                shadow = Shadow(
+                    color = Color.DarkGray,
+                    blurRadius = 20f,
+                    offset = Offset(0f, 0f),
+                )
+            )
+        )
     }
 }
 

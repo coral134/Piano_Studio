@@ -19,6 +19,7 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.onSizeChanged
 import androidx.navigation.NavController
 import com.example.pianostudio.PianoViewModel
+import com.example.pianostudio.data.music.Track
 import com.example.pianostudio.ui.custom_composables.pixToDp
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawClock
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawKeyboard
@@ -34,6 +35,10 @@ fun DrawRecordScreen(
     vm: PianoViewModel,
     nav: NavController
 ) {
+    LaunchedEffect(Unit) {
+        vm.updateSongPoint(0f)
+    }
+
     val positioner = remember {
         mutableStateOf(
             pianoPositionerByNotes(
@@ -73,12 +78,12 @@ fun DrawRecordScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             DrawNotesRoll(
                 positioner = positioner.value,
-                getVisibleNotes = { vm.getVisibleNotes() },
+                getVisibleNotes = { vm.getVisibleNotesRecord() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(positioner.value.rollHeight.pixToDp)
                     .pointerInput(Unit) {
-                        detectTapGestures { vm.isPaused.value = true }
+                        detectTapGestures(onTap = { vm.isPaused.value = true })
                     }
             )
 
@@ -101,9 +106,15 @@ fun DrawRecordScreen(
                     SidePanelButtonState("Options") { nav.navigate("studio_options") }
                 ),
                 rightOptions = listOf(
-                    SidePanelButtonState("Save") {  },
-                    SidePanelButtonState("Delete") {  }
-                )
+                    SidePanelButtonState("Save") {
+                        vm.updateSongPoint(0f)
+                    },
+                    SidePanelButtonState("Delete") {
+                        vm.track = Track()
+                        vm.updateSongPoint(0f)
+                    }
+                ),
+                text = "Recording new song"
             )
         }
 

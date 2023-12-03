@@ -1,94 +1,124 @@
 package com.example.pianostudio.data.music
 
-import java.util.TreeMap
+import kotlin.random.Random
 
+
+fun randomTrack(): Track {
+    val track = Track()
+    var timestamp = 0
+
+    repeat(200) {
+        val numNotes = Random.nextInt(1, 8)
+        repeat(numNotes) {
+            val note = Random.nextInt(20, 80)
+            val duration = Random.nextInt(100, 1000)
+            track.addCompleteNote(timestamp, timestamp + duration, note, 100)
+        }
+
+        val rest = Random.nextInt(100, 900)
+        timestamp += rest
+    }
+
+    return track
+}
 
 class Track {
-    private val measures = mutableListOf<TreeMap<SongNoteKey, SongNote>>()
+    private val chunkSize = 500
+    private val chunks = mutableListOf<MutableSet<SongNote>>()
     private val danglingNotes = mutableMapOf<Note, SongNote>()
 
     fun addEvent(note: Note, vel: Int, songPoint: Int) {
-        // case where pos is same for on and off??
-        // case where pos for off is before start??
-
         noteOff(note, songPoint)
         if (vel != 0) noteOn(note, vel, songPoint)
     }
 
-    private fun noteOn(note: Note, vel: Int, songPoint: Int) {
-        val measure = songPoint.measure()
-        ensureMeasureExists(measure)
-        val songNote = SongNote(note, vel, songPoint, songPoint + 100, false)
-        measures[measure][SongNoteKey(songPoint, note)] = songNote
-        danglingNotes[note] = songNote
+    fun addCompleteNote(timeOn: Int, timeOff: Int, note: Note, vel: Int) {
+        if (timeOff <= timeOn) return
+        if (vel == 0) return
+
+        val songNote = SongNote(
+            timeOn = timeOn,
+            timeOff = timeOff,
+            note = note,
+            vel = vel
+        )
+
+        val offChunk = timeOff.chunk()
+        val onChunk = timeOn.chunk()
+        ensureChunkExists(offChunk)
+
+        for (chunk in onChunk..offChunk)
+            chunks[chunk].add(songNote)
     }
 
-    private fun noteOff(note: Note, songPoint: Int) {
-        // case where note was never pressed
-        val songNote = danglingNotes[note] ?: return
+    fun removeDanglingNotes() {
+        danglingNotes.clear()
+    }
 
-        // definitely adding event
-        val measure = songPoint.measure()
-        ensureMeasureExists(measure)
-        songNote.endPoint = songPoint
-        songNote.complete = true
+    fun finishDanglingNotes(timeOff: Int) {
+        danglingNotes.forEach {
+            addCompleteNote(it.value.timeOn, timeOff, it.value.note, it.value.vel)
+        }
+        removeDanglingNotes()
+    }
+
+    private fun noteOn(note: Note, vel: Int, timeOn: Int) {
+        val onEvent = SongNote(
+            timeOn = timeOn,
+            timeOff = timeOn,
+            note = note,
+            vel = vel
+        )
+        danglingNotes[note] = onEvent
+    }
+
+    private fun noteOff(note: Note, timeOff: Int) {
+        val onEvent = danglingNotes[note] ?: return
         danglingNotes.remove(note)
-        measures[measure][SongNoteKey(songPoint, note)] = songNote
+        addCompleteNote(onEvent.timeOn, timeOff, note, onEvent.vel)
     }
 
-    private fun ensureMeasureExists(measure: Int) {
-        while (measure >= measures.size)
-            measures.add(TreeMap())
-    }
+    fun getNotesInRange(
+        lowerTime: Int,
+        upperTime: Int,
+        currentTime: Int
+    ): MutableSet<SongNote> {
+        val lowerChunk = maxOf(lowerTime.chunk(), 0)
+        val upperChunk = minOf(upperTime.chunk(), chunks.size - 1)
+        val songNotes = mutableSetOf<SongNote>()
 
-    fun collectNotesInRange(lowerSongPoint: Int, upperSongPoint: Int): Set<SongNote> {
-        val notes = mutableSetOf<SongNote>()
-
-        for (mi in maxOf(lowerSongPoint.measure(), 0)..
-                minOf(upperSongPoint.measure(), measures.size - 1)) {
-            measures[mi].subMap(
-                SongNoteKey(lowerSongPoint, -1), true,
-                SongNoteKey(upperSongPoint, 128), true
-            ).forEach {
-                if (it.value.complete) notes.add(it.value)
+        for (mi in lowerChunk..upperChunk) {
+            chunks[mi].forEach {
+                if ((it.timeOn >= lowerTime || it.timeOff >= lowerTime) &&
+                            (it.timeOn <= upperTime || it.timeOff <= upperTime)) {
+                    songNotes.add(it)
+                }
             }
         }
 
         danglingNotes.forEach {
-            notes.add(
-                SongNote(
-                    it.value.note, it.value.vel,
-                    it.value.startPoint, upperSongPoint, false
+            val songNote = it.value
+            if (currentTime > songNote.timeOn) {
+                songNotes.add(
+                    SongNote(songNote.timeOn, currentTime, songNote.note, songNote.vel)
                 )
-            )
+            }
         }
 
-        return notes
+        return songNotes
     }
+
+    private fun ensureChunkExists(measure: Int) {
+        while (measure >= chunks.size)
+            chunks.add(mutableSetOf())
+    }
+
+    private fun Int.chunk(): Int = this / chunkSize
 }
 
-private fun Int.measure(): Int = this / 1000
-private fun Int.posInMeasure(): Int = this % 1000
-
-private class SongNoteKey(
-    val songPoint: Int,
-    val note: Note
-) : Comparable<SongNoteKey> {
-    override fun compareTo(other: SongNoteKey): Int = when {
-        this.songPoint != other.songPoint ->
-            this.songPoint compareTo other.songPoint
-
-        this.note != other.note ->
-            this.note compareTo other.note
-
-        else -> 0
-    }
-}
-
-data class SongNote(
+class SongNote (
+    val timeOn: Int,
+    val timeOff: Int,
     val note: Note,
     val vel: Int,
-    val startPoint: Int,
-    var endPoint: Int,
-    var complete: Boolean
 )

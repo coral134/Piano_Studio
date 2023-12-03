@@ -45,6 +45,10 @@ fun DrawPracticeScreen(
         )
     }
 
+    LaunchedEffect(Unit) {
+        vm.updateSongPoint(-2000f)
+    }
+
     BoxWithConstraints(
         modifier = modifier
             .background(Color.Black)
@@ -73,7 +77,7 @@ fun DrawPracticeScreen(
         Column(modifier = Modifier.fillMaxSize()) {
             DrawNotesRoll(
                 positioner = positioner.value,
-                getVisibleNotes = { vm.getVisibleNotes() },
+                getVisibleNotes = { vm.getVisibleNotesPractice() },
                 modifier = Modifier
                     .fillMaxWidth()
                     .height(positioner.value.rollHeight.pixToDp)
@@ -101,9 +105,10 @@ fun DrawPracticeScreen(
                     SidePanelButtonState("Options") { nav.navigate("studio_options") }
                 ),
                 rightOptions = listOf(
-                    SidePanelButtonState("Restart") { vm.updateSongPoint(0) },
+                    SidePanelButtonState("Restart") { vm.updateSongPoint(-2000f) },
                     SidePanelButtonState("Change song") { nav.navigate("select_song") }
-                )
+                ),
+                text = "Practicing: \"Recorded Song\""
             )
         }
 

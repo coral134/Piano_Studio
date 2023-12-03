@@ -32,7 +32,7 @@ fun DrawClock(
     }
 
     val color = fadeColor(
-        state = paused,
+        state = paused || (seconds < 0),
         color1 = ClockBackgroundPlaying,
         color2 = ClockBackgroundPaused,
         duration = 300

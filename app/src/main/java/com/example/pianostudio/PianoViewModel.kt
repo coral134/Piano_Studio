@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import com.example.pianostudio.data.music.Note
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.createNote
-import com.example.pianostudio.data.music.Track
 import com.example.pianostudio.data.music.randomTrack
 
 
@@ -38,55 +37,51 @@ class PianoViewModel : ViewModel() {
     // song stuff
     var track = randomTrack()
 
-    var currentSongPoint = 0f
-    val measuresPerSecond = 0.5
-    private val numMeasuresVisible = 3.0
+    var timestamp = 0.0
+    private val playbackBPM = 60.0
+    private val numBeatsVisible = 4.0
 
-    private fun getCurrentSongPoint() = currentSongPoint.toInt()
+    fun msToBeats(ms: Long) = ms * playbackBPM / 60000.0
 
-    fun updateSongPoint(songPoint: Float) {
-        currentSongPoint = maxOf(songPoint, -2000f)
-        seconds.value = (songPoint / (1000 * measuresPerSecond)).toInt()
+    fun setTheTimestamp(newTimestamp: Double) {
+        timestamp = newTimestamp
+        seconds.value = timestamp.toInt()
     }
 
-    fun changeSongPoint(change: Float) {
-        updateSongPoint(currentSongPoint + change)
-    }
+    fun changeTimestamp(change: Double) = setTheTimestamp(timestamp + change)
 
     private fun addNoteEvent(note: Note, vel: Int) {
-        track.addEvent(note, vel, getCurrentSongPoint())
+        track.addEvent(note, vel, timestamp)
     }
 
     fun getVisibleNotesRecord(): List<NotePosition> {
-        val range = (1000 * numMeasuresVisible).toInt()
-        val lowerSongPoint = getCurrentSongPoint() - range
+        val lowerBound = timestamp - numBeatsVisible
 
         return track.getNotesInRange(
-            lowerTime = lowerSongPoint,
-            upperTime = getCurrentSongPoint(),
-            currentTime = getCurrentSongPoint()
+            lowerBound = lowerBound,
+            upperBound = timestamp,
+            currentTime = timestamp
         ).map {
             NotePosition(
                 note = it.note,
-                topPos = (it.timeOn - lowerSongPoint).toFloat() / range,
-                height = (it.timeOff - it.timeOn).toFloat() / range
+                topPos = (it.timeOn - lowerBound) / numBeatsVisible,
+                height = (it.timeOff - it.timeOn) / numBeatsVisible
             )
         }
     }
 
     fun getVisibleNotesPractice(): List<NotePosition> {
-        val range = (1000 * numMeasuresVisible).toInt()
-        val higherSongPoint = getCurrentSongPoint() + range
+        val upperBound = timestamp + numBeatsVisible
 
         return track.getNotesInRange(
-            lowerTime = getCurrentSongPoint(),
-            upperTime = higherSongPoint,
-            currentTime = getCurrentSongPoint()
+            lowerBound = timestamp,
+            upperBound = upperBound,
+            currentTime = timestamp
         ).map {
             NotePosition(
                 note = it.note,
-                topPos = (higherSongPoint - it.timeOff).toFloat() / range,
-                height = (it.timeOff - it.timeOn).toFloat() / range
+                topPos = (upperBound - it.timeOff) / numBeatsVisible,
+                height = (it.timeOff - it.timeOn) / numBeatsVisible
             )
         }
     }
@@ -94,6 +89,6 @@ class PianoViewModel : ViewModel() {
 
 data class NotePosition(
     val note: Note,
-    val topPos: Float,
-    val height: Float
+    val topPos: Double,
+    val height: Double
 )

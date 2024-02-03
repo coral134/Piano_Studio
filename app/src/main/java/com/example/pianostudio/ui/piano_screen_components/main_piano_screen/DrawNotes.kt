@@ -47,8 +47,8 @@ fun DrawNotes(
             val note = notePos.note
             if (!positioner.isVisible(note)) continue
 
-            val posY = positioner.noteYPos(notePos.topPos)
-            val height = positioner.noteHeight(notePos.height)
+            val posY = (notePos.topPos * (size.height + 10.dp.toPx()) - 10.dp.toPx()).toFloat()
+            val height = (notePos.height * (size.height + 10.dp.toPx())).toFloat()
 
             if (note.isBlackKey()) {
                 drawNote(

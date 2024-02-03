@@ -106,12 +106,4 @@ class PianoPositioner(
         else
             (wkeyNote - 1).coerceIn(startNote, endNote)
     }
-
-    fun noteYPos(pos: Float): Float {
-        return noteHeight(pos) - 10.dp.toPix
-    }
-
-    fun noteHeight(height: Float): Float {
-        return height * (rollHeight + 10.dp.toPix)
-    }
 }

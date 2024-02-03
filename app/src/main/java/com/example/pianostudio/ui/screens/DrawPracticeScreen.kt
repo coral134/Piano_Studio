@@ -46,7 +46,7 @@ fun DrawPracticeScreen(
     }
 
     LaunchedEffect(Unit) {
-        vm.updateSongPoint(-2000f)
+        vm.setTheTimestamp(0.0)
     }
 
     BoxWithConstraints(
@@ -61,14 +61,13 @@ fun DrawPracticeScreen(
     ) {
         if (!vm.isPaused.value) {
             LaunchedEffect(Unit) {
-                val startTime = System.currentTimeMillis()
-                val initialSongPoint = vm.currentSongPoint
+                val initSystemTime = System.currentTimeMillis()
+                val initTimestamp = vm.timestamp
                 while (true) {
                     withFrameMillis {
-                        val currentSongPoint = initialSongPoint +
-                                ((System.currentTimeMillis() - startTime) * vm.measuresPerSecond)
-                                    .toInt()
-                        vm.updateSongPoint(currentSongPoint)
+                        val currentSongPoint = initTimestamp +
+                                vm.msToBeats(System.currentTimeMillis() - initSystemTime)
+                        vm.setTheTimestamp(currentSongPoint)
                     }
                 }
             }
@@ -99,13 +98,13 @@ fun DrawPracticeScreen(
                 modifier = Modifier.fillMaxSize(),
                 positioner = positioner,
                 onResume = { vm.isPaused.value = false },
-                changeSongPoint = { vm.changeSongPoint(it) },
+                changeSongPoint = { vm.changeTimestamp(it.toDouble()) },
                 leftOptions = listOf(
                     SidePanelButtonState("Home") { nav.navigate("home") },
                     SidePanelButtonState("Options") { nav.navigate("studio_options") }
                 ),
                 rightOptions = listOf(
-                    SidePanelButtonState("Restart") { vm.updateSongPoint(-2000f) },
+                    SidePanelButtonState("Restart") { vm.setTheTimestamp(0.0) },
                     SidePanelButtonState("Change song") { nav.navigate("select_song") }
                 ),
                 text = "Practicing: \"Recorded Song\""

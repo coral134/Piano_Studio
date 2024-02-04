@@ -1,27 +1,16 @@
 package com.example.pianostudio.ui.screens
 
-import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.BoxWithConstraints
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.withFrameMillis
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.navigation.NavController
 import com.example.pianostudio.PianoViewModel
-import com.example.pianostudio.ui.custom_composables.pixToDp
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawClock
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawKeyboard
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawNotesRoll
+import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.PianoScreen
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.keySpacerByNotes
 import com.example.pianostudio.ui.piano_screen_components.paused_screen.DrawPausedScreen
 import com.example.pianostudio.ui.piano_screen_components.paused_screen.SidePanelButtonState
@@ -46,9 +35,18 @@ fun DrawPracticeScreen(
         vm.setTheTimestamp(0.0)
     }
 
-    BoxWithConstraints(
-        modifier = modifier.background(Color.Black)
-    ) {
+    PianoScreen(
+        modifier = Modifier.fillMaxSize(),
+        keysState = vm.keysState,
+        keySpacer = keySpacer.value,
+        getVisibleNotes = remember(vm) { { vm.getVisibleNotesPractice() } },
+        seconds = vm.seconds.value,
+        paused = vm.isPaused.value,
+        onPause = remember(vm) { { vm.isPaused.value = true } },
+        updatePressedNotes = remember(vm) { { vm.updateOSKPressedNotes(it) } },
+    )
+
+    Box(modifier = modifier) {
         if (!vm.isPaused.value) {
             LaunchedEffect(Unit) {
                 val initSystemTime = System.currentTimeMillis()
@@ -61,34 +59,12 @@ fun DrawPracticeScreen(
                     }
                 }
             }
-        }
-
-        Column(modifier = Modifier.fillMaxSize()) {
-            DrawNotesRoll(
-                keySpacer = keySpacer.value,
-                getVisibleNotes = { vm.getVisibleNotesPractice() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .weight(3.5f)
-                    .pointerInput(Unit) {
-                        detectTapGestures(onTap = { vm.isPaused.value = true })
-                    }
-            )
-
-            DrawKeyboard(
-                keySpacer = keySpacer.value,
-                keysState = vm.keysState,
-                updatePressedNotes = { vm.updateOSKPressedNotes(it) },
-                modifier = Modifier.fillMaxSize().weight(1f)
-            )
-        }
-
-        if (vm.isPaused.value) {
+        } else {
             DrawPausedScreen(
                 modifier = Modifier.fillMaxSize(),
                 keySpacer = keySpacer,
-                onResume = { vm.isPaused.value = false },
-                changeSongPoint = { vm.changeTimestamp(it.toDouble()) },
+                onResume = remember(vm) {{ vm.isPaused.value = false }},
+                changeSongPoint = remember(vm) {{ vm.changeTimestamp(it.toDouble()) }},
                 leftOptions = listOf(
                     SidePanelButtonState("Home") { nav.navigate("home") },
                     SidePanelButtonState("Options") { nav.navigate("studio_options") }
@@ -100,11 +76,5 @@ fun DrawPracticeScreen(
                 text = "Practicing: \"Recorded Song\""
             )
         }
-
-        DrawClock(
-            modifier = Modifier.align(Alignment.TopCenter),
-            seconds = vm.seconds.value,
-            paused = vm.isPaused.value
-        )
     }
 }

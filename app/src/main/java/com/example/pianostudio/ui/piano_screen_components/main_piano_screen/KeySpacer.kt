@@ -20,10 +20,10 @@ fun keySpacerByNotes(
 
 @Immutable
 class KeySpacer(
-    val startKeyPoint: Float,
-    val endKeyPoint: Float
+    private val startKeyPoint: Float,
+    private val endKeyPoint: Float
 ) {
-    val range = endKeyPoint - startKeyPoint
+    private val range = endKeyPoint - startKeyPoint
     val startNote = (getNoteAtXPos(0F) - 1).coerceIn(Piano.minNote, Piano.maxNote)
     val endNote = (getNoteAtXPos(1F) + 1).coerceIn(Piano.minNote, Piano.maxNote)
 

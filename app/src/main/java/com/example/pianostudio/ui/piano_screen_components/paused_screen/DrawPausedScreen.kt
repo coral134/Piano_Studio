@@ -20,7 +20,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -32,7 +31,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.ui.custom_composables.animateFloat
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.PianoPositioner
+import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.KeySpacer
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.pianoScreenGestures
 import com.example.pianostudio.ui.theme.PausedTint
 import com.example.pianostudio.ui.theme.SidePanelButtonBackground
@@ -41,7 +40,7 @@ import com.example.pianostudio.ui.theme.SidePanelButtonBackground
 @Composable
 fun DrawPausedScreen(
     modifier: Modifier = Modifier,
-    positioner: MutableState<PianoPositioner>,
+    keySpacer: MutableState<KeySpacer>,
     onResume: () -> Unit,
     changeSongPoint: (change: Float) -> Unit,
     leftOptions: List<SidePanelButtonState>,
@@ -56,7 +55,7 @@ fun DrawPausedScreen(
 
     Box(
         modifier = modifier
-            .pianoScreenGestures(positioner, onResume, gestureIsActive) { changeSongPoint(it) }
+            .pianoScreenGestures(keySpacer, onResume, gestureIsActive) { changeSongPoint(it) }
     )
 
     Row(modifier = modifier.alpha(alpha).background(PausedTint)) {

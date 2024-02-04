@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Rect
@@ -27,7 +28,7 @@ import com.example.pianostudio.ui.theme.WhiteKeyNoteOutline
 @Composable
 fun DrawNotes(
     modifier: Modifier = Modifier,
-    positioner: PianoPositioner,
+    keySpacer: KeySpacer,
     getVisibleNotes: () -> List<NotePosition>
 ) {
     val notesState = remember {
@@ -42,29 +43,29 @@ fun DrawNotes(
         }
     }
 
-    Canvas(modifier = modifier) {
+    Canvas(modifier = modifier.clipToBounds()) {
         for (notePos in notesState.value) {
             val note = notePos.note
-            if (!positioner.isVisible(note)) continue
+            if (!keySpacer.isVisible(note)) continue
 
-            val posY = (notePos.topPos * (size.height + 10.dp.toPx()) - 10.dp.toPx()).toFloat()
-            val height = (notePos.height * (size.height + 10.dp.toPx())).toFloat()
+            val notePosY = (notePos.topPos * (size.height + 10.dp.toPx()) - 10.dp.toPx()).toFloat()
+            val noteHeight = (notePos.height * (size.height + 10.dp.toPx())).toFloat()
 
             if (note.isBlackKey()) {
                 drawNote(
-                    posX = positioner.leftAlignment(note),
-                    posY = posY,
-                    width = positioner.bkeyWidth,
-                    height = height,
+                    posX = size.width * keySpacer.leftAlignment(note),
+                    posY = notePosY,
+                    width = size.width * keySpacer.bkeyWidth,
+                    height = noteHeight,
                     color = BlackKeyNote,
                     outline = BlackKeyNoteOutline
                 )
             } else {
                 drawNote(
-                    posX = positioner.leftAlignment(note),
-                    posY = posY,
-                    width = positioner.wkeyWidth,
-                    height = height,
+                    posX = size.width * keySpacer.leftAlignment(note),
+                    posY = notePosY,
+                    width = size.width * keySpacer.wkeyWidth,
+                    height = noteHeight,
                     color = WhiteKeyNote,
                     outline = WhiteKeyNoteOutline
                 )

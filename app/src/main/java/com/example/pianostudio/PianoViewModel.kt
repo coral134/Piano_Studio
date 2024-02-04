@@ -7,11 +7,13 @@ import com.example.pianostudio.data.music.Note
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.createNote
 import com.example.pianostudio.data.music.randomTrack
+import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.keySpacerByNotes
 
 
 typealias KeysState = List<MutableState<Int>>
 
 class PianoViewModel : ViewModel() {
+
     val keysState: KeysState = List(128) { mutableStateOf(0) }
     val seconds = mutableStateOf(0)
 

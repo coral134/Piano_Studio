@@ -10,7 +10,7 @@ import com.example.pianostudio.ui.custom_composables.detectHorizontalZoomGesture
 import kotlin.math.pow
 
 fun Modifier.pianoScreenGestures(
-    positioner: MutableState<PianoPositioner>,
+    keySpacer: MutableState<KeySpacer>,
     onResume: () -> Unit,
     gestureIsActive: MutableState<Boolean>,
     changeSongPoint: (change: Float) -> Unit
@@ -38,7 +38,7 @@ fun Modifier.pianoScreenGestures(
                 gestureIsActive.value = isActive()
             }
         ) { _, dragAmount ->
-            positioner.value = positioner.value.updateByPanAndZoom(
+            keySpacer.value = keySpacer.value.updateByPanAndZoom(
                 newPan = dragAmount / 2f,
                 newZoom = 1f
             )
@@ -71,7 +71,7 @@ fun Modifier.pianoScreenGestures(
                 gestureIsActive.value = isActive()
             }
         ) { zoom ->
-            positioner.value = positioner.value.updateByPanAndZoom(
+            keySpacer.value = keySpacer.value.updateByPanAndZoom(
                 newPan = 0f,
                 newZoom = zoom
             )

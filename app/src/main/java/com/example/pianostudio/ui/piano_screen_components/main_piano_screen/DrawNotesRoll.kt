@@ -18,8 +18,8 @@ import com.example.pianostudio.ui.theme.PianoRollMinorLine
 
 @Composable
 fun DrawNotesRoll(
-    positioner: PianoPositioner,
     modifier: Modifier = Modifier,
+    keySpacer: KeySpacer,
     getVisibleNotes: () -> List<NotePosition>
 ) {
     Box(modifier = modifier) {
@@ -28,21 +28,25 @@ fun DrawNotesRoll(
             .background(DarkGrayBackground)
             .fillMaxSize()) {
             Canvas(modifier = Modifier.fillMaxSize()) {
-                for (i in 1 until positioner.whiteKeys.size) {
-                    val note = positioner.whiteKeys[i]
+                for (i in 1 until keySpacer.whiteKeys.size) {
+                    val note = keySpacer.whiteKeys[i]
                     if (note.letter() == 0) {
                         val weight = 6.dp.toPx()
                         drawRect(
                             color = PianoRollMajorLine,
-                            topLeft = Offset(positioner.leftAlignment(note) - weight / 2, 0F),
-                            size = Size(weight, positioner.rollHeight)
+                            topLeft = Offset(
+                                keySpacer.leftAlignment(note) * size.width - weight / 2, 0F
+                            ),
+                            size = Size(weight, size.height)
                         )
                     } else {
                         val weight = 3.dp.toPx()
                         drawRect(
                             color = PianoRollMinorLine,
-                            topLeft = Offset(positioner.leftAlignment(note) - weight / 2, 0F),
-                            size = Size(weight, positioner.rollHeight)
+                            topLeft = Offset(
+                                keySpacer.leftAlignment(note) * size.width - weight / 2, 0F
+                            ),
+                            size = Size(weight, size.height)
                         )
                     }
                 }
@@ -52,7 +56,7 @@ fun DrawNotesRoll(
         // Notes
         DrawNotes(
             modifier = Modifier.fillMaxSize(),
-            positioner = positioner,
+            keySpacer = keySpacer,
             getVisibleNotes = getVisibleNotes
         )
     }

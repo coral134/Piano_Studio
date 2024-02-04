@@ -1,58 +1,37 @@
 package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
 
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.unit.dp
+import androidx.compose.runtime.Immutable
 import com.example.pianostudio.data.music.Note
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.isBlackKey
 import com.example.pianostudio.data.music.Piano.letter
 import com.example.pianostudio.data.music.Piano.toWKey
 import com.example.pianostudio.data.music.Piano.wkeyToNote
-import com.example.pianostudio.ui.custom_composables.toPix
 
-// TODO: Make more efficient
 
-fun pianoPositionerByNotes(
+fun keySpacerByNotes(
     startNote: Note,
-    endNote: Note,
-    width: Float,
-    height: Float
-): PianoPositioner {
+    endNote: Note
+): KeySpacer {
     val start = (if (startNote.isBlackKey()) startNote - 1 else startNote).toWKey()
     val end = (if (endNote.isBlackKey()) endNote + 1 else endNote).toWKey()
-    val amountWKeyVisible = (end - start + 1).toFloat()
-    val centerPoint = (start + end + 1).toFloat() / 2
-    return PianoPositioner(amountWKeyVisible, centerPoint, width, height)
+    return KeySpacer(start.toFloat(), end.toFloat() + 1f)
 }
 
-class PianoPositioner(
-    newAmountWKeyVisible: Float,
-    newCenterPoint: Float,
-    val width: Float,
-    val height: Float
+@Immutable
+class KeySpacer(
+    val startKeyPoint: Float,
+    val endKeyPoint: Float
 ) {
-    private val amountWKeyVisible = newAmountWKeyVisible.coerceIn(5F, 60F)
-    private val centerPoint = newCenterPoint.coerceIn(
-        amountWKeyVisible / 2F,
-        Piano.totalNumWhiteNotes.toFloat() - amountWKeyVisible / 2F
-    )
+    val range = endKeyPoint - startKeyPoint
+    val startNote = (getNoteAtXPos(0F) - 1).coerceIn(Piano.minNote, Piano.maxNote)
+    val endNote = (getNoteAtXPos(1F) + 1).coerceIn(Piano.minNote, Piano.maxNote)
 
-    private val startNote = (getNoteAtXPos(0F) - 1).coerceIn(Piano.minNote, Piano.maxNote)
-    private val endNote = (getNoteAtXPos(1F) + 1).coerceIn(Piano.minNote, Piano.maxNote)
-
-    val wkeyWidth = width / amountWKeyVisible
+    val wkeyWidth = 1 / range
     val bkeyWidth = wkeyWidth * 7 / 12
 
-    val keyboardHeight = minOf(wkeyWidth * 5.4F, height * 0.34F)
-    val rollHeight = height - keyboardHeight
-
-    val wkeyClip = wkeyWidth * 0.11F
-    val bkeyHeight = keyboardHeight * 0.65F
-    val bkeyTouchHeight = keyboardHeight * 0.55F
-    val bkeyClip = bkeyWidth * 0.15F
-
-    val whiteKeys = mutableListOf<Int>()
-    val blackKeys = mutableListOf<Int>()
+    val whiteKeys = mutableListOf<Note>()
+    val blackKeys = mutableListOf<Note>()
 
     init {
         for (note in this.startNote..this.endNote) {
@@ -61,25 +40,19 @@ class PianoPositioner(
         }
     }
 
-    private fun getNoteAtXPos(posX: Float): Note =
-        ((posX - 0.5) * amountWKeyVisible + centerPoint).toInt().wkeyToNote()
+    fun getNoteAtXPos(posX: Float): Note = (posX * range + startKeyPoint).toInt().wkeyToNote()
 
-    private fun wkeyLeftAlignment(wkey: Int): Float =
-        (0.5F + (wkey - centerPoint) / amountWKeyVisible) * width
+    private fun wkeyLeftAlignment(wkey: Int): Float = (wkey - startKeyPoint) / range
 
-    fun updateByPanAndZoom(newPan: Float, newZoom: Float): PianoPositioner =
-        PianoPositioner(
-            amountWKeyVisible / newZoom,
-            centerPoint - newPan * amountWKeyVisible / width,
-            width, height
-        )
+    fun updateByPanAndZoom(newPan: Float, newZoom: Float): KeySpacer {
+        val newRange = (range / newZoom).coerceIn(10f, Piano.totalNumWhiteNotes.toFloat())
+        val center = (startKeyPoint + endKeyPoint) / 2 + newPan * range
+        val newStart = (center - newRange / 2)
+            .coerceIn(0f, Piano.totalNumWhiteNotes.toFloat() - newRange)
+        val newEnd = newStart + newRange
 
-    fun updateSize(newWidth: Float, newHeight: Float): PianoPositioner =
-        PianoPositioner(
-            amountWKeyVisible,
-            centerPoint,
-            newWidth, newHeight
-        )
+        return KeySpacer(newStart, newEnd)
+    }
 
     fun leftAlignment(note: Note): Float {
         return if (note.isBlackKey())
@@ -89,21 +62,4 @@ class PianoPositioner(
     }
 
     fun isVisible(note: Note) = (note in startNote..endNote)
-
-    fun whichNotePressed(offset: Offset): Note? {
-        val x = offset.x
-        val y = offset.y
-
-        if (y < 0 || y > keyboardHeight) return null
-
-        val wkeyNote = getNoteAtXPos(x / width)
-        if (wkeyNote < startNote || wkeyNote > endNote) return null
-        if (y > bkeyTouchHeight) return wkeyNote
-
-        val relativePosition = (x - leftAlignment(wkeyNote)) * 24 / wkeyWidth
-        return if (relativePosition > Piano.bkeyHitboxes[wkeyNote.letter()])
-            (wkeyNote + 1).coerceIn(startNote, endNote)
-        else
-            (wkeyNote - 1).coerceIn(startNote, endNote)
-    }
 }

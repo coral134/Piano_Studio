@@ -16,14 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import androidx.compose.ui.layout.onSizeChanged
 import androidx.navigation.NavController
 import com.example.pianostudio.PianoViewModel
 import com.example.pianostudio.ui.custom_composables.pixToDp
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawClock
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawKeyboard
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.DrawNotesRoll
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.pianoPositionerByNotes
+import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.keySpacerByNotes
 import com.example.pianostudio.ui.piano_screen_components.paused_screen.DrawPausedScreen
 import com.example.pianostudio.ui.piano_screen_components.paused_screen.SidePanelButtonState
 
@@ -34,13 +33,11 @@ fun DrawPracticeScreen(
     vm: PianoViewModel,
     nav: NavController
 ) {
-    val positioner = remember {
+    val keySpacer = remember {
         mutableStateOf(
-            pianoPositionerByNotes(
+           keySpacerByNotes(
                 startNote = vm.startNote.value,
                 endNote = vm.endNote.value,
-                width = 0F,
-                height = 0F
             )
         )
     }
@@ -50,14 +47,7 @@ fun DrawPracticeScreen(
     }
 
     BoxWithConstraints(
-        modifier = modifier
-            .background(Color.Black)
-            .onSizeChanged {
-                positioner.value = positioner.value.updateSize(
-                    it.width.toFloat(),
-                    it.height.toFloat()
-                )
-            }
+        modifier = modifier.background(Color.Black)
     ) {
         if (!vm.isPaused.value) {
             LaunchedEffect(Unit) {
@@ -75,28 +65,28 @@ fun DrawPracticeScreen(
 
         Column(modifier = Modifier.fillMaxSize()) {
             DrawNotesRoll(
-                positioner = positioner.value,
+                keySpacer = keySpacer.value,
                 getVisibleNotes = { vm.getVisibleNotesPractice() },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(positioner.value.rollHeight.pixToDp)
+                    .weight(3.5f)
                     .pointerInput(Unit) {
                         detectTapGestures(onTap = { vm.isPaused.value = true })
                     }
             )
 
             DrawKeyboard(
-                positioner = positioner.value,
-                keyboardState = vm.keysState,
+                keySpacer = keySpacer.value,
+                keysState = vm.keysState,
                 updatePressedNotes = { vm.updateOSKPressedNotes(it) },
-                modifier = Modifier.fillMaxSize()
+                modifier = Modifier.fillMaxSize().weight(1f)
             )
         }
 
         if (vm.isPaused.value) {
             DrawPausedScreen(
                 modifier = Modifier.fillMaxSize(),
-                positioner = positioner,
+                keySpacer = keySpacer,
                 onResume = { vm.isPaused.value = false },
                 changeSongPoint = { vm.changeTimestamp(it.toDouble()) },
                 leftOptions = listOf(

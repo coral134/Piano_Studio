@@ -50,7 +50,7 @@ class PianoViewModel : ViewModel() {
 
     fun changeTimestamp(change: Double) = setTheTimestamp(timestamp + change)
 
-    private fun addNoteEvent(note: Note, vel: Int) {
+    fun addNoteEvent(note: Note, vel: Int) {
         track.addEvent(note, vel, timestamp)
     }
 

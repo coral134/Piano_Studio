@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
+package com.example.pianostudio.ui.screens.studio
 
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -6,8 +6,7 @@ import androidx.compose.foundation.gestures.detectVerticalDragGestures
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
-import com.example.pianostudio.ui.custom_composables.detectHorizontalZoomGestures
-import kotlin.math.pow
+import com.example.pianostudio.ui.random.detectHorizontalZoomGestures
 
 fun Modifier.pianoScreenGestures(
     keySpacer: MutableState<KeySpacer>,

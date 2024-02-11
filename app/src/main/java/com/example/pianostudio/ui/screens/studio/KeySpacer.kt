@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
+package com.example.pianostudio.ui.screens.studio
 
 import androidx.compose.runtime.Immutable
 import com.example.pianostudio.data.music.Note

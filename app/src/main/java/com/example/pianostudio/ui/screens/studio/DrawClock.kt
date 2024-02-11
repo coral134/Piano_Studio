@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
+package com.example.pianostudio.ui.screens.studio
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -16,7 +16,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.ui.custom_composables.fadeColor
+import com.example.pianostudio.ui.random.fadeColor
 import com.example.pianostudio.ui.theme.ClockBackgroundPaused
 import com.example.pianostudio.ui.theme.ClockBackgroundPlaying
 

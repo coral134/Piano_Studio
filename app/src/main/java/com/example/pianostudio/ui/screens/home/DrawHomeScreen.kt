@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.screens
+package com.example.pianostudio.ui.screens.home
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background

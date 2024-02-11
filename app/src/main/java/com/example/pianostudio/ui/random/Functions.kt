@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.custom_composables
+package com.example.pianostudio.ui.random
 
 import android.content.res.Resources
 import androidx.compose.ui.unit.Dp

@@ -1,11 +1,11 @@
-package com.example.pianostudio.ui.screens
+package com.example.pianostudio.ui.screens.record
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.PianoScreen
+import com.example.pianostudio.ui.screens.studio.PianoScreen
 import com.example.pianostudio.viewmodel.MainViewModel
 
 

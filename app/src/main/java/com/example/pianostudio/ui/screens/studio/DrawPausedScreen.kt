@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.piano_screen_components.paused_screen
+package com.example.pianostudio.ui.screens.studio
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -29,7 +29,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.ui.custom_composables.animateFloat
+import com.example.pianostudio.ui.random.animateFloat
 import com.example.pianostudio.ui.theme.bgTheme2
 
 

@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.custom_composables
+package com.example.pianostudio.ui.random
 
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.animateFloatAsState

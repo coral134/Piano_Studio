@@ -11,7 +11,7 @@ import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.pianostudio.midi_io.KeyboardInput
-import com.example.pianostudio.ui.Navigation
+import com.example.pianostudio.ui.navigation.Navigation
 import com.example.pianostudio.ui.theme.PianoStudioTheme
 import com.example.pianostudio.ui.theme.bgTheme2
 import com.example.pianostudio.viewmodel.MainViewModel

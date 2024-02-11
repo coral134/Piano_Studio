@@ -10,7 +10,7 @@ import com.example.pianostudio.viewmodel.MainViewModel
 
 
 @Composable
-fun DrawRecordScreen(
+fun StudioRecordingScreen(
     modifier: Modifier = Modifier,
     vm: MainViewModel,
     nav: NavController

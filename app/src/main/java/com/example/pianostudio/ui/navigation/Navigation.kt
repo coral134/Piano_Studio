@@ -7,8 +7,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.pianostudio.ui.screens.home.DrawHomeScreen
-import com.example.pianostudio.ui.screens.practice.DrawPracticeScreen
-import com.example.pianostudio.ui.screens.record.DrawRecordScreen
+import com.example.pianostudio.ui.screens.practice.StudioPracticingScreen
+import com.example.pianostudio.ui.screens.record.StudioRecordingScreen
 import com.example.pianostudio.viewmodel.MainViewModel
 
 
@@ -23,14 +23,14 @@ fun Navigation(vm: MainViewModel) {
             )
         }
         composable("practice") {
-            DrawPracticeScreen(
+            StudioPracticingScreen(
                 vm = vm,
                 nav = navController,
                 modifier = Modifier.fillMaxSize()
             )
         }
         composable("record") {
-            DrawRecordScreen(
+            StudioRecordingScreen(
                 vm = vm,
                 nav = navController,
                 modifier = Modifier.fillMaxSize()

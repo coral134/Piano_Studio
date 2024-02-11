@@ -4,7 +4,6 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -28,6 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.pianostudio.R
+import com.example.pianostudio.ui.random.PillButton
+import com.example.pianostudio.ui.theme.bgTheme1
 import com.example.pianostudio.ui.theme.bgTheme2
 import com.example.pianostudio.ui.theme.bgTheme4
 
@@ -106,19 +107,18 @@ fun DrawChooseModeButton(
     color: Color,
     onClick: () -> Unit
 ) {
-    Box(
-        modifier = modifier
-            .clip(shape = RoundedCornerShape(70.dp))
-            .background(color)
-            .clickable { onClick() },
-        contentAlignment = Alignment.Center
+    PillButton(
+        modifier = modifier.clickable(onClick = onClick),
+        fillColor = color,
+        shadowColor = bgTheme1
     ) {
         Text(
             text = text,
             color = Color.White,
             textAlign = TextAlign.Center,
             fontWeight = FontWeight.Medium,
-            fontSize = 35.sp
+            fontSize = 35.sp,
+            modifier = Modifier
         )
     }
 }

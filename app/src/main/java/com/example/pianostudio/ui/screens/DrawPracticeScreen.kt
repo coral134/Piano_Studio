@@ -1,80 +1,65 @@
 package com.example.pianostudio.ui.screens
 
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import com.example.pianostudio.PianoViewModel
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.PianoScreen
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.keySpacerByNotes
-import com.example.pianostudio.ui.piano_screen_components.paused_screen.DrawPausedScreen
-import com.example.pianostudio.ui.piano_screen_components.paused_screen.SidePanelButtonState
+import com.example.pianostudio.viewmodel.MainViewModel
 
 
 @Composable
 fun DrawPracticeScreen(
     modifier: Modifier = Modifier,
-    vm: PianoViewModel,
+    vm: MainViewModel,
     nav: NavController
 ) {
-    val keySpacer = remember {
-        mutableStateOf(
-           keySpacerByNotes(
-                startNote = vm.startNote.value,
-                endNote = vm.endNote.value,
-            )
-        )
-    }
+    val player = vm.rememberTrackPlayer()
 
-    LaunchedEffect(Unit) {
-        vm.setTheTimestamp(0.0)
+    LaunchedEffect(vm) {
+        player.practice(this)
     }
 
     PianoScreen(
-        modifier = Modifier.fillMaxSize(),
-        keysState = vm.keysState,
-        keySpacer = keySpacer.value,
-        getVisibleNotes = remember(vm) { { vm.getVisibleNotesPractice() } },
-        seconds = vm.seconds.value,
-        paused = vm.isPaused.value,
-        onPause = remember(vm) { { vm.isPaused.value = true } },
-        updatePressedNotes = remember(vm) { { vm.updateOSKPressedNotes(it) } },
+        modifier = modifier,
+        keysState = vm.keyboardInput.keysState,
+        keySpacer = vm.keySpacer.value,
+        trackPlayer = player,
+        onPause = {  },
+        updatePressedNotes = remember(vm) { vm.keyboardInput::uiKeyPress },
     )
 
-    Box(modifier = modifier) {
-        if (!vm.isPaused.value) {
-            LaunchedEffect(Unit) {
-                val initSystemTime = System.currentTimeMillis()
-                val initTimestamp = vm.timestamp
-                while (true) {
-                    withFrameMillis {
-                        val currentSongPoint = initTimestamp +
-                                vm.msToBeats(System.currentTimeMillis() - initSystemTime)
-                        vm.setTheTimestamp(currentSongPoint)
-                    }
-                }
-            }
-        } else {
-            DrawPausedScreen(
-                modifier = Modifier.fillMaxSize(),
-                keySpacer = keySpacer,
-                onResume = remember(vm) {{ vm.isPaused.value = false }},
-                changeSongPoint = remember(vm) {{ vm.changeTimestamp(it.toDouble()) }},
-                leftOptions = listOf(
-                    SidePanelButtonState("Home") { nav.navigate("home") },
-                    SidePanelButtonState("Options") { nav.navigate("studio_options") }
-                ),
-                rightOptions = listOf(
-                    SidePanelButtonState("Restart") { vm.setTheTimestamp(0.0) },
-                    SidePanelButtonState("Change song") { nav.navigate("select_song") }
-                ),
-                text = "Practicing: \"Recorded Song\""
-            )
-        }
-    }
+
+//    Box(modifier = modifier) {
+//        if (!vm.isPaused.value) {
+//            LaunchedEffect(Unit) {
+//                val initSystemTime = System.currentTimeMillis()
+//                val initTimestamp = vm.timestamp
+//                while (true) {
+//                    withFrameMillis {
+//                        val currentSongPoint = initTimestamp +
+//                                vm.msToBeats(System.currentTimeMillis() - initSystemTime)
+//                        vm.setTheTimestamp(currentSongPoint)
+//                    }
+//                }
+//            }
+//        } else {
+//            DrawPausedScreen(
+//                modifier = Modifier.fillMaxSize(),
+//                keySpacer = keySpacer,
+//                onResume = remember(vm) {{ vm.isPaused.value = false }},
+//                changeSongPoint = remember(vm) {{ vm.changeTimestamp(it.toDouble()) }},
+//                leftOptions = listOf(
+//                    SidePanelButtonState("Home") { nav.navigate("home") },
+//                    SidePanelButtonState("Options") { nav.navigate("studio_options") }
+//                ),
+//                rightOptions = listOf(
+//                    SidePanelButtonState("Restart") { vm.setTheTimestamp(0.0) },
+//                    SidePanelButtonState("Change song") { nav.navigate("select_song") }
+//                ),
+//                text = "Practicing: \"Recorded Song\""
+//            )
+//        }
+//    }
 }

@@ -23,12 +23,12 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.KeysState
 import com.example.pianostudio.data.music.Note
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.isBlackKey
 import com.example.pianostudio.data.music.Piano.letter
 import com.example.pianostudio.data.music.Piano.string
+import com.example.pianostudio.midi_io.KeysState
 import com.example.pianostudio.ui.custom_composables.fadeOut
 import com.example.pianostudio.ui.custom_composables.trackPointers
 import com.example.pianostudio.ui.theme.PressedBlackKey

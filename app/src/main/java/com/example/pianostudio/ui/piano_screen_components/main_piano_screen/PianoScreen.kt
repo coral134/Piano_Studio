@@ -10,8 +10,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
-import com.example.pianostudio.KeysState
-import com.example.pianostudio.NotePosition
+import com.example.pianostudio.viewmodel.TrackPlayer
+import com.example.pianostudio.midi_io.KeysState
 
 
 @Composable
@@ -19,17 +19,15 @@ fun PianoScreen(
     modifier: Modifier = Modifier,
     keysState: KeysState,
     keySpacer: KeySpacer,
-    getVisibleNotes: () -> List<NotePosition>,
-    seconds: Int,
-    paused: Boolean,
+    trackPlayer: TrackPlayer,
     onPause: () -> Unit,
     updatePressedNotes: (touches: List<Int>) -> Unit,
 ) {
     Box(modifier = modifier.background(Color.Black)) {
         Column(modifier = Modifier.fillMaxSize()) {
-            DrawNotesRoll(
+            NotesRoll(
                 keySpacer = keySpacer,
-                getVisibleNotes = getVisibleNotes,
+                notes = trackPlayer.notes,
                 modifier = Modifier
                     .fillMaxSize()
                     .weight(3.5f)
@@ -50,10 +48,8 @@ fun PianoScreen(
 
         DrawClock(
             modifier = Modifier.align(Alignment.TopCenter),
-            seconds = seconds,
-            paused = paused
+            seconds = trackPlayer.secondsInt,
+            paused = false
         )
     }
 }
-
-

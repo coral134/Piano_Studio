@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.NotePosition
+import com.example.pianostudio.viewmodel.NotePosition
 import com.example.pianostudio.data.music.Piano.letter
 import com.example.pianostudio.ui.theme.DarkGrayBackground
 import com.example.pianostudio.ui.theme.PianoRollMajorLine
@@ -17,10 +17,10 @@ import com.example.pianostudio.ui.theme.PianoRollMinorLine
 
 
 @Composable
-fun DrawNotesRoll(
+fun NotesRoll(
     modifier: Modifier = Modifier,
     keySpacer: KeySpacer,
-    getVisibleNotes: () -> List<NotePosition>
+    notes: List<NotePosition>
 ) {
     Box(modifier = modifier) {
         // Background
@@ -57,7 +57,7 @@ fun DrawNotesRoll(
         DrawNotes(
             modifier = Modifier.fillMaxSize(),
             keySpacer = keySpacer,
-            getVisibleNotes = getVisibleNotes
+            notes = notes
         )
     }
 }

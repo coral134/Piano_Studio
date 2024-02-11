@@ -6,16 +6,16 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.pianostudio.PianoViewModel
 import com.example.pianostudio.ui.screens.DrawHomeScreen
 import com.example.pianostudio.ui.screens.DrawPracticeScreen
 import com.example.pianostudio.ui.screens.DrawRecordScreen
 import com.example.pianostudio.ui.screens.DrawSelectSongScreen
 import com.example.pianostudio.ui.screens.DrawStudioOptionsScreen
+import com.example.pianostudio.viewmodel.MainViewModel
 
 
 @Composable
-fun Navigation(vm: PianoViewModel) {
+fun Navigation(vm: MainViewModel) {
     val navController = rememberNavController()
     NavHost(navController = navController, startDestination = "home") {
         composable("home") {

@@ -2,10 +2,6 @@ package com.example.pianostudio.ui.piano_screen_components.main_piano_screen
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.withFrameMillis
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.geometry.CornerRadius
@@ -17,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.unit.dp
-import com.example.pianostudio.NotePosition
+import com.example.pianostudio.viewmodel.NotePosition
 import com.example.pianostudio.data.music.Piano.isBlackKey
 import com.example.pianostudio.ui.theme.BlackKeyNote
 import com.example.pianostudio.ui.theme.BlackKeyNoteOutline
@@ -29,22 +25,10 @@ import com.example.pianostudio.ui.theme.WhiteKeyNoteOutline
 fun DrawNotes(
     modifier: Modifier = Modifier,
     keySpacer: KeySpacer,
-    getVisibleNotes: () -> List<NotePosition>
+    notes: List<NotePosition>
 ) {
-    val notesState = remember {
-        mutableStateOf(getVisibleNotes())
-    }
-
-    LaunchedEffect(Unit) {
-        while (true) {
-            withFrameMillis {
-                notesState.value = getVisibleNotes()
-            }
-        }
-    }
-
     Canvas(modifier = modifier.clipToBounds()) {
-        for (notePos in notesState.value) {
+        for (notePos in notes) {
             val note = notePos.note
             if (!keySpacer.isVisible(note)) continue
 

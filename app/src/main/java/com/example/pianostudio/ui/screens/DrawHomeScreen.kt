@@ -28,8 +28,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.pianostudio.R
-import com.example.pianostudio.ui.theme.DarkGrayBackground
-import com.example.pianostudio.ui.theme.SidePanelButtonBackground
+import com.example.pianostudio.ui.theme.bgTheme2
+import com.example.pianostudio.ui.theme.bgTheme4
 
 
 @Composable
@@ -37,16 +37,11 @@ fun DrawHomeScreen(
     modifier: Modifier = Modifier,
     nav: NavController
 ) {
-    Column(
-        modifier = modifier
-            .background(DarkGrayBackground)
-            .padding(vertical = 60.dp)
-    ) {
+    Column(modifier = modifier.padding(vertical = 60.dp).background(bgTheme2)) {
         DrawLogo(modifier = Modifier.align(Alignment.CenterHorizontally))
 
         Row(
             modifier = Modifier
-                .background(DarkGrayBackground)
                 .padding(top = 30.dp)
                 .padding(horizontal = 60.dp),
             horizontalArrangement = Arrangement.SpaceBetween
@@ -59,14 +54,14 @@ fun DrawHomeScreen(
             DrawChooseModeButton(
                 text = "Record",
                 modifier = mod,
-                color = SidePanelButtonBackground,
+                color = bgTheme4,
                 onClick = { nav.navigate("record") }
             )
 
             DrawChooseModeButton(
                 text = "Practice",
                 modifier = mod,
-                color = SidePanelButtonBackground,
+                color = bgTheme4,
                 onClick = { nav.navigate("practice") }
             )
         }

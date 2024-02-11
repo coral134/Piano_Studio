@@ -1,6 +1,7 @@
 package com.example.pianostudio.viewmodel
 
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameMillis
@@ -10,6 +11,7 @@ import com.example.pianostudio.midi_io.KeyboardInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+
 class TrackPlayer(
     private val track: Track,
     private var playbackBPM: Double = 60.0,
@@ -17,7 +19,7 @@ class TrackPlayer(
     private val keyboardInput: KeyboardInput
 ) {
     var notes by mutableStateOf(listOf<NotePosition>())
-    var secondsInt by mutableStateOf(0)
+    var secondsInt by mutableIntStateOf(0)
 
     private var timestamp = 0.0
 

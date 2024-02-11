@@ -26,8 +26,8 @@ fun DrawRecordScreen(
         keysState = vm.keyboardInput.keysState,
         keySpacer = vm.keySpacer.value,
         trackPlayer = player,
-        onPause = {  },
-        updatePressedNotes = remember(vm) { vm.keyboardInput::uiKeyPress },
+        onPause = { nav.navigate("home") },
+        updatePressedNotes = remember(vm.keyboardInput) { vm.keyboardInput::uiKeyPress },
     )
 
 //    Box(modifier = modifier) {

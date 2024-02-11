@@ -26,7 +26,7 @@ fun DrawPracticeScreen(
         keysState = vm.keyboardInput.keysState,
         keySpacer = vm.keySpacer.value,
         trackPlayer = player,
-        onPause = {  },
+        onPause = { nav.navigate("home") },
         updatePressedNotes = remember(vm) { vm.keyboardInput::uiKeyPress },
     )
 

@@ -6,12 +6,14 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.createNote
+import com.example.pianostudio.data.music.Track
 import com.example.pianostudio.data.music.randomTrack
 import com.example.pianostudio.midi_io.KeyboardInput
 import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.keySpacerByNotes
 
 
 class MainViewModel : ViewModel() {
+
     lateinit var keyboardInput: KeyboardInput
 
     val keySpacer = mutableStateOf(

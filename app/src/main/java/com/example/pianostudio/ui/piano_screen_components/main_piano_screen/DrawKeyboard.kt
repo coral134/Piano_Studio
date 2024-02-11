@@ -15,7 +15,6 @@ import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.text.ExperimentalTextApi
 import androidx.compose.ui.text.TextLayoutResult
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
@@ -36,7 +35,6 @@ import com.example.pianostudio.ui.theme.PressedWhiteKey
 import com.example.pianostudio.ui.theme.WhiteKeyText
 
 
-@OptIn(ExperimentalTextApi::class)
 @Composable
 fun DrawKeyboard(
     keySpacer: KeySpacer,
@@ -133,7 +131,6 @@ fun DrawKeyboard(
     }
 }
 
-@OptIn(ExperimentalTextApi::class)
 private fun DrawScope.whiteKey(
     position: Float,
     width: Float,
@@ -211,4 +208,3 @@ private fun KeySpacer.whichNotePressed(offset: Offset): Note? {
     else
         (wkeyNote - 1).coerceIn(startNote, endNote)
 }
-

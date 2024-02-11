@@ -48,8 +48,7 @@ fun PianoScreen(
 
         DrawClock(
             modifier = Modifier.align(Alignment.TopCenter),
-            seconds = trackPlayer.secondsInt,
-            paused = false
+            seconds = trackPlayer.secondsInt
         )
     }
 }

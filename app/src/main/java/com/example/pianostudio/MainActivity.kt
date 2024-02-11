@@ -12,8 +12,8 @@ import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import com.example.pianostudio.midi_io.KeyboardInput
 import com.example.pianostudio.ui.Navigation
-import com.example.pianostudio.ui.theme.DarkGrayBackground
 import com.example.pianostudio.ui.theme.PianoStudioTheme
+import com.example.pianostudio.ui.theme.bgTheme2
 import com.example.pianostudio.viewmodel.MainViewModel
 
 
@@ -35,7 +35,7 @@ class MainActivity : ComponentActivity() {
             PianoStudioTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
-                    color = DarkGrayBackground
+                    color = bgTheme2
                 ) {
                     Navigation(vm)
                 }

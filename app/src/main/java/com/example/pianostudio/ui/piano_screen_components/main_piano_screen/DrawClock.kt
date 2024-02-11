@@ -24,15 +24,14 @@ import com.example.pianostudio.ui.theme.ClockBackgroundPlaying
 @Composable
 fun DrawClock(
     modifier: Modifier = Modifier,
-    seconds: Int,
-    paused: Boolean
+    seconds: Int
 ) {
     val text = remember(seconds) {
         String.format("%02d:%02d", seconds / 60, seconds % 60)
     }
 
     val color = fadeColor(
-        state = paused || (seconds < 0),
+        state = (seconds < 0),
         color1 = ClockBackgroundPlaying,
         color2 = ClockBackgroundPaused,
         duration = 300

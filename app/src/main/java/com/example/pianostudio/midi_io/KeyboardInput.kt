@@ -5,7 +5,7 @@ import android.media.midi.MidiManager
 import android.media.midi.MidiReceiver
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import com.example.pianostudio.MainActivity
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
@@ -17,7 +17,7 @@ import kotlinx.coroutines.flow.callbackFlow
 typealias KeysState = List<MutableState<Int>>
 
 class KeyboardInput constructor (context: MainActivity) {
-    val keysState: KeysState = List(128) { mutableStateOf(0) }
+    val keysState: KeysState = List(128) { mutableIntStateOf(0) }
 
     val messages = callbackFlow {
         sendToFlow = { trySend(it) }

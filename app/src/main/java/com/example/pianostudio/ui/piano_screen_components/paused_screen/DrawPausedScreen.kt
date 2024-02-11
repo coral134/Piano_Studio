@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -31,18 +30,14 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.ui.custom_composables.animateFloat
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.KeySpacer
-import com.example.pianostudio.ui.piano_screen_components.main_piano_screen.pianoScreenGestures
-import com.example.pianostudio.ui.theme.PausedTint
-import com.example.pianostudio.ui.theme.SidePanelButtonBackground
+import com.example.pianostudio.ui.theme.bgTheme2
 
 
 @Composable
 fun DrawPausedScreen(
     modifier: Modifier = Modifier,
-    keySpacer: MutableState<KeySpacer>,
     onResume: () -> Unit,
-    changeSongPoint: (change: Float) -> Unit,
+    changeTimestamp: (change: Double) -> Unit,
     leftOptions: List<SidePanelButtonState>,
     rightOptions: List<SidePanelButtonState>,
     text: String
@@ -53,12 +48,9 @@ fun DrawPausedScreen(
     else
         animateFloat(1F, 0F, 100)
 
-    Box(
-        modifier = modifier
-            .pianoScreenGestures(keySpacer, onResume, gestureIsActive) { changeSongPoint(it) }
-    )
-
-    Row(modifier = modifier.alpha(alpha).background(PausedTint)) {
+    Row(modifier = modifier
+        .alpha(alpha)
+        .background(bgTheme2)) {
         // Left menu
         DrawSidePanel(leftOptions)
 
@@ -68,6 +60,7 @@ fun DrawPausedScreen(
                 .fillMaxSize()
                 .weight(1F)
                 .padding(vertical = 75.dp)
+                .clickable { onResume() }
         )
 
         // Right menu
@@ -138,12 +131,12 @@ fun DrawSidePanel(buttons: List<SidePanelButtonState>) {
 }
 
 @Composable
-fun DrawSidePanelButton(state: SidePanelButtonState = SidePanelButtonState("Thing", {})) {
+fun DrawSidePanelButton(state: SidePanelButtonState) {
     val shape = RoundedCornerShape(12.dp)
     Box(
         modifier = Modifier
             .padding(25.dp)
-            .background(SidePanelButtonBackground, shape = shape)
+            .background(bgTheme2, shape = shape)
             .clickable { state.onClick() }
             .padding(10.dp)
     ) {

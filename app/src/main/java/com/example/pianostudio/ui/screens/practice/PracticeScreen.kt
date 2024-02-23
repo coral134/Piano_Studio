@@ -14,7 +14,7 @@ import com.example.pianostudio.viewmodel.MainViewModel
 
 
 @Composable
-fun StudioRecordingScreen(
+fun PracticeScreen(
     modifier: Modifier = Modifier,
     vm: MainViewModel
 ) {

@@ -37,7 +37,10 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = bgTheme2
                 ) {
-                    Navigation(vm)
+                    Navigation(
+                        modifier = Modifier.fillMaxSize(),
+                        vm = vm
+                    )
                 }
             }
         }

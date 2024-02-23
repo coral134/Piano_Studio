@@ -1,7 +1,6 @@
 package com.example.pianostudio.ui.screens.home
 
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,20 +24,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import com.example.pianostudio.R
+import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
 import com.example.pianostudio.ui.random.PillButton
 import com.example.pianostudio.ui.theme.bgTheme1
-import com.example.pianostudio.ui.theme.bgTheme2
 import com.example.pianostudio.ui.theme.bgTheme4
 
 
 @Composable
-fun DrawHomeScreen(
+fun HomeScreen(
     modifier: Modifier = Modifier,
-    nav: NavController
 ) {
-    Column(modifier = modifier.padding(vertical = 60.dp).background(bgTheme2)) {
+    val nav = rememberLocalPageNavigator()
+
+    Column(modifier = modifier.padding(vertical = 60.dp)) {
         DrawLogo(modifier = Modifier.align(Alignment.CenterHorizontally))
 
         Row(
@@ -56,14 +55,14 @@ fun DrawHomeScreen(
                 text = "Record",
                 modifier = mod,
                 color = bgTheme4,
-                onClick = { nav.navigate("record") }
+                onClick = { nav.navigateTo("StudioRecord") }
             )
 
             DrawChooseModeButton(
                 text = "Practice",
                 modifier = mod,
                 color = bgTheme4,
-                onClick = { nav.navigate("practice") }
+                onClick = { nav.navigateTo("StudioPractice") }
             )
         }
     }

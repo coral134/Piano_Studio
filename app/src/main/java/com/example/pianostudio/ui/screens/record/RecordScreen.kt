@@ -14,8 +14,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.ui.random.PillButton
-import com.example.pianostudio.ui.theme.bgTheme1
-import com.example.pianostudio.ui.theme.bgTheme3
 import com.example.pianostudio.viewmodel.MainViewModel
 
 
@@ -45,13 +43,13 @@ fun RecordScreen(
 
         PillButton(
             modifier = Modifier.padding(end = 17.dp, bottom = 17.dp),
-            fillColor = bgTheme3,
-            shadowColor = bgTheme1
+            fillColor = Color(0xFFFF2686),
+            shadowColor = Color.Black
         ) {
             Text(
                 text = "Record new",
                 fontSize = 25.sp,
-                color = bgTheme1,
+                color = Color(0xFF4D0718),
                 fontFamily = FontFamily.Default,
                 fontWeight = FontWeight.ExtraBold,
                 modifier = Modifier.padding(vertical = 13.dp, horizontal = 13.dp)

@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.screens.studio
+package com.example.pianostudio.ui.screens.shared.studio
 
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures

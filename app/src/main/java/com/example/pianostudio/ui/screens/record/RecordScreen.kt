@@ -14,6 +14,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.ui.random.PillButton
+import com.example.pianostudio.ui.screens.shared.MidiFileList
 import com.example.pianostudio.viewmodel.MainViewModel
 
 
@@ -38,6 +39,10 @@ fun RecordScreen(
                 color = Color.White,
                 fontFamily = FontFamily.Default,
                 modifier = Modifier.padding(bottom = 10.dp)
+            )
+
+            MidiFileList(
+                modifier = Modifier.fillMaxSize().weight(1f)
             )
         }
 

@@ -108,30 +108,30 @@ private fun MainPages(modifier: Modifier = Modifier, vm: MainViewModel) {
                 .weight(6f),
             transitionSpec = mainPagesTransition
         ) {
-            page(name = "Home") {
+            page("Home") {
                 HomeScreen(
                     modifier = Modifier.fillMaxSize(),
                 )
             }
-            page(name = "Practice") {
+            page("Practice") {
                 PracticeScreen(
                     modifier = Modifier.fillMaxSize(),
                     vm = vm
                 )
             }
-            page(name = "Record") {
+            page("Record") {
                 RecordScreen(
                     modifier = Modifier.fillMaxSize(),
                     vm = vm
                 )
             }
-            page(name = "Files") {
+            page("Files") {
                 FilesScreen(
                     modifier = Modifier.fillMaxSize(),
                     vm = vm
                 )
             }
-            page(name = "Settings") {
+            page("Settings") {
                 SettingsScreen(
                     modifier = Modifier.fillMaxSize(),
                     vm = vm

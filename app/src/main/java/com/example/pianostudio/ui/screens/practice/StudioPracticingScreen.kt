@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
-import com.example.pianostudio.ui.screens.studio.PianoScreen
+import com.example.pianostudio.ui.screens.shared.studio.PianoScreen
 import com.example.pianostudio.viewmodel.MainViewModel
 
 

@@ -1,12 +1,12 @@
 package com.example.pianostudio.midi_io
 
+import android.app.Application
 import android.content.pm.PackageManager
 import android.media.midi.MidiManager
 import android.media.midi.MidiReceiver
 import androidx.activity.ComponentActivity
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
-import com.example.pianostudio.MainActivity
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 
@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.callbackFlow
 
 typealias KeysState = List<MutableState<Int>>
 
-class KeyboardInput constructor (context: MainActivity) {
+class KeyboardInput constructor (app: Application) {
     val keysState: KeysState = List(128) { mutableIntStateOf(0) }
 
     val messages = callbackFlow {
@@ -43,7 +43,7 @@ class KeyboardInput constructor (context: MainActivity) {
 
     private var sendToFlow: (msg: MidiMessage) -> Unit = {}
 
-    private val midiManager = context.getSystemService(ComponentActivity.MIDI_SERVICE) as MidiManager
+    private val midiManager = app.getSystemService(ComponentActivity.MIDI_SERVICE) as MidiManager
     private val midiReceiver = object : MidiReceiver() {
         override fun onSend(data: ByteArray, offset: Int, count: Int, timestamp: Long) {
             var message = parseMidiMessage(data, offset, count, timestamp)
@@ -57,7 +57,7 @@ class KeyboardInput constructor (context: MainActivity) {
     }
 
     init {
-        if (context.packageManager.hasSystemFeature(PackageManager.FEATURE_MIDI)) {
+        if (app.packageManager.hasSystemFeature(PackageManager.FEATURE_MIDI)) {
             midiManager.getDevicesForTransport(MidiManager.TRANSPORT_MIDI_BYTE_STREAM)
                 .forEach { midiDeviceInfo ->
                     midiManager.openDevice(

@@ -11,9 +11,9 @@ import com.example.pianostudio.midi_io.KeyboardInput
 import com.example.pianostudio.ui.screens.shared.studio.keySpacerByNotes
 
 
-class MainViewModel : ViewModel() {
-
-    lateinit var keyboardInput: KeyboardInput
+class MainViewModel constructor (
+    val keyboardInput: KeyboardInput
+) : ViewModel() {
 
     val keySpacer = mutableStateOf(
         keySpacerByNotes(

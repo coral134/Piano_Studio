@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.screens.shared
+package com.example.pianostudio.ui.random.ui_elements
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box

@@ -9,41 +9,61 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Rect
+import androidx.compose.ui.geometry.RoundRect
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.layout.layout
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
 
-fun Modifier.trackPointers(
-    key1: Any?,
-    processTouchInput: (pointers: MutableCollection<Offset>) -> Unit
-) =
-    pointerInput(key1) {
-        awaitPointerEventScope {
-            val map = mutableMapOf<Long, Offset>()
-            while (true) {
-                val event = awaitPointerEvent()
-                event.changes.forEach {
-                    if (it.pressed) map[it.id.value] = it.position
-                    else map.remove(it.id.value)
-                }
-                processTouchInput(map.values)
-            }
+fun Modifier.drawPillShape(
+    borderColor: Color,
+    borderWeight: Dp,
+    fillColor: Color
+) = then(
+    drawBehind {
+        val radius = minOf(size.width/2, size.height/2)
+        val weight = borderWeight.toPx()
+        val padding = weight/2
+
+        val cornerRadius = CornerRadius(radius - padding, radius - padding)
+        val path = Path().apply {
+            addRoundRect(
+                RoundRect(
+                    rect = Rect(
+                        offset = Offset(padding, padding),
+                        size = Size(
+                            size.width - weight,
+                            size.height - weight
+                        )
+                    ),
+                    topLeft = cornerRadius,
+                    topRight = cornerRadius,
+                    bottomLeft = cornerRadius,
+                    bottomRight = cornerRadius
+                )
+            )
         }
 
-//        awaitEachGesture {
-//            awaitFirstDown()
-//            do {
-//                val event = awaitPointerEvent()
-//                processTouchInput( event.changes.map { it.position } )
-//                event.changes.forEach { it.consume() }
-//            } while (event.changes.any { it.pressed })
-//            processTouchInput(listOf())
-//        }
+        drawPath(
+            path = path,
+            color = fillColor
+        )
+
+        drawPath(
+            path = path,
+            color = borderColor,
+            style = Stroke(weight)
+        )
     }
+)
 
 fun Modifier.absoluteHorizOffsetByCenter(x: Dp = 0.dp) =
     layout { measurable, constraints ->
@@ -61,7 +81,7 @@ fun VerticalLine(
     modifier: Modifier = Modifier
 ) {
     Box(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxHeight()
             .width(width)
             .absoluteHorizOffsetByCenter(horizPosition)

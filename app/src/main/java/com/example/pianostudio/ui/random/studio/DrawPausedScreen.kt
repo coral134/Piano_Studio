@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.screens.shared.studio
+package com.example.pianostudio.ui.random.studio
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

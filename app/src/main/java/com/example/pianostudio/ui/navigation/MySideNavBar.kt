@@ -3,8 +3,8 @@ package com.example.pianostudio.ui.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import com.example.pianostudio.ui.random.SideNavBar
-import com.example.pianostudio.ui.random.SideNavBarButtonState
+import com.example.pianostudio.ui.random.ui_elements.SideNavBar
+import com.example.pianostudio.ui.random.ui_elements.SideNavBarButtonState
 
 
 @Composable

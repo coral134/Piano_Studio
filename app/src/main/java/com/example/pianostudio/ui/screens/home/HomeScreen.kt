@@ -26,7 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.R
 import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
-import com.example.pianostudio.ui.random.PillButton
+import com.example.pianostudio.ui.random.ui_elements.PillButton
 import com.example.pianostudio.ui.theme.bgTheme1
 import com.example.pianostudio.ui.theme.bgTheme4
 

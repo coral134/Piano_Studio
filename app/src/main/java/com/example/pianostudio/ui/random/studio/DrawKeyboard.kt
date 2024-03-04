@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.screens.shared.studio
+package com.example.pianostudio.ui.random.studio
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -193,9 +193,6 @@ private fun DrawScope.blackKey(
 }
 
 private fun KeySpacer.whichNotePressed(offset: Offset): Note? {
-
-    println("finding which notes pressed #############################################")
-
     val x = offset.x
     val y = offset.y
 
@@ -203,9 +200,6 @@ private fun KeySpacer.whichNotePressed(offset: Offset): Note? {
 
     val wkeyNote = getNoteAtXPos(x)
     if (wkeyNote < startNote || wkeyNote > endNote) return null
-
-    println("Note pressed ############################################")
-
     if (y > 0.55F) return wkeyNote
 
     val relativePosition = (x - leftAlignment(wkeyNote)) * 24 / wkeyWidth

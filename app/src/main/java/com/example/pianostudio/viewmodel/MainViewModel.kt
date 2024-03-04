@@ -8,7 +8,7 @@ import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.createNote
 import com.example.pianostudio.data.music.randomTrack
 import com.example.pianostudio.midi_io.KeyboardInput
-import com.example.pianostudio.ui.screens.shared.studio.keySpacerByNotes
+import com.example.pianostudio.ui.random.studio.keySpacerByNotes
 
 
 class MainViewModel constructor (

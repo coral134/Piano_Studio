@@ -13,8 +13,8 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.ui.random.PillButton
-import com.example.pianostudio.ui.screens.shared.MidiFileList
+import com.example.pianostudio.ui.random.ui_elements.PillButton
+import com.example.pianostudio.ui.random.ui_elements.MidiFileList
 import com.example.pianostudio.viewmodel.MainViewModel
 
 

@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.random
+package com.example.pianostudio.ui.random.ui_elements
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -29,7 +29,7 @@ fun PillButton(
         modifier = modifier
             .pillButtonShadow(
                 fillColor = fillColor,
-                color = shadowColor,
+                shadowColor = shadowColor,
                 alpha = shadowAlpha,
                 shadowRadius = shadowRadius
             ).padding(shadowExpansion),
@@ -41,7 +41,7 @@ fun PillButton(
 
 private fun Modifier.pillButtonShadow(
     fillColor: Color,
-    color: Color,
+    shadowColor: Color,
     alpha: Float,
     shadowRadius: Dp,
     offsetY: Dp = 0.dp,
@@ -49,7 +49,7 @@ private fun Modifier.pillButtonShadow(
 ) = drawBehind {
     drawIntoCanvas {
         val maxDimension = maxOf(size.width, size.height)
-        val shadowColor = color.copy(alpha = alpha).toArgb()
+        val finalShadowColor = shadowColor.copy(alpha = alpha).toArgb()
 
         val paint = Paint()
         val frameworkPaint = paint.asFrameworkPaint()
@@ -58,7 +58,7 @@ private fun Modifier.pillButtonShadow(
             shadowRadius.toPx(),
             offsetX.toPx(),
             offsetY.toPx(),
-            shadowColor
+            finalShadowColor
         )
 
         it.drawRoundRect(

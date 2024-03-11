@@ -6,12 +6,12 @@ import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.createNote
-import com.example.pianostudio.data.music.randomTrack
+import com.example.pianostudio.data.music.Track
 import com.example.pianostudio.midi_io.KeyboardInput
 import com.example.pianostudio.ui.random.studio.keySpacerByNotes
 
 
-class MainViewModel constructor (
+class MainViewModel(
     val keyboardInput: KeyboardInput
 ) : ViewModel() {
 
@@ -22,7 +22,7 @@ class MainViewModel constructor (
         )
     )
 
-    private var activeTrack = randomTrack()
+    private var activeTrack = Track() // randomTrack()
 
     // #############################################################################################
 

@@ -7,6 +7,7 @@ import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.togetherWith
 
+
 val fullScreenTransition: myTransition = {
     fadeIn(
         animationSpec = tween(400)
@@ -24,8 +25,8 @@ val fullScreenTransition: myTransition = {
 
 val mainPagesTransition: myTransition = {
     fadeIn(
-        animationSpec = tween(300, delayMillis = 0)
+        animationSpec = tween(3000, delayMillis = 100)
     ) togetherWith fadeOut(
-        animationSpec = tween(300)
+        animationSpec = tween(3000, delayMillis = 100)
     )
 }

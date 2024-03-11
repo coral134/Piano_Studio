@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import com.example.pianostudio.R
 import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
 import com.example.pianostudio.ui.random.ui_elements.PillButton
+import com.example.pianostudio.ui.theme.LocalTheme
 import com.example.pianostudio.ui.theme.bgTheme1
-import com.example.pianostudio.ui.theme.bgTheme4
 
 
 @Composable
@@ -54,14 +54,14 @@ fun HomeScreen(
             DrawChooseModeButton(
                 text = "Record",
                 modifier = mod,
-                color = bgTheme4,
+                color = LocalTheme.current.light,
                 onClick = { nav.navigateTo("StudioRecord") }
             )
 
             DrawChooseModeButton(
                 text = "Practice",
                 modifier = mod,
-                color = bgTheme4,
+                color = LocalTheme.current.light,
                 onClick = { nav.navigateTo("StudioPractice") }
             )
         }

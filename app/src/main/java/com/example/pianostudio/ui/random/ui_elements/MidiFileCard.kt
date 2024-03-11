@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.ui.theme.bgTheme3
+import com.example.pianostudio.ui.theme.LocalTheme
 
 
 @Composable
@@ -33,7 +33,7 @@ fun MidiFileCard(
     Column(
         modifier = modifier
             .clip(shape = RoundedCornerShape(25.dp))
-            .background(bgTheme3)
+            .background(LocalTheme.current.surface)
     ) {
         Row(
             modifier = Modifier

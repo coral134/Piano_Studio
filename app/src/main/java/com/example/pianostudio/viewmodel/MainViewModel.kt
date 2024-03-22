@@ -1,6 +1,7 @@
 package com.example.pianostudio.viewmodel
 
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
@@ -11,6 +12,7 @@ import com.example.pianostudio.midi_io.KeyboardInput
 import com.example.pianostudio.ui.random.studio.keySpacerByNotes
 
 
+@Stable
 class MainViewModel(
     val keyboardInput: KeyboardInput
 ) : ViewModel() {

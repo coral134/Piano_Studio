@@ -35,6 +35,7 @@ class MainActivity : ComponentActivity() {
                     color = bgTheme2
                 ) {
                     Navigation(Modifier.fillMaxSize(), viewModel)
+//                    AnimatedContentTest()
                 }
             }
         }

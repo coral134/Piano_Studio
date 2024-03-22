@@ -1,9 +1,11 @@
 package com.example.pianostudio.ui.screens.practice
 
+import android.app.Application
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import com.example.pianostudio.midi_io.KeyboardInput
 import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
 import com.example.pianostudio.ui.random.studio.PianoScreen
 import com.example.pianostudio.viewmodel.MainViewModel

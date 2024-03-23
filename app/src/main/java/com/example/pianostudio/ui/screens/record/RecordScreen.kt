@@ -15,6 +15,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.ui.random.ui_elements.PillButton
 import com.example.pianostudio.ui.random.ui_elements.MidiFileList
+import com.example.pianostudio.ui.theme.localTheme
 import com.example.pianostudio.viewmodel.MainViewModel
 
 
@@ -42,13 +43,15 @@ fun RecordScreen(
             )
 
             MidiFileList(
-                modifier = Modifier.fillMaxSize().weight(1f)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .weight(1f)
             )
         }
 
         PillButton(
             modifier = Modifier.padding(end = 17.dp, bottom = 17.dp),
-            fillColor = Color(0xFFFF2686),
+            fillColor = localTheme().relatedColor(0.85f, 1f, -10f),
             shadowColor = Color.Black
         ) {
             Text(

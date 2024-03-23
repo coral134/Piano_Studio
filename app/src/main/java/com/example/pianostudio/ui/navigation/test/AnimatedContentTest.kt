@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.navigation
+package com.example.pianostudio.ui.navigation.test
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedContentTransitionScope

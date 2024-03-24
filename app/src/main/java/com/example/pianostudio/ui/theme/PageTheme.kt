@@ -18,7 +18,7 @@ const val homeTheme = 240f
 const val practiceTheme = 180f
 const val recordTheme = 343f
 const val filesTheme = 286f
-const val settingsTheme = 220f
+const val settingsTheme = 240f
 
 @Immutable
 class PageTheme(private val baseColor: Color) {
@@ -52,7 +52,7 @@ fun localTheme(): PageTheme {
 }
 
 @Composable
-fun AnimateTheme(
+fun ProvideAnimatedTheme(
     hue: Float,
     animationSpec: AnimationSpec<Color> = tween(300),
     content: @Composable () -> Unit
@@ -69,6 +69,26 @@ fun AnimateTheme(
 
     val theme = remember(baseColor.value) {
         PageTheme(baseColor.value)
+    }
+
+    CompositionLocalProvider(
+        LocalPageTheme provides theme,
+        content = content
+    )
+}
+
+
+@Composable
+fun ProvideTheme(
+    hue: Float,
+    content: @Composable () -> Unit
+) {
+    val baseColor = remember(hue) {
+        Color.hsv(hue, 1f, 1f)
+    }
+
+    val theme = remember(baseColor) {
+        PageTheme(baseColor)
     }
 
     CompositionLocalProvider(

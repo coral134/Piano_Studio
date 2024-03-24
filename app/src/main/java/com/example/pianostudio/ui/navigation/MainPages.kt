@@ -14,7 +14,7 @@ import com.example.pianostudio.ui.screens.home.HomeScreen
 import com.example.pianostudio.ui.screens.practice.PracticeScreen
 import com.example.pianostudio.ui.screens.record.RecordScreen
 import com.example.pianostudio.ui.screens.settings.SettingsScreen
-import com.example.pianostudio.ui.theme.AnimateTheme
+import com.example.pianostudio.ui.theme.ProvideTheme
 import com.example.pianostudio.ui.theme.filesTheme
 import com.example.pianostudio.ui.theme.homeTheme
 import com.example.pianostudio.ui.theme.localTheme
@@ -30,9 +30,9 @@ fun MainPages(modifier: Modifier = Modifier, vm: MainViewModel) {
     val selection = remember { mutableIntStateOf(0) }
     val themeHue = remember { mutableFloatStateOf(homeTheme) }
 
-    AnimateTheme(themeHue.floatValue) {
-        val navBarColor = localTheme().surface
+    ProvideTheme(themeHue.floatValue) {
         val bgColor = localTheme().darkBg
+        val navBarColor = localTheme().surface
 
         LaunchedEffect(nav.nextPage) {
             when (nav.nextPage) {
@@ -68,6 +68,10 @@ fun MainPages(modifier: Modifier = Modifier, vm: MainViewModel) {
                 color = navBarColor
             )
 
+            val mod = remember(bgColor.value) {
+                Modifier.fillMaxSize().background(bgColor)
+            }
+
             PageSwitcher(
                 modifier = Modifier
                     .fillMaxSize()
@@ -76,30 +80,30 @@ fun MainPages(modifier: Modifier = Modifier, vm: MainViewModel) {
             ) {
                 page("Home") {
                     HomeScreen(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = mod,
                     )
                 }
                 page("Practice") {
                     PracticeScreen(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = mod,
                         vm = vm
                     )
                 }
                 page("Record") {
                     RecordScreen(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = mod,
                         vm = vm
                     )
                 }
                 page("Files") {
                     FilesScreen(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = mod,
                         vm = vm
                     )
                 }
                 page("Settings") {
                     SettingsScreen(
-                        modifier = Modifier.fillMaxSize(),
+                        modifier = mod,
                         vm = vm
                     )
                 }

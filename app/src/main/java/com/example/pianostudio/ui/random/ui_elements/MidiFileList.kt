@@ -2,9 +2,12 @@ package com.example.pianostudio.ui.random.ui_elements
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyItemScope
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
@@ -41,6 +44,9 @@ fun MidiFileList(
                     date = "1/30/24",
                     duration = 189
                 )
+            }
+            item {
+                Spacer(modifier = Modifier.padding(100.dp))
             }
         }
     }

@@ -43,15 +43,13 @@ fun RecordScreen(
             )
 
             MidiFileList(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .weight(1f)
+                modifier = Modifier.fillMaxSize().weight(1f)
             )
         }
 
         PillButton(
             modifier = Modifier.padding(end = 17.dp, bottom = 17.dp),
-            fillColor = localTheme().relatedColor(0.85f, 1f, -10f),
+            fillColor = Color(0xFFFF2684),
             shadowColor = Color.Black
         ) {
             Text(

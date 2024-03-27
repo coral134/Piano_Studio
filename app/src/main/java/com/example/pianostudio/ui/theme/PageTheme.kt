@@ -22,13 +22,11 @@ const val settingsTheme = 240f
 
 @Immutable
 class PageTheme(private val baseColor: Color) {
-    val darkest = relatedColor(0.7f, 0.10f)
-    val darkBg = relatedColor(0.7f, 0.23f)
-    val surface = relatedColor(0.7f, 0.33f)
-    val light = relatedColor(0.7f, 0.50f)
-    val lightest = relatedColor(0.20f, 1f)
+    private var baseHue = 0.0f
+    private var baseSat = 0.0f
+    private var baseVal = 0.0f
 
-    fun relatedColor(s: Float, v: Float, dH: Float = 0f, a: Float = 1f): Color {
+    init {
         val hsv = FloatArray(3)
         android.graphics.Color.RGBToHSV(
             (baseColor.red * 255).toInt(),
@@ -36,11 +34,22 @@ class PageTheme(private val baseColor: Color) {
             (baseColor.blue * 255).toInt(),
             hsv
         )
+        baseHue = hsv[0]
+        baseSat = hsv[1]
+        baseVal = hsv[2]
+    }
 
+    val darkest = relatedColor(0.7f, 0.10f)
+    val darkBg = relatedColor(0.7f, 0.23f)
+    val surface = relatedColor(0.7f, 0.33f)
+    val light = relatedColor(0.7f, 0.50f)
+    val lightest = relatedColor(0.20f, 1f)
+
+    fun relatedColor(s: Float, v: Float, dH: Float = 0f, a: Float = 1f): Color {
         return Color.hsv(
-            hue = (hsv[0] + dH).mod(360f),
-            saturation = s * hsv[1],
-            value = v * hsv[2],
+            hue = (baseHue + dH).mod(360f),
+            saturation = s * baseSat,
+            value = v * baseVal,
             alpha = a
         )
     }

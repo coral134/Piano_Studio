@@ -14,6 +14,7 @@ import com.example.pianostudio.ui.screens.home.HomeScreen
 import com.example.pianostudio.ui.screens.practice.PracticeScreen
 import com.example.pianostudio.ui.screens.record.RecordScreen
 import com.example.pianostudio.ui.screens.settings.SettingsScreen
+import com.example.pianostudio.ui.theme.ProvideAnimatedTheme
 import com.example.pianostudio.ui.theme.ProvideTheme
 import com.example.pianostudio.ui.theme.filesTheme
 import com.example.pianostudio.ui.theme.homeTheme
@@ -30,7 +31,7 @@ fun MainPages(modifier: Modifier = Modifier, vm: MainViewModel) {
     val selection = remember { mutableIntStateOf(0) }
     val themeHue = remember { mutableFloatStateOf(homeTheme) }
 
-    ProvideTheme(themeHue.floatValue) {
+    ProvideAnimatedTheme(themeHue.floatValue) {
         val bgColor = localTheme().darkBg
         val navBarColor = localTheme().surface
 

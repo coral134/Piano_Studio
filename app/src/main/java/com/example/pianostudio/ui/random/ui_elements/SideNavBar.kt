@@ -1,11 +1,14 @@
 package com.example.pianostudio.ui.random.ui_elements
 
 import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.spring
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -16,38 +19,41 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
-import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.pianostudio.ui.random.linearMap
 
 
-private val strokeWeight = 2.dp
 private const val animationDuration = 400
+private val notchWidth = 25.dp
 
 @Composable
 fun SideNavBar(
     modifier: Modifier = Modifier,
     bgColor: Color,
-    lineColor: Color = Color.White,
+    notchColor: Color,
     buttons: List<SideNavBarButtonState>,
     selection: Int
 ) {
     val selectionInterp by animateFloatAsState(
         selection.toFloat(),
-        animationSpec = tween(animationDuration),
+//        animationSpec = tween(animationDuration),
+        animationSpec = spring(
+            0.75f,
+            130f
+        ),
         label = ""
     )
 
     Column(
         modifier = modifier
             .clipToBounds()
+            .background(bgColor)
             .drawBehind {
                 sideNavBarBackground(
                     numButtons = buttons.size,
                     selectedButton = selectionInterp,
-                    bgColor = bgColor,
-                    lineColor = lineColor
+                    bgColor = notchColor,
+                    notchWidth = notchWidth.toPx()
                 )
             },
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -55,11 +61,14 @@ fun SideNavBar(
         buttons.forEachIndexed { _, button ->
             SideBarButton(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxHeight()
                     .weight(1f)
                     .clickable {
                         button.onClick()
-                    },
+                    }.padding(
+                        start = 20.dp,
+                        end = 10.dp + notchWidth
+                    ),
                 text = button.text
             )
         }
@@ -75,70 +84,38 @@ private fun DrawScope.sideNavBarBackground(
     numButtons: Int,
     selectedButton: Float,
     bgColor: Color,
-    lineColor: Color
+    notchWidth: Float
 ) {
-    val weight = strokeWeight.toPx()
-    val rightEdge = size.width - weight * 0.5f
-    val leftEdge = weight * 0.5f
-    val center = (rightEdge + leftEdge) / 2
+    val leftCurveStrength = 0.20f
+    val rightCurveStrength = 0.5f
+    val notchHeight = 1.2f
 
+    val rightEdge = size.width + 1
     val buttonHeight = size.height / numButtons
-    val curveHeight = buttonHeight/2
-
-    val overshootTop = -curveHeight
-    val overshootBottom = size.height + curveHeight
-    val overshootLeft = -weight
-
-    val buttonTop =
-        if(selectedButton >= 1) selectedButton * buttonHeight
-        else linearMap(selectedButton, 0f, 1f, overshootTop, buttonHeight)
-
-    val buttonBottom =
-        if(selectedButton <= numButtons - 2) (selectedButton + 1) * buttonHeight
-        else linearMap(
-            selectedButton + 1,
-            numButtons - 1f, numButtons.toFloat(),
-            size.height - buttonHeight, overshootBottom
-        )
+    val halfNotchHeight = buttonHeight * notchHeight * 0.5f
+    val notchVertPos = (selectedButton + 0.5f) * buttonHeight
+    val leftEdge = size.width - notchWidth
+    val leftCurveSize = buttonHeight * leftCurveStrength
+    val rightCurveSize = buttonHeight * rightCurveStrength
 
     val path = Path().apply {
-        moveTo(overshootLeft, overshootTop)
-        lineTo(rightEdge, overshootTop)
-        lineTo(rightEdge, buttonTop - buttonHeight)
+        moveTo(rightEdge, notchVertPos - halfNotchHeight)
         cubicTo(
-            rightEdge, buttonTop,
-            rightEdge, buttonTop,
-            center, buttonTop
+            rightEdge, notchVertPos - halfNotchHeight + rightCurveSize,
+            leftEdge, notchVertPos - leftCurveSize,
+            leftEdge, notchVertPos
         )
         cubicTo(
-            leftEdge, buttonTop,
-            leftEdge, buttonTop,
-            leftEdge, buttonTop + curveHeight
+            leftEdge, notchVertPos + leftCurveSize,
+            rightEdge, notchVertPos + halfNotchHeight - rightCurveSize,
+            rightEdge, notchVertPos + halfNotchHeight
         )
-        lineTo(leftEdge, buttonBottom - curveHeight)
-        cubicTo(
-            leftEdge, buttonBottom,
-            leftEdge, buttonBottom,
-            center, buttonBottom
-        )
-        cubicTo(
-            rightEdge, buttonBottom,
-            rightEdge, buttonBottom,
-            rightEdge, buttonBottom + buttonHeight
-        )
-        lineTo(rightEdge, overshootBottom)
-        lineTo(overshootLeft, overshootBottom)
+        close()
     }
 
     drawPath(
         path = path,
         color = bgColor
-    )
-
-    drawPath(
-        path = path,
-        color = lineColor,
-        style = Stroke(weight)
     )
 }
 

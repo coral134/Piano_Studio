@@ -150,12 +150,12 @@ class DefineNewPagesScope {
     }
 }
 
-class Page(
+data class Page(
     val onOpened: () -> Unit = {},
     val content: @Composable AnimatedContentScope.() -> Unit,
 )
 
-class PageWithContext(
+data class PageWithContext(
     val pageContent: Page,
     val navContext: ScopedNavContext
 )
@@ -168,13 +168,13 @@ private val localScopedNavContext: ProvidableCompositionLocal<ScopedNavContext?>
 private val localRootNavContext: ProvidableCompositionLocal<RootNavContext?> =
     staticCompositionLocalOf { null }
 
-class ScopedNavContext(
+data class ScopedNavContext(
     val thisPageName: String,
     val localRoute: List<String>,
     val transitionSpec: MyTransition
 )
 
-class RootNavContext(
+data class RootNavContext(
     val rootPath: MutableState<List<String>>,
 )
 

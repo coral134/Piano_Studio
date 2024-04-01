@@ -16,7 +16,7 @@ import kotlinx.coroutines.flow.callbackFlow
 
 typealias KeysState = List<MutableState<Int>>
 
-class KeyboardInput constructor (app: Application) {
+class KeyboardInput(app: Application) {
     val keysState: KeysState = List(128) { mutableIntStateOf(0) }
 
     val messages = callbackFlow {

@@ -10,46 +10,26 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import com.example.pianostudio.ui.random.currentOrThrow
+import com.example.pianostudio.ui.random.getHSV
 
 
 private val LocalPageTheme = compositionLocalOf<PageTheme?> { null }
 
-const val homeTheme = 240f
-const val practiceTheme = 180f
-const val recordTheme = 343f
-const val filesTheme = 286f
-const val settingsTheme = 240f
-
 @Immutable
-class PageTheme(private val baseColor: Color) {
-    private var baseHue = 0.0f
-    private var baseSat = 0.0f
-    private var baseVal = 0.0f
+class PageTheme(baseColor: Color) {
+    private val hsv = baseColor.getHSV()
 
-    init {
-        val hsv = FloatArray(3)
-        android.graphics.Color.RGBToHSV(
-            (baseColor.red * 255).toInt(),
-            (baseColor.green * 255).toInt(),
-            (baseColor.blue * 255).toInt(),
-            hsv
-        )
-        baseHue = hsv[0]
-        baseSat = hsv[1]
-        baseVal = hsv[2]
-    }
-
-    val darkest = relatedColor(0.7f, 0.10f)
-    val darkBg = relatedColor(0.7f, 0.23f)
-    val surface = relatedColor(0.7f, 0.33f)
-    val light = relatedColor(0.7f, 0.50f)
+    val darkest = relatedColor(0.73f, 0.10f)
+    val darkBg = relatedColor(0.73f, 0.25f)
+    val surface = relatedColor(0.73f, 0.40f)
+    val light = relatedColor(0.73f, 0.55f)
     val lightest = relatedColor(0.20f, 1f)
 
     fun relatedColor(s: Float, v: Float, dH: Float = 0f, a: Float = 1f): Color {
         return Color.hsv(
-            hue = (baseHue + dH).mod(360f),
-            saturation = s * baseSat,
-            value = v * baseVal,
+            hue = (hsv[0] + dH).mod(360f),
+            saturation = (s * hsv[1]).coerceIn(0f, 1f),
+            value = (v * hsv[2]).coerceIn(0f, 1f),
             alpha = a
         )
     }
@@ -62,22 +42,18 @@ fun localTheme(): PageTheme {
 
 @Composable
 fun ProvideAnimatedTheme(
-    hue: Float,
+    baseColor: Color,
     animationSpec: AnimationSpec<Color> = tween(300),
     content: @Composable () -> Unit
 ) {
-    val targetColor = remember(hue) {
-        Color.hsv(hue, 1f, 1f)
-    }
-
-    val baseColor = animateColorAsState(
-        targetValue = targetColor,
+    val animatedColor = animateColorAsState(
+        targetValue = baseColor,
         animationSpec = animationSpec,
         label = ""
     )
 
-    val theme = remember(baseColor.value) {
-        PageTheme(baseColor.value)
+    val theme = remember(animatedColor.value) {
+        PageTheme(animatedColor.value)
     }
 
     CompositionLocalProvider(
@@ -86,17 +62,12 @@ fun ProvideAnimatedTheme(
     )
 }
 
-
 @Composable
 fun ProvideTheme(
-    hue: Float,
+    baseColor: Color,
     content: @Composable () -> Unit
 ) {
-    val baseColor = remember(hue) {
-        Color.hsv(hue, 1f, 1f)
-    }
-
-    val theme = remember(baseColor) {
+    val theme = remember(Color) {
         PageTheme(baseColor)
     }
 

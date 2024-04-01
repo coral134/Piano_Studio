@@ -12,6 +12,18 @@ val Pink40 = Color(0xFF7D5260)
 
 // ADDED BY ME #####################################################################################
 
+// TODO: Make page theme base hues have 73% saturation and some lower value, making theme
+//   more representative of the actual color palette
+
+// Page theme base hues
+val homeTheme = Color(0xFF006eff)
+val practiceTheme = Color(0xFF00ffff)
+val recordTheme = Color(0xFFFF0051)
+val filesTheme = Color(0xFF4D85B4)
+val settingsTheme = Color(0xFF4D85B4)
+
+// Studio theme colors ---------------------------------------------------------------
+
 // Blue theme colors
 val bgTheme1 = Color(0xFF101622)
 val bgTheme2 = Color(0xFF1B263C)

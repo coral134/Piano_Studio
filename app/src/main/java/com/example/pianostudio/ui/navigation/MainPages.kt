@@ -4,8 +4,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.pianostudio.ui.random.ui_elements.SideNavBarButtonState
@@ -32,7 +32,7 @@ fun MainPages(
 ) {
     val nav = rememberLocalPageNavigator()
     val selection = remember { mutableIntStateOf(0) }
-    val themeHue = remember { mutableFloatStateOf(homeTheme) }
+    val themeColor = remember { mutableStateOf(homeTheme) }
 
     val buttons = remember {
         listOf(
@@ -44,28 +44,28 @@ fun MainPages(
         )
     }
 
-    ProvideAnimatedTheme(themeHue.floatValue) {
+    ProvideAnimatedTheme(themeColor.value) {
         LaunchedEffect(nav.nextPage) {
             when (nav.nextPage) {
                 "Practice" -> {
                     selection.intValue = 1
-                    themeHue.floatValue = practiceTheme
+                    themeColor.value = practiceTheme
                 }
                 "Record" -> {
                     selection.intValue = 2
-                    themeHue.floatValue = recordTheme
+                    themeColor.value = recordTheme
                 }
                 "Files" -> {
                     selection.intValue = 3
-                    themeHue.floatValue = filesTheme
+                    themeColor.value = filesTheme
                 }
                 "Settings" -> {
                     selection.intValue = 4
-                    themeHue.floatValue = settingsTheme
+                    themeColor.value = settingsTheme
                 }
                 else -> {
                     selection.intValue = 0
-                    themeHue.floatValue = homeTheme
+                    themeColor.value = homeTheme
                 }
             }
         }
@@ -81,7 +81,7 @@ fun MainPages(
         SideNavigation(
             modifier = modifier,
             bgColor = bgColor,
-            navBarColor = localTheme().light,
+            navBarColor = localTheme().surface,
             buttons = buttons,
             selection = selection.intValue
         ) {

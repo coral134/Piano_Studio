@@ -3,30 +3,68 @@ package com.example.pianostudio.data.music
 import kotlin.random.Random
 
 
-class Track {
+interface Track {
+    fun addEvent(note: Note, vel: Int, timestamp: Double)
+    fun addCompleteNote(timeOn: Double, timeOff: Double, note: Note, vel: Int)
+    fun getNotesInRange(
+        lowerBound: Double,
+        upperBound: Double,
+        currentTime: Double
+    ): Set<SongNote>
+}
+
+fun newEmptyTrack(): Track = TrackImpl()
+
+fun newRandomTrack(): Track {
+    val track = newEmptyTrack()
+    var timestamp = 0.0
+
+    repeat(200) {
+        val numNotes = Random.nextInt(1, 8)
+        repeat(numNotes) {
+            val note = Random.nextInt(20, 80)
+            val duration = Random.nextInt(100, 1000) / 1000.0
+            track.addCompleteNote(timestamp, timestamp + duration, note, 100)
+        }
+
+        val rest = Random.nextInt(100, 900) / 1000.0
+        timestamp += rest
+    }
+
+    return track
+}
+
+class SongNote (
+    val timeOn: Double,
+    val timeOff: Double,
+    val note: Note,
+    val vel: Int,
+)
+
+// #################################################################################################
+
+private class TrackImpl : Track {
 
     private val beatsPerChunk = 1.0
     private val chunks = mutableListOf<MutableSet<SongNote>>()
     private val danglingNotes = mutableMapOf<Note, SongNote>()
 
-    // #############################################################################################
-
-    fun addEvent(note: Note, vel: Int, timestamp: Double) = synchronized(this) {
+    override fun addEvent(note: Note, vel: Int, timestamp: Double) = synchronized(this) {
         noteOff(note, timestamp)
         if (vel != 0) noteOn(note, vel, timestamp)
     }
 
-    fun addCompleteNote(
+    override fun addCompleteNote(
         timeOn: Double, timeOff: Double, note: Note, vel: Int
     ) = synchronized(this) {
         doAddCompleteNote(timeOn, timeOff, note, vel)
     }
 
-    fun getNotesInRange(
+    override fun getNotesInRange(
         lowerBound: Double,
         upperBound: Double,
         currentTime: Double
-    ): MutableSet<SongNote> = synchronized(this) {
+    ): Set<SongNote> = synchronized(this) {
         val lowerChunk = maxOf(lowerBound.chunk(), 0)
         val upperChunk = minOf(upperBound.chunk(), chunks.size - 1)
         val songNotes = mutableSetOf<SongNote>()
@@ -49,17 +87,6 @@ class Track {
 
         return songNotes
     }
-
-//    fun removeDanglingNotes() {
-//        danglingNotes.clear()
-//    }
-//
-//    fun finishDanglingNotes(timeOff: Int) {
-//        danglingNotes.forEach {
-//            addCompleteNote(it.value.timeOn, timeOff, it.value.note, it.value.vel)
-//        }
-//        removeDanglingNotes()
-//    }
 
     // #############################################################################################
 
@@ -96,30 +123,4 @@ class Track {
     }
 
     private fun Double.chunk(): Int = (this / beatsPerChunk).toInt()
-}
-
-class SongNote (
-    val timeOn: Double,
-    val timeOff: Double,
-    val note: Note,
-    val vel: Int,
-)
-
-fun randomTrack(): Track {
-    val track = Track()
-    var timestamp = 0.0
-
-    repeat(200) {
-        val numNotes = Random.nextInt(1, 8)
-        repeat(numNotes) {
-            val note = Random.nextInt(20, 80)
-            val duration = Random.nextInt(100, 1000) / 1000.0
-            track.addCompleteNote(timestamp, timestamp + duration, note, 100)
-        }
-
-        val rest = Random.nextInt(100, 900) / 1000.0
-        timestamp += rest
-    }
-
-    return track
 }

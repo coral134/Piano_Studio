@@ -8,8 +8,9 @@ import com.example.pianostudio.data.music.Note
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.createNote
 import com.example.pianostudio.data.music.Track
+import com.example.pianostudio.data.music.newEmptyTrack
 import com.example.pianostudio.midi_io.KeyboardInput
-import com.example.pianostudio.ui.random.studio.keySpacerByNotes
+import com.example.pianostudio.ui.screens.studio.keySpacerByNotes
 
 
 @Stable
@@ -22,7 +23,7 @@ class MainViewModel(val keyboardInput: KeyboardInput) : ViewModel() {
         )
     )
 
-    private var activeTrack = Track() // randomTrack()
+    private var activeTrack = newEmptyTrack() // randomTrack()
 
     val recordedTracks = mutableStateListOf<RecordedTrack>()
 }

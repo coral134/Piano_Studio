@@ -9,8 +9,8 @@ import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
-import com.example.pianostudio.ui.random.currentOrThrow
-import com.example.pianostudio.ui.random.getHSV
+import com.example.pianostudio.ui.shared.currentOrThrow
+import com.example.pianostudio.ui.shared.getHSV
 
 
 private val LocalPageTheme = compositionLocalOf<PageTheme?> { null }

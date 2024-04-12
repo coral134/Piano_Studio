@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.random
+package com.example.pianostudio.ui.shared
 
 import android.util.Log
 import androidx.compose.foundation.background

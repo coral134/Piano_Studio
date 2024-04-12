@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.random
+package com.example.pianostudio.ui.shared
 
 import androidx.compose.foundation.gestures.awaitEachGesture
 import androidx.compose.foundation.gestures.awaitFirstDown

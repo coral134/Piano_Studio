@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.random
+package com.example.pianostudio.ui.shared
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset

@@ -5,7 +5,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
-import com.example.pianostudio.ui.random.studio.PianoScreen
+import com.example.pianostudio.ui.screens.studio.PianoScreen
 import com.example.pianostudio.viewmodel.MainViewModel
 import com.example.pianostudio.viewmodel.rememberTrackPracticer
 import org.koin.androidx.compose.koinViewModel

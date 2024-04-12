@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.random.studio
+package com.example.pianostudio.ui.screens.studio
 
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
@@ -28,8 +28,8 @@ import com.example.pianostudio.data.music.Piano.isBlackKey
 import com.example.pianostudio.data.music.Piano.letter
 import com.example.pianostudio.data.music.Piano.string
 import com.example.pianostudio.midi_io.KeysState
-import com.example.pianostudio.ui.random.fadeOut
-import com.example.pianostudio.ui.random.trackPointers
+import com.example.pianostudio.ui.shared.fadeOut
+import com.example.pianostudio.ui.shared.trackPointers
 import com.example.pianostudio.ui.theme.PressedBlackKey
 import com.example.pianostudio.ui.theme.PressedWhiteKey
 import com.example.pianostudio.ui.theme.WhiteKeyText

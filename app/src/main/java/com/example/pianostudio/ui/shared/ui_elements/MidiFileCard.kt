@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.random.ui_elements
+package com.example.pianostudio.ui.shared.ui_elements
 
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween

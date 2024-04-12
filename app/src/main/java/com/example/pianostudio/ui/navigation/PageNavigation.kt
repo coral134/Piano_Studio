@@ -19,7 +19,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.example.pianostudio.ui.random.currentOrThrow
+import com.example.pianostudio.ui.shared.currentOrThrow
 
 
 @Composable

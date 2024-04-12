@@ -8,6 +8,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.withFrameMillis
 import com.example.pianostudio.data.music.Track
+import com.example.pianostudio.data.music.newEmptyTrack
 import com.example.pianostudio.midi_io.KeyboardInput
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -37,7 +38,7 @@ class TrackPracticer(
     var notes by mutableStateOf(listOf<NotePosition>())
     var seconds by mutableIntStateOf(0)
 
-    private val track = Track()
+    private val track = newEmptyTrack()
     private var timestamp = 0.0
 
     init {

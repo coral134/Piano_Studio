@@ -3,11 +3,10 @@ package com.example.pianostudio.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.pianostudio.ui.random.ui_elements.SideNavBarButtonState
-import com.example.pianostudio.ui.random.ui_elements.SideNavigation
+import com.example.pianostudio.ui.shared.ui_elements.SideNavBarButtonState
+import com.example.pianostudio.ui.shared.ui_elements.SideNavigation
 import com.example.pianostudio.ui.screens.files.FilesScreen
 import com.example.pianostudio.ui.screens.home.HomeScreen
 import com.example.pianostudio.ui.screens.practice.PracticeScreen

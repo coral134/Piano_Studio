@@ -15,10 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
-import com.example.pianostudio.ui.random.ui_elements.PillButton
-import com.example.pianostudio.ui.random.ui_elements.MidiFileList
-import com.example.pianostudio.ui.theme.localTheme
-import com.example.pianostudio.viewmodel.MainViewModel
+import com.example.pianostudio.ui.shared.ui_elements.PillButton
+import com.example.pianostudio.ui.shared.ui_elements.MidiFileList
 
 
 @Composable

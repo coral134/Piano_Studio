@@ -1,4 +1,4 @@
-package com.example.pianostudio.ui.random
+package com.example.pianostudio.ui.shared
 
 import androidx.compose.animation.Animatable
 import androidx.compose.animation.core.animateFloatAsState

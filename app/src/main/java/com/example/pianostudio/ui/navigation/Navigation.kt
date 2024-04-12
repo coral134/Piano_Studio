@@ -11,32 +11,20 @@ import com.example.pianostudio.viewmodel.MainViewModel
 // vm seems to be causing pages to rebuild often
 
 @Composable
-fun Navigation(
-    modifier: Modifier,
-    vm: MainViewModel
-) {
+fun Navigation(modifier: Modifier) {
     PageNavigationRoot(
         startingRoute = "MainPages/Home",
         transitionSpec = fullScreenTransition
     ) {
         PageSwitcher(modifier = modifier) {
             page("MainPages") {
-                MainPages(
-                    modifier = Modifier.fillMaxSize(),
-                    vm = vm
-                )
+                MainPages(modifier = Modifier.fillMaxSize())
             }
             page("StudioPractice") {
-                StudioPracticingScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    vm = vm
-                )
+                StudioPracticingScreen(modifier = Modifier.fillMaxSize())
             }
             page("StudioRecord") {
-                StudioRecordingScreen(
-                    modifier = Modifier.fillMaxSize(),
-                    vm = vm
-                )
+                StudioRecordingScreen(modifier = Modifier.fillMaxSize())
             }
         }
     }

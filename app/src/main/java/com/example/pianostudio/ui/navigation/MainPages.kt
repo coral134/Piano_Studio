@@ -3,9 +3,7 @@ package com.example.pianostudio.ui.navigation
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.pianostudio.ui.random.ui_elements.SideNavBarButtonState
@@ -23,16 +21,31 @@ import com.example.pianostudio.ui.theme.practiceTheme
 import com.example.pianostudio.ui.theme.recordTheme
 import com.example.pianostudio.ui.theme.settingsTheme
 import com.example.pianostudio.viewmodel.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun MainPages(
     modifier: Modifier = Modifier,
-    vm: MainViewModel
+    vm: MainViewModel = koinViewModel()
 ) {
     val nav = rememberLocalPageNavigator()
-    val selection = remember { mutableIntStateOf(0) }
-    val themeColor = remember { mutableStateOf(homeTheme) }
+
+    val themeColor = when (nav.nextPage) {
+        "Practice" -> practiceTheme
+        "Record" -> recordTheme
+        "Files" -> filesTheme
+        "Settings" -> settingsTheme
+        else -> homeTheme
+    }
+
+    val selection = when (nav.nextPage) {
+        "Practice" -> 1
+        "Record" -> 2
+        "Files" -> 3
+        "Settings" -> 4
+        else -> 0
+    }
 
     val buttons = remember {
         listOf(
@@ -44,32 +57,7 @@ fun MainPages(
         )
     }
 
-    ProvideAnimatedTheme(themeColor.value) {
-        LaunchedEffect(nav.nextPage) {
-            when (nav.nextPage) {
-                "Practice" -> {
-                    selection.intValue = 1
-                    themeColor.value = practiceTheme
-                }
-                "Record" -> {
-                    selection.intValue = 2
-                    themeColor.value = recordTheme
-                }
-                "Files" -> {
-                    selection.intValue = 3
-                    themeColor.value = filesTheme
-                }
-                "Settings" -> {
-                    selection.intValue = 4
-                    themeColor.value = settingsTheme
-                }
-                else -> {
-                    selection.intValue = 0
-                    themeColor.value = homeTheme
-                }
-            }
-        }
-
+    ProvideAnimatedTheme(themeColor) {
         val bgColor = localTheme().darkBg
 
         val mod = remember(bgColor) {
@@ -83,36 +71,22 @@ fun MainPages(
             bgColor = bgColor,
             navBarColor = localTheme().surface,
             buttons = buttons,
-            selection = selection.intValue
+            selection = selection
         ) {
             page("Home") {
-                HomeScreen(
-                    modifier = mod,
-                )
+                HomeScreen(modifier = mod)
             }
             page("Practice") {
-                PracticeScreen(
-                    modifier = mod,
-                    vm = vm
-                )
+                PracticeScreen(modifier = mod)
             }
             page("Record") {
-                RecordScreen(
-                    modifier = mod,
-                    vm = vm
-                )
+                RecordScreen(modifier = mod)
             }
             page("Files") {
-                FilesScreen(
-                    modifier = mod,
-                    vm = vm
-                )
+                FilesScreen(modifier = mod)
             }
             page("Settings") {
-                SettingsScreen(
-                    modifier = mod,
-                    vm = vm
-                )
+                SettingsScreen(modifier = mod)
             }
         }
     }

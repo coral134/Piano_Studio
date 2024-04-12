@@ -17,8 +17,7 @@ import com.example.pianostudio.viewmodel.MainViewModel
 
 @Composable
 fun FilesScreen(
-    modifier: Modifier = Modifier,
-    vm: MainViewModel
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.padding(start = 40.dp, end = 40.dp, top = 10.dp),
@@ -30,10 +29,6 @@ fun FilesScreen(
             color = Color.White,
             fontFamily = FontFamily.Default,
             modifier = Modifier.padding(bottom = 10.dp)
-        )
-
-        MidiFileList(
-            modifier = Modifier.fillMaxSize().weight(1f)
         )
     }
 }

@@ -1,5 +1,6 @@
 package com.example.pianostudio.ui.screens.record
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +14,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
 import com.example.pianostudio.ui.random.ui_elements.PillButton
 import com.example.pianostudio.ui.random.ui_elements.MidiFileList
 import com.example.pianostudio.ui.theme.localTheme
@@ -21,9 +23,10 @@ import com.example.pianostudio.viewmodel.MainViewModel
 
 @Composable
 fun RecordScreen(
-    modifier: Modifier = Modifier,
-    vm: MainViewModel
+    modifier: Modifier = Modifier
 ) {
+    val nav = rememberLocalPageNavigator()
+
     Box(
         modifier = modifier,
         contentAlignment = Alignment.BottomEnd
@@ -48,7 +51,9 @@ fun RecordScreen(
         }
 
         PillButton(
-            modifier = Modifier.padding(end = 17.dp, bottom = 17.dp),
+            modifier = Modifier
+                .padding(end = 17.dp, bottom = 17.dp)
+                .clickable { nav.navigateTo("StudioRecord") },
             fillColor = Color(0xFFFF2684),
             shadowColor = Color.Black
         ) {

@@ -17,8 +17,7 @@ import com.example.pianostudio.viewmodel.MainViewModel
 
 @Composable
 fun PracticeScreen(
-    modifier: Modifier = Modifier,
-    vm: MainViewModel
+    modifier: Modifier = Modifier
 ) {
     Column(
         modifier = modifier.padding(start = 40.dp, end = 40.dp, top = 10.dp),

@@ -2,15 +2,14 @@ package com.example.pianostudio.ui.shared.ui_elements
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.spring
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -20,8 +19,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.drawscope.DrawScope
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import com.example.pianostudio.ui.navigation.DefineNewPagesScope
 import com.example.pianostudio.ui.navigation.PageSwitcher
@@ -90,21 +89,15 @@ private fun SideNavBar(
             SideBarButton(
                 modifier = Modifier
                     .fillMaxHeight()
-                    .weight(1f)
-                    .clickable {
-                        button.onClick()
-                    }.padding(
-                        start = 20.dp,
-                        end = 10.dp + notchWidth
-                    ),
-                text = button.text
+                    .weight(1f),
+                state = button
             )
         }
     }
 }
 
 data class SideNavBarButtonState(
-    val text: String,
+    val icon: Int,
     val onClick: () -> Unit
 )
 
@@ -163,16 +156,19 @@ private fun DrawScope.sideNavBarBackground(
 @Composable
 private fun SideBarButton(
     modifier: Modifier = Modifier,
-    text: String
+    state: SideNavBarButtonState
 ) {
-    Box(
-        modifier = modifier,
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = text,
-            fontSize = 20.sp,
-            color = Color.White
-        )
-    }
+    val image = painterResource(id = state.icon)
+    Image(
+        painter = image,
+        contentDescription = "icon",
+        modifier = modifier
+            .clickable { state.onClick() }
+            .padding(
+                top = 20.dp,
+                bottom = 20.dp,
+                start = 30.dp,
+                end = 15.dp + notchWidth
+            )
+    )
 }

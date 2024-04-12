@@ -5,13 +5,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import com.example.pianostudio.ui.shared.ui_elements.SideNavBarButtonState
-import com.example.pianostudio.ui.shared.ui_elements.SideNavigation
+import com.example.pianostudio.R
 import com.example.pianostudio.ui.screens.files.FilesScreen
 import com.example.pianostudio.ui.screens.home.HomeScreen
 import com.example.pianostudio.ui.screens.practice.PracticeScreen
 import com.example.pianostudio.ui.screens.record.RecordScreen
 import com.example.pianostudio.ui.screens.settings.SettingsScreen
+import com.example.pianostudio.ui.shared.ui_elements.SideNavBarButtonState
+import com.example.pianostudio.ui.shared.ui_elements.SideNavigation
 import com.example.pianostudio.ui.theme.ProvideAnimatedTheme
 import com.example.pianostudio.ui.theme.filesTheme
 import com.example.pianostudio.ui.theme.homeTheme
@@ -19,14 +20,11 @@ import com.example.pianostudio.ui.theme.localTheme
 import com.example.pianostudio.ui.theme.practiceTheme
 import com.example.pianostudio.ui.theme.recordTheme
 import com.example.pianostudio.ui.theme.settingsTheme
-import com.example.pianostudio.viewmodel.MainViewModel
-import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun MainPages(
-    modifier: Modifier = Modifier,
-    vm: MainViewModel = koinViewModel()
+    modifier: Modifier = Modifier
 ) {
     val nav = rememberLocalPageNavigator()
 
@@ -46,13 +44,13 @@ fun MainPages(
         else -> 0
     }
 
-    val buttons = remember {
+    val buttons = remember(nav) {
         listOf(
-            SideNavBarButtonState("[Hom]") { nav.navigateTo("MainPages/Home") },
-            SideNavBarButtonState("[Pra]") { nav.navigateTo("MainPages/Practice") },
-            SideNavBarButtonState("[Rec]") { nav.navigateTo("MainPages/Record") },
-            SideNavBarButtonState("[Fil]") { nav.navigateTo("MainPages/Files") },
-            SideNavBarButtonState("[Set]") { nav.navigateTo("MainPages/Settings") },
+            SideNavBarButtonState(R.drawable.home) { nav.navigateTo("MainPages/Home") },
+            SideNavBarButtonState(R.drawable.practice) { nav.navigateTo("MainPages/Practice") },
+            SideNavBarButtonState(R.drawable.record) { nav.navigateTo("MainPages/Record") },
+            SideNavBarButtonState(R.drawable.files) { nav.navigateTo("MainPages/Files") },
+            SideNavBarButtonState(R.drawable.settings) { nav.navigateTo("MainPages/Settings") },
         )
     }
 

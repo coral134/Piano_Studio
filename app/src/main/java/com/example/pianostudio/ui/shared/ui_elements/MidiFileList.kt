@@ -14,6 +14,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
+import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
+import com.example.pianostudio.ui.screens.record.viewDetailsOfRecording
 import com.example.pianostudio.viewmodel.MainViewModel
 import org.koin.androidx.compose.koinViewModel
 
@@ -23,6 +25,7 @@ fun MidiFileList(
     modifier: Modifier = Modifier
 ) {
     val vm: MainViewModel = koinViewModel()
+    val nav = rememberLocalPageNavigator()
 
     Box(
         modifier = modifier,
@@ -37,10 +40,12 @@ fun MidiFileList(
             items(vm.recordedTracks) {
                 MidiFileCard(
                     modifier = modifier.fillMaxWidth(),
-                    name = it.name,
+                    name = it.name.value,
                     date = it.date,
                     duration = it.duration
-                )
+                ) {
+                    viewDetailsOfRecording(vm = vm, nav = nav, recordedTrack = it)
+                }
             }
             item {
                 Spacer(modifier = Modifier.padding(100.dp))

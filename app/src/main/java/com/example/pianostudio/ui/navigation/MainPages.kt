@@ -9,7 +9,10 @@ import com.example.pianostudio.R
 import com.example.pianostudio.ui.screens.files.FilesScreen
 import com.example.pianostudio.ui.screens.home.HomeScreen
 import com.example.pianostudio.ui.screens.practice.PracticeScreen
-import com.example.pianostudio.ui.screens.record.RecordScreen
+import com.example.pianostudio.ui.screens.practice.StudioPracticingScreen
+import com.example.pianostudio.ui.screens.record.MainRecordScreen
+import com.example.pianostudio.ui.screens.record.RecordedTrackDetailsScreen
+import com.example.pianostudio.ui.screens.record.StudioRecordingScreen
 import com.example.pianostudio.ui.screens.settings.SettingsScreen
 import com.example.pianostudio.ui.shared.ui_elements.SideNavBarButtonState
 import com.example.pianostudio.ui.shared.ui_elements.SideNavigation
@@ -48,7 +51,7 @@ fun MainPages(
         listOf(
             SideNavBarButtonState(R.drawable.home) { nav.navigateTo("MainPages/Home") },
             SideNavBarButtonState(R.drawable.practice) { nav.navigateTo("MainPages/Practice") },
-            SideNavBarButtonState(R.drawable.record) { nav.navigateTo("MainPages/Record") },
+            SideNavBarButtonState(R.drawable.record) { nav.navigateTo("MainPages/Record/Main") },
             SideNavBarButtonState(R.drawable.files) { nav.navigateTo("MainPages/Files") },
             SideNavBarButtonState(R.drawable.settings) { nav.navigateTo("MainPages/Settings") },
         )
@@ -77,7 +80,7 @@ fun MainPages(
                 PracticeScreen(modifier = mod)
             }
             page("Record") {
-                RecordScreen(modifier = mod)
+                RecordPage(modifier = mod)
             }
             page("Files") {
                 FilesScreen(modifier = mod)
@@ -85,6 +88,20 @@ fun MainPages(
             page("Settings") {
                 SettingsScreen(modifier = mod)
             }
+        }
+    }
+}
+
+@Composable
+fun RecordPage(
+    modifier: Modifier = Modifier
+) {
+    PageSwitcher(modifier = modifier) {
+        page("Main") {
+            MainRecordScreen(modifier = Modifier.fillMaxSize())
+        }
+        page("ViewDetails") {
+            RecordedTrackDetailsScreen(modifier = Modifier.fillMaxSize())
         }
     }
 }

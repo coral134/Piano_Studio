@@ -25,6 +25,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.pianostudio.ui.theme.localTheme
+import com.example.pianostudio.viewmodel.MainViewModel
+import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
@@ -32,7 +34,8 @@ fun MidiFileCard(
     modifier: Modifier = Modifier,
     name: String,
     date: String,
-    duration: Int
+    duration: Int,
+    onViewDetails: () -> Unit = {}
 ) {
     val formattedDuration = remember(duration) {
         String.format("%2d:%02d", duration / 60, duration % 60)
@@ -96,7 +99,8 @@ fun MidiFileCard(
                     text = "View Details",
                     fontSize = 16.sp,
                     color = Color.White,
-                    fontWeight = FontWeight.Bold
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.clickable { onViewDetails.invoke() }
                 )
                 Text(
                     text = "Rename",

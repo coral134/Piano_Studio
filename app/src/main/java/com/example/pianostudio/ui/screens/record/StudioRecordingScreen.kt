@@ -2,6 +2,7 @@ package com.example.pianostudio.ui.screens.record
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.example.pianostudio.ui.navigation.rememberLocalPageNavigator
@@ -33,12 +34,12 @@ fun StudioRecordingScreen(
         onPause = {
             val recordedTrack = RecordedTrack(
                 track = recorder.track,
-                name = "My recording ${vm.recordedTracks.size}",
+                name = mutableStateOf("My recording ${vm.recordedTracks.size}"),
                 date = "4/12/24",
                 duration = 60
             )
             vm.recordedTracks.add(recordedTrack)
-            nav.navigateTo("MainPages/Record")
+            viewDetailsOfRecording(vm, nav, recordedTrack)
         },
         updatePressedNotes = remember(vm.keyboardInput) { vm.keyboardInput::uiKeyPress },
     )

@@ -20,7 +20,7 @@ import com.example.pianostudio.ui.shared.ui_elements.MidiFileList
 
 
 @Composable
-fun RecordScreen(
+fun MainRecordScreen(
     modifier: Modifier = Modifier
 ) {
     val nav = rememberLocalPageNavigator()

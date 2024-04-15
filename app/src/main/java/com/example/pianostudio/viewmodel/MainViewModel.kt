@@ -23,7 +23,7 @@ class MainViewModel(val keyboardInput: KeyboardInput) : ViewModel() {
         )
     )
 
-    private var activeTrack = newEmptyTrack() // randomTrack()
+    val activeRecordedTrack = mutableStateOf<RecordedTrack?>(null)
 
     val recordedTracks = mutableStateListOf<RecordedTrack>()
 }

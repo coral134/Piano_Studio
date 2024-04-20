@@ -11,12 +11,12 @@ fun parseMidiMessage(
         val note = data[offset + 1].toInt()
         val vel = data[offset + 2].toInt()
         if (note !in 0..127 || vel !in 0..127) return null
-        println("note on")
+//        println("note on")
         return MidiMessage(note, vel)
     } else if(data[offset].toInt() == (-128)) {  // note off
         val note = data[offset + 1].toInt()
         if (note !in 0..127) return null
-        println("note off")
+//        println("note off")
         return MidiMessage(note, 0)
     }
 

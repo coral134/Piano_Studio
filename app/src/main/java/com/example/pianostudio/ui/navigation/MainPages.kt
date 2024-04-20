@@ -1,18 +1,22 @@
 package com.example.pianostudio.ui.navigation
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.pianostudio.R
 import com.example.pianostudio.ui.screens.files.FilesScreen
 import com.example.pianostudio.ui.screens.home.HomeScreen
 import com.example.pianostudio.ui.screens.practice.PracticeScreen
-import com.example.pianostudio.ui.screens.practice.StudioPracticingScreen
 import com.example.pianostudio.ui.screens.record.MainRecordScreen
+import com.example.pianostudio.ui.screens.record.RecordNewButton
 import com.example.pianostudio.ui.screens.record.RecordedTrackDetailsScreen
-import com.example.pianostudio.ui.screens.record.StudioRecordingScreen
 import com.example.pianostudio.ui.screens.settings.SettingsScreen
 import com.example.pianostudio.ui.shared.ui_elements.SideNavBarButtonState
 import com.example.pianostudio.ui.shared.ui_elements.SideNavigation
@@ -96,12 +100,25 @@ fun MainPages(
 fun RecordPage(
     modifier: Modifier = Modifier
 ) {
-    PageSwitcher(modifier = modifier) {
-        page("Main") {
-            MainRecordScreen(modifier = Modifier.fillMaxSize())
+    val nav = rememberLocalPageNavigator()
+
+    Box(
+        modifier = modifier,
+        contentAlignment = Alignment.BottomEnd
+    ) {
+        PageSwitcher {
+            page("Main") {
+                MainRecordScreen(modifier = Modifier.fillMaxSize())
+            }
+            page("ViewDetails") {
+                RecordedTrackDetailsScreen(modifier = Modifier.fillMaxSize())
+            }
         }
-        page("ViewDetails") {
-            RecordedTrackDetailsScreen(modifier = Modifier.fillMaxSize())
-        }
+
+        RecordNewButton(
+            modifier = Modifier
+                .padding(end = 17.dp, bottom = 17.dp)
+                .clickable { nav.navigateTo("StudioRecord") },
+        )
     }
 }

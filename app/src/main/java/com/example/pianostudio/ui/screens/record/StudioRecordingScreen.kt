@@ -35,7 +35,7 @@ fun StudioRecordingScreen(
             val recordedTrack = RecordedTrack(
                 track = recorder.track,
                 name = mutableStateOf("My recording ${vm.recordedTracks.size}"),
-                date = "4/12/24",
+                date = "4/19/24",
                 duration = 60
             )
             vm.recordedTracks.add(recordedTrack)

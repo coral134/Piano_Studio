@@ -31,7 +31,8 @@ fun PracticeScreen(
         )
 
         MidiFileList(
-            modifier = Modifier.fillMaxSize().weight(1f)
+            modifier = Modifier.fillMaxSize().weight(1f),
+            emptyMessage = "No songs available to practice"
         )
     }
 }

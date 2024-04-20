@@ -28,6 +28,53 @@ fun DrawNotes(
     notes: List<NotePosition>
 ) {
     Canvas(modifier = modifier.clipToBounds()) {
+//        for (notePos in notes) {
+//            val note = notePos.note
+//            if (!keySpacer.isVisible(note)) continue
+//
+//            val notePosY = (notePos.topPos * (size.height + 10.dp.toPx()) - 10.dp.toPx()).toFloat()
+//            val noteHeight = (notePos.height * (size.height + 10.dp.toPx())).toFloat()
+//
+//            if (note.isBlackKey()) {
+//                drawNote(
+//                    posX = size.width * keySpacer.leftAlignment(note),
+//                    posY = notePosY,
+//                    width = size.width * keySpacer.bkeyWidth,
+//                    height = noteHeight,
+//                    color = BlackKeyNote,
+//                    outline = BlackKeyNoteOutline
+//                )
+//            } else {
+//                drawNote(
+//                    posX = size.width * keySpacer.leftAlignment(note),
+//                    posY = notePosY,
+//                    width = size.width * keySpacer.wkeyWidth,
+//                    height = noteHeight,
+//                    color = WhiteKeyNote,
+//                    outline = WhiteKeyNoteOutline
+//                )
+//            }
+//        }
+
+        for (notePos in notes) {
+            val note = notePos.note
+            if (!keySpacer.isVisible(note)) continue
+
+            val notePosY = (notePos.topPos * (size.height + 10.dp.toPx()) - 10.dp.toPx()).toFloat()
+            val noteHeight = (notePos.height * (size.height + 10.dp.toPx())).toFloat()
+
+            if (!note.isBlackKey()) {
+                drawNote(
+                    posX = size.width * keySpacer.leftAlignment(note),
+                    posY = notePosY,
+                    width = size.width * keySpacer.wkeyWidth,
+                    height = noteHeight,
+                    color = WhiteKeyNote,
+                    outline = WhiteKeyNoteOutline
+                )
+            }
+        }
+
         for (notePos in notes) {
             val note = notePos.note
             if (!keySpacer.isVisible(note)) continue
@@ -43,15 +90,6 @@ fun DrawNotes(
                     height = noteHeight,
                     color = BlackKeyNote,
                     outline = BlackKeyNoteOutline
-                )
-            } else {
-                drawNote(
-                    posX = size.width * keySpacer.leftAlignment(note),
-                    posY = notePosY,
-                    width = size.width * keySpacer.wkeyWidth,
-                    height = noteHeight,
-                    color = WhiteKeyNote,
-                    outline = WhiteKeyNoteOutline
                 )
             }
         }

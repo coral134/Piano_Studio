@@ -30,15 +30,32 @@ fun rememberTrackPracticer(
     }
 }
 
+@Composable
+fun rememberTrackPlayer(
+    playbackBPM: Double = 60.0,
+    numBeatsVisible: Double = 4.0,
+    track: Track,
+    keyboardInput: KeyboardInput = koinInject()
+): TrackPracticer {
+    return remember {
+        TrackPracticer(
+            playbackBPM = playbackBPM,
+            numBeatsVisible = numBeatsVisible,
+            keyboardInput = keyboardInput,
+            track = track
+        )
+    }
+}
+
 class TrackPracticer(
     val playbackBPM: Double = 60.0,
     val numBeatsVisible: Double = 4.0,
-    private val keyboardInput: KeyboardInput
+    private val keyboardInput: KeyboardInput,
+    private val track: Track = newEmptyTrack()
 ) {
     var notes by mutableStateOf(listOf<NotePosition>())
     var seconds by mutableIntStateOf(0)
 
-    private val track = newEmptyTrack()
     private var timestamp = 0.0
 
     init {

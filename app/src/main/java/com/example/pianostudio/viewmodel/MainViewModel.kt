@@ -7,7 +7,6 @@ import androidx.lifecycle.ViewModel
 import com.example.pianostudio.data.music.Note
 import com.example.pianostudio.data.music.Piano
 import com.example.pianostudio.data.music.Piano.createNote
-import com.example.pianostudio.data.music.Track
 import com.example.pianostudio.data.music.newEmptyTrack
 import com.example.pianostudio.midi_io.KeyboardInput
 import com.example.pianostudio.ui.screens.studio.keySpacerByNotes
@@ -24,6 +23,8 @@ class MainViewModel(val keyboardInput: KeyboardInput) : ViewModel() {
     )
 
     val activeRecordedTrack = mutableStateOf<RecordedTrack?>(null)
+
+    val activePlaybackTrack = mutableStateOf(newEmptyTrack())
 
     val recordedTracks = mutableStateListOf<RecordedTrack>()
 }
